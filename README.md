@@ -9,23 +9,33 @@ This InstaBot work by [https://www.instagram.com][2] and need only your login an
 # Usage
 Login:
 --------------------
+```python
 bot = InstaBot('login', 'password')
-
+```
 You can like one tag: 
 --------------------
-Set tag to like: bot.get_media_id_by_tag('dog')
-
-Like 4 times: bot.like_all_exist_media(4)
-
+Set tag to like: 
+```python
+bot.get_media_id_by_tag('dog')
+```
+Like 4 times: 
+```python
+bot.like_all_exist_media(4)
+```
 Ore you can choose auto_mod (like all tags from setting by loop):
 --------------------
-Set tag list: bot.tag_list = ['moto', 'atv', 'car', 'travel', 'cat']
-
-Start auto_mod: bot.auto_mod()
-
+Set tag list: 
+```python
+bot.tag_list = ['moto', 'atv', 'car', 'travel', 'cat']
+```
+Start auto_mod: 
+```python
+bot.auto_mod()
+```
 Logout from exist session:
 --------------------
+```python
 bot.logout()
-
+```
 [1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
 [2]: https://www.instagram.com
