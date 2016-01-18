@@ -13,9 +13,9 @@ bot = InstaBot('login', 'password')
 
 You can like one tag: 
 --------------------
-bot.get_media_id_by_tag('dog') - set tag to like.
+Set tag to like: bot.get_media_id_by_tag('dog')
 
-bot.like_all_exist_media(4) - like 4 times.
+Like 4 times: bot.like_all_exist_media(4)
 
 Ore you can choose auto_mod (like all tags from setting by loop):
 --------------------
