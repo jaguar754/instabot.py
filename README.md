@@ -3,7 +3,9 @@ Instagram bot. It works without instagram api, need only login and password. Wri
 # Usage
 
 bot = InstaBot('login', 'password')
+
 You can like one tag: 
+
 bot.get_media_id_by_tag('dog') - set tag to like.
 bot.like_all_exist_media(4) - like 4 times.
 
