@@ -10,7 +10,11 @@ This InstaBot work by [https://www.instagram.com][2] and need only your login an
 Login:
 --------------------
 ```python
-bot = InstaBot('login', 'password')
+bot = InstaBot('login', 'password', 
+               like_in_day=1000,
+               more_than_likes=10,
+               tag_list = ['cat', 'car', 'dog'],
+               max_like_for_one_tag = 5)
 ```
 You can like one tag: 
 --------------------
@@ -24,10 +28,6 @@ bot.like_all_exist_media(4)
 ```
 Ore you can choose auto_mod (like all tags from setting by loop):
 --------------------
-Set tag list: 
-```python
-bot.tag_list = ['moto', 'atv', 'car', 'travel', 'cat']
-```
 Start auto_mod: 
 ```python
 bot.auto_mod()
