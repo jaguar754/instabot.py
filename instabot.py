@@ -22,7 +22,6 @@ class InstaBot:
                   (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
     accept_language = 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
 
-    # Don't like if media have more than n likes.
     # If instagram ban you - query return 400 error.
     error_400 = 0
     # If you have 3 in row 400 error - look like you banned.
@@ -40,13 +39,14 @@ class InstaBot:
     log_file = 0
 
     def __init__(self, login, password
-                like_in_day=1000,
+                like_per_day=1000,
                 more_than_likes=10,
                 tag_list = ['cat', 'car', 'dog'],
                 max_like_for_one_tag = 5):
-        self.like_in_day = like_in_day
+        self.like_per_day = like_per_day
         self.time_in_day = 24*60*60
-        self.like_delay = time_in_day / like_in_day
+        self.like_delay = time_in_day / like_per_day
+        # Don't like if media have more than n likes.
         self.more_than_likes = more_than_likes
         
         # Auto mod seting:
