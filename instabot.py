@@ -64,8 +64,8 @@ class InstaBot:
                      (now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         self.login()
+        
     def login(self):
-
         log_string = 'Try to login by %s...' % (self.user_login)
         self.write_log(log_string)
         self.s.cookies.update ({'sessionid' : '', 'mid' : '', 'ig_pr' : '1',
@@ -102,6 +102,7 @@ class InstaBot:
                 self.write_log('Login error! Сheck your login data!')
         else:
             self.write_log('Login error! Connenction error!')
+            
     def get_media_id_by_tag (self, tag):
         log_string = "Get media id by tag: %s" % (tag)
         self.write_log(log_string)
@@ -124,6 +125,7 @@ class InstaBot:
                                     ['tag']['media']['nodes'])
         else:
             return 0
+            
     def like_all_exist_media (self, media_size=-1):
         if self.media_by_tag != 0:
             i=0
@@ -164,24 +166,29 @@ class InstaBot:
                         # This media have to many likes!
         else:
             self.write_log("No media to like!")
+            
     def like(self, media_id):
         url_likes = self.url_likes % (media_id)
         like = self.s.post(url_likes)
         return like
+        
     def comment(self, comment):
         return 0
+        
     def logout(self):
         login_status = 0
         now_time = datetime.datetime.now()
         log_string = 'Insta Bot stop at %s, like count %i.' \
                      % (now_time.strftime("%d.%m.%Y_%H:%M"), self.like_conter)
         self.write_log(log_string)
+        
     def auto_mod(self):
         while True:
             random.shuffle(self.tag_list)
             self.get_media_id_by_tag(random.choice(self.tag_list))
             self.like_all_exist_media(random.randint \
                                      (1, self.max_like_for_one_tag))
+                                     
     def write_log(self, log_text):
         if self.log_mod == 0:
             print (log_text)
