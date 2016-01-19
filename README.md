@@ -14,7 +14,23 @@ bot = InstaBot('login', 'password',
                like_in_day=1000,
                more_than_likes=10,
                tag_list = ['cat', 'car', 'dog'],
-               max_like_for_one_tag = 5)
+               max_like_for_one_tag=5)
+```
+How many likes set bot in one day.
+```python
+like_in_day=100
+```
+Don't like media (photo or video) if it have more than `more_than_likes` likes. If media have too much likes - your like have not feedback.
+```python
+more_than_likes=10
+```
+Tag list to like.
+```python
+tag_list = ['cat', 'car', 'dog']
+```
+Like 1 to max_like_for_one_tag times by row.
+```python
+max_like_for_one_tag=5
 ```
 You can like one tag: 
 --------------------
@@ -26,7 +42,7 @@ Like 4 times:
 ```python
 bot.like_all_exist_media(4)
 ```
-Ore you can choose auto_mod (like all tags from setting by loop):
+Or you can choose auto_mod (like all tags from setting by loop):
 --------------------
 Start auto_mod: 
 ```python
