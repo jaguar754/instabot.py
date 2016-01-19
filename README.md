@@ -28,7 +28,7 @@ Tag list to like.
 ```python
 tag_list = ['cat', 'car', 'dog']
 ```
-Like 1 to max_like_for_one_tag times by row.
+Like 1 to `max_like_for_one_tag` times by row.
 ```python
 max_like_for_one_tag=5
 ```
@@ -42,7 +42,7 @@ Like 4 times:
 ```python
 bot.like_all_exist_media(4)
 ```
-Or you can choose auto_mod (like all tags from setting by loop):
+Or you can choose `auto_mod` (like all tags from setting by loop):
 --------------------
 Start auto_mod: 
 ```python
