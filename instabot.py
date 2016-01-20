@@ -127,6 +127,7 @@ class InstaBot:
             except:
                 self.media_by_tag = []
                 self.write_log("Exept on get_media!")
+                time.sleep(60)
         else:
             return 0
             
