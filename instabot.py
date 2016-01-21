@@ -217,10 +217,12 @@ class InstaBot:
             if self.log_file == 0:
                 self.log_file = 1
                 now_time = datetime.datetime.now()
-                log_full_path = '%s%s_%s.log' % (self.log_file_path, self.user_login, now_time.strftime("%d.%m.%Y_%H:%M"))
-                log_file = open(log_full_path, 'tw').close()
-                FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-                logging.basicConfig(filename=log_full_path, format=FORMAT, level=logging.INFO)
+                self.log_full_path = '%s%s_%s.log' % (self.log_file_path, self.user_login, now_time.strftime("%d.%m.%Y_%H:%M"))
+                formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
                 self.logger = logging.getLogger(self.user_login)
+                self.hdrl = logging.FileHandler(self.log_full_path, mode='w')
+                self.hdrl.setFormatter(formatter)
+                self.logger.setLevel(level=logging.INFO)
+                self.logger.addHandler(self.hdrl)
             # Log to log file.
             self.logger.info(log_text)
