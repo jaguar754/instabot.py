@@ -212,7 +212,7 @@ class InstaBot:
     def write_log(self, log_text):
         if self.log_mod == 0:
             print (log_text)
-        else:
+        elif self.log_mod == 1:
             # Create log_file if not exist.
             if self.log_file == 0:
                 self.log_file = 1
