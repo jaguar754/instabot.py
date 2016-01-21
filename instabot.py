@@ -100,7 +100,7 @@ class InstaBot:
                 self.write_log(log_string)
             else:
                 self.login_status = 0
-                self.write_log('Login error! Сheck your login data!')
+                self.write_log('Login error! Check your login data!')
         else:
             self.write_log('Login error! Connenction error!')
             
