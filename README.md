@@ -58,8 +58,39 @@ Logout from exist session:
 ```python
 bot.logout()
 ```
-Test on:
---------------------
+
+# Usage examples
+Standard use (will like by loop, all default tag):
+```python
+bot = InstaBot('login', 'password')
+bot.auto_mod()
+```
+Standard use with your tag (will like by loop, all your tag):
+```python
+bot = InstaBot('login', 'password', tag_list = ['with', 'your', 'tag'])
+bot.auto_mod()
+```
+Standard use with change defaul settings (you should know what you do!):
+```python
+bot = InstaBot('login', 'password', 
+               like_in_day=100000,
+               more_than_likes=5,
+               tag_list = ['like', 'follow', 'girls'],
+               max_like_for_one_tag=50,
+               log_mod = 1)
+bot.auto_mod()
+```
+Get media_id buy one tag `'python'` and like 4 of them:
+```python
+bot = InstaBot('login', 'password')
+bot.get_media_id_by_tag('python')
+bot.like_all_exist_media(4)
+```
+# Requirements
+Python 3.4 +
+
+.py file must be in UTF-8 encoding!
+# Test on:
 Windows 8 & Python 3.4
 
 CentOS 6 & Python 3.4
