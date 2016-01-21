@@ -183,6 +183,15 @@ class InstaBot:
         return like
         
     def comment(self, comment):
+        # To do
+        return 0
+    
+    def follow(self, user_id):
+        # To do
+        return 0
+        
+    def unfollow(self, user_id):
+        # To do
         return 0
         
     def logout(self):
