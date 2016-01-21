@@ -34,7 +34,7 @@ class InstaBot:
 
     # Log setting.
     # log_mod 0 to console, 1 to file
-    log_mod = 1
+    log_mod = 0
     log_file_path = '/var/www/python/log/'
     log_file = 0
 
