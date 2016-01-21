@@ -33,8 +33,6 @@ class InstaBot:
     like_conter = 0
 
     # Log setting.
-    # log_mod 0 to console, 1 to file
-    log_mod = 0
     log_file_path = '/var/www/python/log/'
     log_file = 0
 
@@ -42,7 +40,8 @@ class InstaBot:
                 like_per_day=1000,
                 more_than_likes=10,
                 tag_list=['cat', 'car', 'dog'],
-                max_like_for_one_tag = 5):
+                max_like_for_one_tag = 5,
+                log_mod = 0):
         self.like_per_day = like_per_day
         self.time_in_day = 24*60*60
         self.like_delay = self.time_in_day / self.like_per_day
@@ -54,6 +53,8 @@ class InstaBot:
         self.tag_list = tag_list
         # Get random tag, from tag_list, and like (1 to n) times.
         self.max_like_for_one_tag = max_like_for_one_tag
+        # log_mod 0 to console, 1 to file
+        self.log_mod = log_mod
         
         self.s = requests.Session()
         self.user_login = login
@@ -220,5 +221,6 @@ class InstaBot:
                 log_file = open(log_full_path, 'tw').close()
                 FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
                 logging.basicConfig(filename=log_full_path, format=FORMAT, level=logging.INFO)
+                self.logger = logging.getLogger(self.user_login)
             # Log to log file.
-            logging.info(log_text)
+            self.logger.info(log_text)
