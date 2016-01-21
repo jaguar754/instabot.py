@@ -33,7 +33,7 @@ Like 1 to `max_like_for_one_tag` times by row.
 ```python
 max_like_for_one_tag=5
 ```
-Log mod: `log_mod=0` log to console, `log_mod=1` log to file.
+Log mod: `log_mod=0` log to console, `log_mod=1` log to file, `log_mod=2` no log.
 ```python
 log_mod = 0
 ```
