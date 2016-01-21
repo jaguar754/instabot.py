@@ -53,5 +53,10 @@ Logout from exist session:
 ```python
 bot.logout()
 ```
+Test on:
+--------------------
+Windows 8 & Python 3.4
+
+CentOS 6 & Python 3.4
 [1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
 [2]: https://www.instagram.com
