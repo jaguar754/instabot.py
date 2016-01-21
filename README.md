@@ -14,7 +14,8 @@ bot = InstaBot('login', 'password',
                like_in_day=1000,
                more_than_likes=10,
                tag_list = ['cat', 'car', 'dog'],
-               max_like_for_one_tag=5)
+               max_like_for_one_tag=5,
+               log_mod = 0)
 ```
 How many likes set bot in one day.
 ```python
@@ -31,6 +32,10 @@ tag_list = ['cat', 'car', 'dog']
 Like 1 to `max_like_for_one_tag` times by row.
 ```python
 max_like_for_one_tag=5
+```
+Log mod: `log_mod=0` log to console, `log_mod=1` log to file.
+```python
+log_mod = 0
 ```
 You can like one tag: 
 --------------------
