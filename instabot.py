@@ -7,7 +7,7 @@ import logging
 import json
 
 class InstaBot:
-    """ Instagram bot v 0.01 """
+    """ Instagram bot v 0.02 """
     error_400 = 0
     media_by_tag = 0
     login_status = 0
