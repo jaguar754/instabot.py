@@ -1,4 +1,3 @@
-from lxml import html
 import requests
 import random
 import time
@@ -7,16 +6,17 @@ import logging
 import json
 
 class InstaBot:
-    """ Instagram bot v 0.02 """
+    """ Instagram bot v 0.03 """
     error_400 = 0
     media_by_tag = 0
     login_status = 0
-    
+
     url = 'https://www.instagram.com/'
     url_tag = 'https://www.instagram.com/explore/tags/'
     url_likes = 'https://www.instagram.com/web/likes/%s/like/'
     url_comment = 'https://www.instagram.com/web/comments/%s/add/'
     url_login = 'https://www.instagram.com/accounts/login/ajax/'
+    url_logout = 'https://www.instagram.com/accounts/logout/'
 
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
                   (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
@@ -47,7 +47,7 @@ class InstaBot:
         self.like_delay = self.time_in_day / self.like_per_day
         # Don't like if media have more than n likes.
         self.more_than_likes = more_than_likes
-        
+
         # Auto mod seting:
         # Default list of tag.
         self.tag_list = tag_list
@@ -55,17 +55,20 @@ class InstaBot:
         self.max_like_for_one_tag = max_like_for_one_tag
         # log_mod 0 to console, 1 to file
         self.log_mod = log_mod
-        
+
         self.s = requests.Session()
         self.user_login = login
         self.user_password = password
-        
+
         now_time = datetime.datetime.now()
-        log_string = 'Insta Bot v0.01 start at %s:' %\
+        log_string = 'Insta Bot v0.03 start at %s:' %\
                      (now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         self.login()
-        
+
+    def __del__ (self):
+        self.logout()
+
     def login(self):
         log_string = 'Try to login by %s...' % (self.user_login)
         self.write_log(log_string)
@@ -89,6 +92,7 @@ class InstaBot:
         login = self.s.post(self.url_login, data=self.login_post,
                             allow_redirects=True)
         self.s.headers.update({'X-CSRFToken' : login.cookies['csrftoken']})
+        self.csrftoken = login.cookies['csrftoken']
         time.sleep(5 * random.random())
 
         if login.status_code == 200:
@@ -103,7 +107,21 @@ class InstaBot:
                 self.write_log('Login error! Check your login data!')
         else:
             self.write_log('Login error! Connenction error!')
-            
+
+    def logout(self):
+        self.login_status = 0
+        now_time = datetime.datetime.now()
+        log_string = 'Insta Bot logout at %s, like count %i.' \
+                     % (now_time.strftime("%d.%m.%Y_%H:%M"), self.like_conter)
+        self.write_log(log_string)
+
+        try:
+            logout_post = {'csrfmiddlewaretoken' : self.csrftoken}
+            logout = self.s.post(self.url_likes, data=logout_post)
+            self.write_log("Logout succes!")
+        except:
+            self.write_log("Logout error!")
+
     def get_media_id_by_tag (self, tag):
         log_string = "Get media id by tag: %s" % (tag)
         self.write_log(log_string)
@@ -112,17 +130,17 @@ class InstaBot:
             try:
                 r = self.s.get(url_tag)
                 text = r.text
-    
+
                 finder_text_start = '<script type="text/javascript">window._sharedData = '
                 finder_text_start_len = len(finder_text_start)-1
                 finder_text_end = ';</script>'
-    
+
                 all_data_start = text.find(finder_text_start)
                 all_data_end = text.find(finder_text_end, all_data_start + 1)
                 json_str = text[(all_data_start + finder_text_start_len + 1) \
                                : all_data_end]
                 all_data = json.loads(json_str)
-    
+
                 self.media_by_tag = list(all_data['entry_data']['TagPage'][0]\
                                         ['tag']['media']['nodes'])
             except:
@@ -131,7 +149,7 @@ class InstaBot:
                 time.sleep(60)
         else:
             return 0
-            
+
     def like_all_exist_media (self, media_size=-1):
         if self.media_by_tag != 0:
             i=0
@@ -173,7 +191,7 @@ class InstaBot:
                         # This media have to many likes!
         else:
             self.write_log("No media to like!")
-            
+
     def like(self, media_id):
         url_likes = self.url_likes % (media_id)
         try:
@@ -182,33 +200,27 @@ class InstaBot:
             self.write_log("Exept on like!")
             like = 0
         return like
-        
+
     def comment(self, comment):
         # To do
         return 0
-    
+
     def follow(self, user_id):
         # To do
         return 0
-        
+
     def unfollow(self, user_id):
         # To do
         return 0
-        
-    def logout(self):
-        login_status = 0
-        now_time = datetime.datetime.now()
-        log_string = 'Insta Bot stop at %s, like count %i.' \
-                     % (now_time.strftime("%d.%m.%Y_%H:%M"), self.like_conter)
-        self.write_log(log_string)
-        
+
+
     def auto_mod(self):
         while True:
             random.shuffle(self.tag_list)
             self.get_media_id_by_tag(random.choice(self.tag_list))
             self.like_all_exist_media(random.randint \
                                      (1, self.max_like_for_one_tag))
-                                     
+
     def write_log(self, log_text):
         if self.log_mod == 0:
             print (log_text)
