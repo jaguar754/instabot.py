@@ -18,8 +18,8 @@ class InstaBot:
     url_login = 'https://www.instagram.com/accounts/login/ajax/'
     url_logout = 'https://www.instagram.com/accounts/logout/'
 
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
-                  (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
+    user_agent = ("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 "
+                  "KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36")
     accept_language = 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
 
     # If instagram ban you - query return 400 error.
@@ -75,7 +75,8 @@ class InstaBot:
         self.s.cookies.update ({'sessionid' : '', 'mid' : '', 'ig_pr' : '1',
                                'ig_vw' : '1920', 'csrftoken' : '',
                                's_network' : '', 'ds_user_id' : ''})
-        self.login_post = {'username' : self.user_login, 'password' : self.user_password}
+        self.login_post = {'username' : self.user_login,
+                           'password' : self.user_password}
         self.s.headers.update ({'Accept-Encoding' : 'gzip, deflate',
                                'Accept-Language' : self.accept_language,
                                'Connection' : 'keep-alive',
@@ -131,7 +132,8 @@ class InstaBot:
                 r = self.s.get(url_tag)
                 text = r.text
 
-                finder_text_start = '<script type="text/javascript">window._sharedData = '
+                finder_text_start = ('<script type="text/javascript">'
+                                     'window._sharedData = ')
                 finder_text_start_len = len(finder_text_start)-1
                 finder_text_end = ';</script>'
 
@@ -157,7 +159,8 @@ class InstaBot:
                 # Media count by this tag.
                 if media_size > 0 or media_size < 0:
                     media_size -= 1
-                    if (self.media_by_tag[i]['likes']['count'] < self.more_than_likes):
+                    if (self.media_by_tag[i]['likes']['count'] < \
+                        self.more_than_likes):
                         log_string = "Try to like media: %s" %\
                                      (self.media_by_tag[i]['id'])
                         self.write_log(log_string)
@@ -172,7 +175,8 @@ class InstaBot:
                                               self.like_conter)
                                 self.write_log(log_string)
                             elif like.status_code == 400:
-                                log_string = "Not liked: %i" % (like.status_code)
+                                log_string = "Not liked: %i" \
+                                              % (like.status_code)
                                 self.write_log(log_string)
                                 # Some error. If repeated - can be ban!
                                 if self.error_400 >= self.error_400_to_ban:
@@ -181,7 +185,8 @@ class InstaBot:
                                 else:
                                     self.error_400 += 1
                             else:
-                                log_string = "Not liked: %i" % (like.status_code)
+                                log_string = "Not liked: %i" \
+                                              % (like.status_code)
                                 self.write_log(log_string)
                                 # Some error.
                             i += 1
@@ -229,8 +234,11 @@ class InstaBot:
             if self.log_file == 0:
                 self.log_file = 1
                 now_time = datetime.datetime.now()
-                self.log_full_path = '%s%s_%s.log' % (self.log_file_path, self.user_login, now_time.strftime("%d.%m.%Y_%H:%M"))
-                formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+                self.log_full_path = '%s%s_%s.log' % (self.log_file_path,
+                                     self.user_login,
+                                     now_time.strftime("%d.%m.%Y_%H:%M"))
+                formatter = logging.Formatter('%(asctime)s - %(name)s '
+                            '- %(message)s')
                 self.logger = logging.getLogger(self.user_login)
                 self.hdrl = logging.FileHandler(self.log_full_path, mode='w')
                 self.hdrl.setFormatter(formatter)
