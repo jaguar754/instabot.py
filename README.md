@@ -90,6 +90,16 @@ bot.like_all_exist_media(4)
 Python 3.4 +
 
 .py file must be in UTF-8 encoding!
+# How to install and run:
+1) You should download and install python 3.4 on your OS.
+
+2) You should install python lib `requests`. Run command `pip3 install requests`. If you type `pip install requests` - you will install `requests` for python 2.7. This is WRONG!
+
+3) Download instabot.py and save it in UTF-8 encoding.
+
+4) Add the code to the end of the file (like in usage examples), depending on how you want to use bot.
+
+5) Run program `python3 instabot.py` on MAC and Linux, or `python instabot.py` on Windows.
 # Test on:
 Windows 8 & Python 3.4
 
