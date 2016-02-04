@@ -104,6 +104,7 @@ Instagram account
 Windows 8 & Python 3.4
 
 CentOS 6 & Python 3.4
+
 CentOS 6 & Python 2.6
 # Warning!
 The entire responsibility for the use of bot programs entirely on you.
