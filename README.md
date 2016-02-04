@@ -87,26 +87,27 @@ bot.get_media_id_by_tag('python')
 bot.like_all_exist_media(4)
 ```
 # Requirements
-Python 3.4 +
-
-.py file must be in UTF-8 encoding!
+`Python`
+Instagram account
+`instabot.py` file must be in `UTF-8` encoding if you use `Python 3`, or `ASCII` in `Python 2` ([PEP][3])!
 # How to install and run:
-1) You should download and install python 3.4 on your OS.
+1) You should download and install `Python` on your OS.
 
-2) You should install python lib `requests`. Run command `pip3 install requests`. If you type `pip install requests` - you will install `requests` for python 2.7. This is WRONG!
+2) You should install Python lib `requests`. Run command `pip3 install requests` if you use `Python 3`, or type `pip install requests` if you use `Python 2`.
 
-3) Download instabot.py and save it in UTF-8 encoding.
+3) Download `instabot.py` and save it in right encoding!
 
 4) Add the code to the end of the file (like in usage examples), depending on how you want to use bot.
 
-5) Run program `python3 instabot.py` on MAC and Linux, or `python instabot.py` on Windows.
+5) Run program `python3 instabot.py` or `python instabot.py` on MAC and Linux, or `python instabot.py` on Windows.
 # Test on:
 Windows 8 & Python 3.4
 
 CentOS 6 & Python 3.4
-
+CentOS 6 & Python 2.6
 # Warning!
 The entire responsibility for the use of bot programs entirely on you.
 
 [1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
 [2]: https://www.instagram.com
+[3]: https://www.python.org/dev/peps/pep-0008/#source-file-encoding
