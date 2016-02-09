@@ -280,7 +280,10 @@ class InstaBot:
         """ Write log by print() or logger """
 
         if self.log_mod == 0:
-            print (log_text)
+            try:
+                print(log_text)
+            except UnicodeEncodeError:
+                print("Your text have unicode problem!")
         elif self.log_mod == 1:
             # Create log_file if not exist.
             if self.log_file == 0:
@@ -297,4 +300,7 @@ class InstaBot:
                 self.logger.setLevel(level=logging.INFO)
                 self.logger.addHandler(self.hdrl)
             # Log to log file.
-            self.logger.info(log_text)
+            try:
+                self.logger.info(log_text)
+            except UnicodeEncodeError:
+                print("Your text have unicode problem!")
