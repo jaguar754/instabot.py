@@ -7,8 +7,9 @@ If your app can't pass new review process, this is solution!
 
 This InstaBot work by [https://www.instagram.com][2] and need only your login and password.
 # Usage
-Login:
+1) Login:
 --------------------
+Login automatic, when you create `InstaBot` class element:
 ```python
 bot = InstaBot('login', 'password',
                like_in_day=1000,
@@ -17,6 +18,8 @@ bot = InstaBot('login', 'password',
                max_like_for_one_tag=5,
                log_mod = 0)
 ```
+2) Set likes:
+--------------------
 How many likes set bot in one day.
 ```python
 like_in_day=1000
@@ -33,10 +36,7 @@ Like 1 to `max_like_for_one_tag` times by row.
 ```python
 max_like_for_one_tag=5
 ```
-Log mod: `log_mod=0` log to console, `log_mod=1` log to file, `log_mod=2` no log.
-```python
-log_mod = 0
-```
+
 You can like one tag:
 --------------------
 Set tag to like:
@@ -53,12 +53,42 @@ Start auto_mod:
 ```python
 bot.auto_mod()
 ```
+
+3) Set comments:
+--------------------
+```python
+bot.comment('media_id', 'comment')
+```
+For example:
+```python
+bot.comment(11111111111111111111, 'Cool!')
+```
+4) Follow and unfollow:
+--------------------
+Follow:
+```python
+bot.follow('user_id')
+```
+Unfollow:
+```python
+bot.unfollow('user_id')
+```
+For example (follow and unfollow user with id 111111111):
+```python
+bot.follow(111111111)
+bot.unfollow(111111111)
+```
+5) Else:
+--------------------
+Log mod: `log_mod=0` log to console, `log_mod=1` log to file, `log_mod=2` no log.
+```python
+log_mod = 0
+```
 Logout from exist session:
 --------------------
 ```python
 bot.logout()
 ```
-
 # Usage examples
 Standard use (will like by loop, all default tag):
 ```python
@@ -101,11 +131,11 @@ Instagram account
 
 5) Run program `python3 instabot.py` or `python instabot.py` on MAC and Linux, or `python instabot.py` on Windows.
 # Test on:
-Windows 8 & Python 3.4
+Windows & Python 3.4
 
-CentOS 6 & Python 3.4
+CentOS & Python 3.4
 
-CentOS 6 & Python 2.6
+CentOS & Python 2.6
 # Warning!
 The entire responsibility for the use of bot programs entirely on you.
 

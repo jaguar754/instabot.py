@@ -27,8 +27,8 @@ class InstaBot:
     url_tag = 'https://www.instagram.com/explore/tags/'
     url_likes = 'https://www.instagram.com/web/likes/%s/like/'
     url_comment = 'https://www.instagram.com/web/comments/%s/add/'
-    url_follow = 'https://www.instagram.com/web/comments/%s/add/'
-    url_unfollow = 'https://www.instagram.com/web/comments/%s/add/'
+    url_follow = 'https://www.instagram.com/web/friendships/%s/follow/'
+    url_unfollow = 'https://www.instagram.com/web/friendships/%s/unfollow/'
     url_login = 'https://www.instagram.com/accounts/login/ajax/'
     url_logout = 'https://www.instagram.com/accounts/logout/'
 
@@ -233,24 +233,39 @@ class InstaBot:
                 like = 0
             return like
 
-    def comment(self, comment):
+    def comment(self, media_id, comment_text):
         """ Send http request to comment """
-        if (self.login_status):
-            # To do
-            return 0
+        if (self.login_status and comment_text!="" and media_id>0):
+            comment_post = {'comment_text' : comment_text}
+            url_comment = self.url_comment % (media_id)
+            try:
+                comment = self.s.post(url_comment, data=comment_post)
+                return comment
+            except:
+                self.write_log("Exept on comment!")
+        return False
 
     def follow(self, user_id):
         """ Send http request to follow """
-        if (self.login_status):
-            # To do
-            return 0
+        if (self.login_status and user_id>0):
+            url_follow = self.url_follow % (user_id)
+            try:
+                follow = self.s.post(url_follow)
+                return follow
+            except:
+                self.write_log("Exept on follow!")
+        return False
 
     def unfollow(self, user_id):
         """ Send http request to unfollow """
-        if (self.login_status):
-            # To do
-            return 0
-
+        if (self.login_status and user_id>0):
+            url_unfollow = self.url_unfollow % (user_id)
+            try:
+                unfollow = self.s.post(url_unfollow)
+                return unfollow
+            except:
+                self.write_log("Exept on unfollow!")
+        return False
 
     def auto_mod(self):
         """ Star loop, that get media ID by your tag list, and like it """
