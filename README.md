@@ -38,8 +38,6 @@ max_like_for_one_tag=5
 ```
 
 You can like one tag:
---------------------
-Set tag to like:
 ```python
 bot.get_media_id_by_tag('dog')
 ```
@@ -48,8 +46,6 @@ Like 4 times:
 bot.like_all_exist_media(4)
 ```
 Or you can choose `auto_mod` (like all tags from setting by loop):
---------------------
-Start auto_mod:
 ```python
 bot.auto_mod()
 ```
@@ -84,7 +80,7 @@ Log mod: `log_mod=0` log to console, `log_mod=1` log to file, `log_mod=2` no log
 ```python
 log_mod = 0
 ```
-Logout from exist session:
+6) Logout from exist session:
 --------------------
 ```python
 bot.logout()
@@ -118,7 +114,9 @@ bot.like_all_exist_media(4)
 ```
 # Requirements
 `Python`
+
 Instagram account
+
 `instabot.py` file must be in `UTF-8` encoding if you use `Python 3`, or `ASCII` in `Python 2` ([PEP][3])!
 # How to install and run:
 1) You should download and install `Python` on your OS.
