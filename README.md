@@ -11,7 +11,7 @@ This InstaBot work by [https://www.instagram.com][2] and need only your login an
 Login automatic, when you create `InstaBot` class element:
 ```python
 bot = InstaBot('login', 'password',
-               like_in_day=1000,
+               like_per_day=1000,
                more_than_likes=10,
                tag_list = ['cat', 'car', 'dog'],
                max_like_for_one_tag=5,
@@ -20,7 +20,7 @@ bot = InstaBot('login', 'password',
 ####2) Set likes:
 How many likes set bot in one day.
 ```python
-like_in_day=1000
+like_per_day=1000
 ```
 Don't like media (photo or video) if it have more than `more_than_likes` likes. If media have too much likes - your like have not feedback.
 ```python
