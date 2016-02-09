@@ -6,20 +6,34 @@ import logging
 import json
 
 class InstaBot:
-    """ Instagram bot v 0.03 """
-    error_400 = 0
-    media_by_tag = 0
-    login_status = 0
+    """
+    Instagram bot v 0.04
+    like_in_day=1000 - How many likes set bot in one day.
+
+    more_than_likes=10 - Don't like media (photo or video) if it have more than
+    more_than_likes likes.
+
+    tag_list = ['cat', 'car', 'dog'] - Tag list to like.
+
+    max_like_for_one_tag=5 - Like 1 to max_like_for_one_tag times by row.
+
+    log_mod = 0 - Log mod: log_mod = 0 log to console, log_mod = 1 log to file,
+    log_mod = 2 no log.
+
+    https://github.com/LevPasha/instabot.py
+    """
 
     url = 'https://www.instagram.com/'
     url_tag = 'https://www.instagram.com/explore/tags/'
     url_likes = 'https://www.instagram.com/web/likes/%s/like/'
     url_comment = 'https://www.instagram.com/web/comments/%s/add/'
+    url_follow = 'https://www.instagram.com/web/comments/%s/add/'
+    url_unfollow = 'https://www.instagram.com/web/comments/%s/add/'
     url_login = 'https://www.instagram.com/accounts/login/ajax/'
     url_logout = 'https://www.instagram.com/accounts/logout/'
 
     user_agent = ("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 "
-                  "KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36")
+                  "(KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36")
     accept_language = 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
 
     # If instagram ban you - query return 400 error.
@@ -35,6 +49,10 @@ class InstaBot:
     # Log setting.
     log_file_path = '/var/www/python/log/'
     log_file = 0
+
+    # Other.
+    media_by_tag = 0
+    login_status = 0
 
     def __init__(self, login, password,
                 like_per_day=1000,
@@ -124,6 +142,8 @@ class InstaBot:
             self.write_log("Logout error!")
 
     def get_media_id_by_tag (self, tag):
+        """ Get media ID set, by your hashtag """
+
         log_string = "Get media id by tag: %s" % (tag)
         self.write_log(log_string)
         if self.login_status == 1:
@@ -153,6 +173,8 @@ class InstaBot:
             return 0
 
     def like_all_exist_media (self, media_size=-1):
+        """ Like all media ID that have self.media_by_tag """
+
         if self.media_by_tag != 0:
             i=0
             for d in self.media_by_tag:
@@ -198,6 +220,8 @@ class InstaBot:
             self.write_log("No media to like!")
 
     def like(self, media_id):
+        """ Send http request to like media by ID """
+
         url_likes = self.url_likes % (media_id)
         try:
             like = self.s.post(url_likes)
@@ -207,19 +231,24 @@ class InstaBot:
         return like
 
     def comment(self, comment):
+        """ Send http request to comment """
         # To do
         return 0
 
     def follow(self, user_id):
+        """ Send http request to follow """
         # To do
         return 0
 
     def unfollow(self, user_id):
+        """ Send http request to unfollow """
         # To do
         return 0
 
 
     def auto_mod(self):
+        """ Star loop, that get media ID by your tag list, and like it """
+
         while True:
             random.shuffle(self.tag_list)
             self.get_media_id_by_tag(random.choice(self.tag_list))
@@ -227,6 +256,8 @@ class InstaBot:
                                      (1, self.max_like_for_one_tag))
 
     def write_log(self, log_text):
+        """ Write log by print() or logger """
+
         if self.log_mod == 0:
             print (log_text)
         elif self.log_mod == 1:
@@ -243,6 +274,6 @@ class InstaBot:
                 self.hdrl = logging.FileHandler(self.log_full_path, mode='w')
                 self.hdrl.setFormatter(formatter)
                 self.logger.setLevel(level=logging.INFO)
-                self.logger.addHandler(self.hdrl)
+                self.c.addHandler(self.hdrl)
             # Log to log file.
             self.logger.info(log_text)
