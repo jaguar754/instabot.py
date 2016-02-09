@@ -52,7 +52,7 @@ class InstaBot:
 
     # Other.
     media_by_tag = 0
-    login_status = 0
+    login_status = False
 
     def __init__(self, login, password,
                 like_per_day=1000,
@@ -75,17 +75,19 @@ class InstaBot:
         self.log_mod = log_mod
 
         self.s = requests.Session()
-        self.user_login = login
+        # convert login to lower
+        self.user_login = login.lower()
         self.user_password = password
 
         now_time = datetime.datetime.now()
-        log_string = 'Insta Bot v0.03 start at %s:' %\
+        log_string = 'Insta Bot v0.04 start at %s:' %\
                      (now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         self.login()
 
     def __del__ (self):
-        self.logout()
+        if (self.login_status):
+            self.logout()
 
     def login(self):
         log_string = 'Try to login by %s...' % (self.user_login)
@@ -118,142 +120,146 @@ class InstaBot:
             r = self.s.get('https://www.instagram.com/')
             finder = r.text.find(self.user_login)
             if finder != -1:
-                self.login_status = 1
+                self.login_status = True
                 log_string = 'Look like login by %s succes!' % (self.user_login)
                 self.write_log(log_string)
             else:
-                self.login_status = 0
+                self.login_status = False
                 self.write_log('Login error! Check your login data!')
         else:
             self.write_log('Login error! Connenction error!')
 
     def logout(self):
-        self.login_status = 0
         now_time = datetime.datetime.now()
-        log_string = 'Insta Bot logout at %s, like count %i.' \
-                     % (now_time.strftime("%d.%m.%Y_%H:%M"), self.like_conter)
+        log_string = 'Insta Bot logout, like count %i.' % self.like_conter
         self.write_log(log_string)
 
         try:
             logout_post = {'csrfmiddlewaretoken' : self.csrftoken}
-            logout = self.s.post(self.url_likes, data=logout_post)
+            logout = self.s.post(self.url_logout, data=logout_post)
             self.write_log("Logout succes!")
+            self.login_status = False
         except:
             self.write_log("Logout error!")
 
     def get_media_id_by_tag (self, tag):
         """ Get media ID set, by your hashtag """
 
-        log_string = "Get media id by tag: %s" % (tag)
-        self.write_log(log_string)
-        if self.login_status == 1:
-            url_tag = '%s%s%s' % (self.url_tag, tag, '/')
-            try:
-                r = self.s.get(url_tag)
-                text = r.text
+        if (self.login_status):
+            log_string = "Get media id by tag: %s" % (tag)
+            self.write_log(log_string)
+            if self.login_status == 1:
+                url_tag = '%s%s%s' % (self.url_tag, tag, '/')
+                try:
+                    r = self.s.get(url_tag)
+                    text = r.text
 
-                finder_text_start = ('<script type="text/javascript">'
-                                     'window._sharedData = ')
-                finder_text_start_len = len(finder_text_start)-1
-                finder_text_end = ';</script>'
+                    finder_text_start = ('<script type="text/javascript">'
+                                         'window._sharedData = ')
+                    finder_text_start_len = len(finder_text_start)-1
+                    finder_text_end = ';</script>'
 
-                all_data_start = text.find(finder_text_start)
-                all_data_end = text.find(finder_text_end, all_data_start + 1)
-                json_str = text[(all_data_start + finder_text_start_len + 1) \
-                               : all_data_end]
-                all_data = json.loads(json_str)
+                    all_data_start = text.find(finder_text_start)
+                    all_data_end = text.find(finder_text_end, all_data_start + 1)
+                    json_str = text[(all_data_start + finder_text_start_len + 1) \
+                                   : all_data_end]
+                    all_data = json.loads(json_str)
 
-                self.media_by_tag = list(all_data['entry_data']['TagPage'][0]\
-                                        ['tag']['media']['nodes'])
-            except:
-                self.media_by_tag = []
-                self.write_log("Exept on get_media!")
-                time.sleep(60)
-        else:
-            return 0
+                    self.media_by_tag = list(all_data['entry_data']['TagPage'][0]\
+                                            ['tag']['media']['nodes'])
+                except:
+                    self.media_by_tag = []
+                    self.write_log("Exept on get_media!")
+                    time.sleep(60)
+            else:
+                return 0
 
     def like_all_exist_media (self, media_size=-1):
         """ Like all media ID that have self.media_by_tag """
 
-        if self.media_by_tag != 0:
-            i=0
-            for d in self.media_by_tag:
-                # Media count by this tag.
-                if media_size > 0 or media_size < 0:
-                    media_size -= 1
-                    if (self.media_by_tag[i]['likes']['count'] < \
-                        self.more_than_likes):
-                        log_string = "Try to like media: %s" %\
-                                     (self.media_by_tag[i]['id'])
-                        self.write_log(log_string)
-                        like = self.like(self.media_by_tag[i]['id'])
-                        if like != 0:
-                            if like.status_code == 200:
-                                # Like, all ok!
-                                self.error_400 = 0
-                                self.like_conter += 1
-                                log_string = "Liked: %s. Like #%i." %\
-                                             (self.media_by_tag[i]['id'],
-                                              self.like_conter)
-                                self.write_log(log_string)
-                            elif like.status_code == 400:
-                                log_string = "Not liked: %i" \
-                                              % (like.status_code)
-                                self.write_log(log_string)
-                                # Some error. If repeated - can be ban!
-                                if self.error_400 >= self.error_400_to_ban:
-                                    # Look like you banned!
-                                    time.sleep(self.ban_sleep_time)
+        if (self.login_status):
+            if self.media_by_tag != 0:
+                i=0
+                for d in self.media_by_tag:
+                    # Media count by this tag.
+                    if media_size > 0 or media_size < 0:
+                        media_size -= 1
+                        if (self.media_by_tag[i]['likes']['count'] < \
+                            self.more_than_likes):
+                            log_string = "Try to like media: %s" %\
+                                         (self.media_by_tag[i]['id'])
+                            self.write_log(log_string)
+                            like = self.like(self.media_by_tag[i]['id'])
+                            if like != 0:
+                                if like.status_code == 200:
+                                    # Like, all ok!
+                                    self.error_400 = 0
+                                    self.like_conter += 1
+                                    log_string = "Liked: %s. Like #%i." %\
+                                                 (self.media_by_tag[i]['id'],
+                                                  self.like_conter)
+                                    self.write_log(log_string)
+                                elif like.status_code == 400:
+                                    log_string = "Not liked: %i" \
+                                                  % (like.status_code)
+                                    self.write_log(log_string)
+                                    # Some error. If repeated - can be ban!
+                                    if self.error_400 >= self.error_400_to_ban:
+                                        # Look like you banned!
+                                        time.sleep(self.ban_sleep_time)
+                                    else:
+                                        self.error_400 += 1
                                 else:
-                                    self.error_400 += 1
-                            else:
-                                log_string = "Not liked: %i" \
-                                              % (like.status_code)
-                                self.write_log(log_string)
-                                # Some error.
-                            i += 1
-                            time.sleep(self.like_delay*0.9 +
-                                       self.like_delay*0.2*random.random())
-                    #else:
-                        # This media have to many likes!
-        else:
-            self.write_log("No media to like!")
+                                    log_string = "Not liked: %i" \
+                                                  % (like.status_code)
+                                    self.write_log(log_string)
+                                    # Some error.
+                                i += 1
+                                time.sleep(self.like_delay*0.9 +
+                                           self.like_delay*0.2*random.random())
+                        #else:
+                            # This media have to many likes!
+            else:
+                self.write_log("No media to like!")
 
     def like(self, media_id):
         """ Send http request to like media by ID """
-
-        url_likes = self.url_likes % (media_id)
-        try:
-            like = self.s.post(url_likes)
-        except:
-            self.write_log("Exept on like!")
-            like = 0
-        return like
+        if (self.login_status):
+            url_likes = self.url_likes % (media_id)
+            try:
+                like = self.s.post(url_likes)
+            except:
+                self.write_log("Exept on like!")
+                like = 0
+            return like
 
     def comment(self, comment):
         """ Send http request to comment """
-        # To do
-        return 0
+        if (self.login_status):
+            # To do
+            return 0
 
     def follow(self, user_id):
         """ Send http request to follow """
-        # To do
-        return 0
+        if (self.login_status):
+            # To do
+            return 0
 
     def unfollow(self, user_id):
         """ Send http request to unfollow """
-        # To do
-        return 0
+        if (self.login_status):
+            # To do
+            return 0
 
 
     def auto_mod(self):
         """ Star loop, that get media ID by your tag list, and like it """
-
-        while True:
-            random.shuffle(self.tag_list)
-            self.get_media_id_by_tag(random.choice(self.tag_list))
-            self.like_all_exist_media(random.randint \
-                                     (1, self.max_like_for_one_tag))
+        if (self.login_status):
+            while True:
+                random.shuffle(self.tag_list)
+                self.get_media_id_by_tag(random.choice(self.tag_list))
+                self.like_all_exist_media(random.randint \
+                                         (1, self.max_like_for_one_tag))
 
     def write_log(self, log_text):
         """ Write log by print() or logger """
@@ -274,6 +280,6 @@ class InstaBot:
                 self.hdrl = logging.FileHandler(self.log_full_path, mode='w')
                 self.hdrl.setFormatter(formatter)
                 self.logger.setLevel(level=logging.INFO)
-                self.c.addHandler(self.hdrl)
+                self.logger.addHandler(self.hdrl)
             # Log to log file.
             self.logger.info(log_text)
