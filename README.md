@@ -18,7 +18,9 @@ bot = InstaBot('login', 'password',
                log_mod = 0)
 ```
 ####2) Set likes:
-How many likes set bot in one day.
+How many likes set bot in one day. Default value is 1000 likes per 24 hours.
+If you make more than 1000 likes in day - instagram can ban you. Usually this bot use 24/7 and this is way to set 1000 like in day evenly. If you want more likes in one moment with auto_mod() - set this parameter to 5000 or 10000 or more. Formula: set like with delay - `(24 hour * 60 minute * 60 second / like_per_day)`
+######Be careful, don't set more than 1000 like in day!
 ```python
 like_per_day=1000
 ```
