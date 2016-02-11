@@ -26,6 +26,7 @@ class InstaBot:
     url = 'https://www.instagram.com/'
     url_tag = 'https://www.instagram.com/explore/tags/'
     url_likes = 'https://www.instagram.com/web/likes/%s/like/'
+    url_unlike = 'https://www.instagram.com/web/likes/%s/unlike/'
     url_comment = 'https://www.instagram.com/web/comments/%s/add/'
     url_follow = 'https://www.instagram.com/web/friendships/%s/follow/'
     url_unfollow = 'https://www.instagram.com/web/friendships/%s/unfollow/'
@@ -232,6 +233,17 @@ class InstaBot:
                 self.write_log("Exept on like!")
                 like = 0
             return like
+
+    def unlike(self, media_id):
+        """ Send http request to unlike media by ID """
+        if (self.login_status):
+            url_unlike = self.url_unlike % (media_id)
+            try:
+                unlike = self.s.post(url_unlike)
+            except:
+                self.write_log("Exept on unlike!")
+                unlike = 0
+            return unlike
 
     def comment(self, media_id, comment_text):
         """ Send http request to comment """
