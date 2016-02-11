@@ -7,11 +7,14 @@ import json
 
 class InstaBot:
     """
-    Instagram bot v 0.04
+    Instagram bot v 0.05
     like_in_day=1000 - How many likes set bot in one day.
 
-    more_than_likes=10 - Don't like media (photo or video) if it have more than
-    more_than_likes likes.
+    media_max_like=10 - Don't like media (photo or video) if it have more than
+    media_max_like likes.
+
+    media_min_like=0 - Don't like media (photo or video) if it have less than
+    media_min_like likes.
 
     tag_list = ['cat', 'car', 'dog'] - Tag list to like.
 
@@ -57,7 +60,8 @@ class InstaBot:
 
     def __init__(self, login, password,
                 like_per_day=1000,
-                more_than_likes=10,
+                media_max_like=10,
+                media_min_like=0,
                 tag_list=['cat', 'car', 'dog'],
                 max_like_for_one_tag = 5,
                 log_mod = 0):
@@ -65,8 +69,9 @@ class InstaBot:
         self.time_in_day = 24*60*60
         self.like_delay = self.time_in_day / self.like_per_day
         # Don't like if media have more than n likes.
-        self.more_than_likes = more_than_likes
-
+        self.media_max_like = media_max_like
+        # Don't like if media have less than n likes.
+        self.media_min_like = media_min_like
         # Auto mod seting:
         # Default list of tag.
         self.tag_list = tag_list
@@ -81,7 +86,7 @@ class InstaBot:
         self.user_password = password
 
         now_time = datetime.datetime.now()
-        log_string = 'Insta Bot v0.04 start at %s:' %\
+        log_string = 'Insta Bot v0.05 start at %s:' %\
                      (now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         self.login()
@@ -185,12 +190,17 @@ class InstaBot:
                     # Media count by this tag.
                     if media_size > 0 or media_size < 0:
                         media_size -= 1
-                        if (self.media_by_tag[i]['likes']['count'] < \
-                            self.more_than_likes):
+                        l_c = self.media_by_tag[i]['likes']['count']
+                        if ((l_c<=self.media_max_like and l_c>=self.media_min_like)
+                            or (self.media_max_like==0 and l_c>=self.media_min_like)
+                            or (self.media_min_like==0 and l_c<=self.media_max_like)
+                            or (self.media_min_like==0 and self.media_max_like==0)):
                             log_string = "Try to like media: %s" %\
                                          (self.media_by_tag[i]['id'])
                             self.write_log(log_string)
                             like = self.like(self.media_by_tag[i]['id'])
+                            # comment = self.comment(self.media_by_tag[i]['id'], 'Cool!')
+                            # follow = self.follow(self.media_by_tag[i]["owner"]["id"])
                             if like != 0:
                                 if like.status_code == 200:
                                     # Like, all ok!
@@ -247,7 +257,7 @@ class InstaBot:
 
     def comment(self, media_id, comment_text):
         """ Send http request to comment """
-        if (self.login_status and comment_text!="" and media_id>0):
+        if (self.login_status and comment_text!=""):
             comment_post = {'comment_text' : comment_text}
             url_comment = self.url_comment % (media_id)
             try:
@@ -259,7 +269,7 @@ class InstaBot:
 
     def follow(self, user_id):
         """ Send http request to follow """
-        if (self.login_status and user_id>0):
+        if (self.login_status):
             url_follow = self.url_follow % (user_id)
             try:
                 follow = self.s.post(url_follow)

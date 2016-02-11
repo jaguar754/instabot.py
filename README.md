@@ -12,7 +12,8 @@ Login automatic, when you create `InstaBot` class element:
 ```python
 bot = InstaBot('login', 'password',
                like_per_day=1000,
-               more_than_likes=10,
+               media_max_like=10,
+               media_min_like=0,
                tag_list = ['cat', 'car', 'dog'],
                max_like_for_one_tag=5,
                log_mod = 0)
@@ -24,9 +25,11 @@ If you make more than 1000 likes in day - instagram can ban you. Usually this bo
 ```python
 like_per_day=1000
 ```
-Don't like media (photo or video) if it have more than `more_than_likes` likes. If media have too much likes - your like have not feedback.
+Don't like media (photo or video) if it have more than `media_max_like` likes. `media_max_like = 0` will ignore this property. If media have too much likes - your like have not feedback.
+Don't like media (photo or video) if it have less than `media_min_like` likes. `media_min_like = 0` will ignore this property.
 ```python
-more_than_likes=10
+media_max_like=10
+media_min_like=0
 ```
 Tag list to like.
 ```python
@@ -95,11 +98,12 @@ Standard use with your tag (will like by loop, all your tag):
 bot = InstaBot('login', 'password', tag_list = ['with', 'your', 'tag'])
 bot.auto_mod()
 ```
-Standard use with change defaul settings (you should know what you do!):
+Standard use with change default settings (you should know what you do!):
 ```python
 bot = InstaBot('login', 'password',
                like_in_day=100000,
-               more_than_likes=5,
+               media_max_like=50,
+               media_min_like=5,
                tag_list = ['like', 'follow', 'girls'],
                max_like_for_one_tag=50,
                log_mod = 1)
