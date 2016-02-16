@@ -142,6 +142,33 @@ The entire responsibility for the use of bot programs entirely on you.
 #### What i see every time open instagram:
 ![What i see every time open instagram](http://cs627124.vk.me/v627124268/35d95/rSponlVRclY.jpg)
 
+## Work with userinfo.py
+If you want to get some user info (follower, following and etc.) Instagram don't give this info.
+Class in `userinfo.py` aggregate this information, from other sites (now only from http://ink361.com/)
+#### How to use:
+```python
+ui = UserInfo()
+```
+Search by `user_name` (need to get `user_id`, `user_name` if you don't know it):
+```python
+ui.search_user(user_name="danbilzerian")
+```
+or if you know `user_id` use `ui.search_user(user_id="50417061")`. Your result:
+```python
+print(ui.user_name)
+print(ui.user_id)
+```
+Get following list with no limit
+```python
+ui.get_following()
+print(ui.following)
+```
+Get followers list with limit 10:
+```python
+ui.get_followers(limit=10)
+print(ui.followers)
+```
+
 [1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
 [2]: https://www.instagram.com
 [3]: https://www.python.org/dev/peps/pep-0008/#source-file-encoding
