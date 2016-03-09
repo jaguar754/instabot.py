@@ -4,10 +4,12 @@ import time
 import datetime
 import logging
 import json
+import atexit
+import itertools
 
 class InstaBot:
     """
-    Instagram bot v 0.05
+    Instagram bot v 1.0
     like_per_day=1000 - How many likes set bot in one day.
 
     media_max_like=10 - Don't like media (photo or video) if it have more than
@@ -47,8 +49,14 @@ class InstaBot:
     # If InstaBot think you have banned - going to sleep.
     ban_sleep_time = 2*60*60
 
-    # All likes counter.
-    like_conter = 0
+    # All counter.
+    like_counter = 0
+    follow_counter = 0
+    unfollow_counter = 0
+    comments_counter = 0
+
+    # List of user_id, that bot follow
+    bot_follow_list = []
 
     # Log setting.
     log_file_path = '/var/www/python/log/'
@@ -58,16 +66,43 @@ class InstaBot:
     media_by_tag = 0
     login_status = False
 
+    # For new_auto_mod
+    next_iteration = {"Like": 0, "Follow": 0, "Unfollow": 0, "Comments": 0}
+
     def __init__(self, login, password,
                 like_per_day=1000,
                 media_max_like=10,
                 media_min_like=0,
+                follow_per_day=0,
+                follow_time=5*60*60,
+                unfollow_per_day=0,
+                comments_per_day=0,
                 tag_list=['cat', 'car', 'dog'],
                 max_like_for_one_tag = 5,
                 log_mod = 0):
-        self.like_per_day = like_per_day
+
         self.time_in_day = 24*60*60
-        self.like_delay = self.time_in_day / self.like_per_day
+        # Like
+        self.like_per_day = like_per_day
+        if self.like_per_day != 0:
+            self.like_delay = self.time_in_day / self.like_per_day
+
+        # Follow
+        self.follow_time = follow_time
+        self.follow_per_day = follow_per_day
+        if self.follow_per_day != 0:
+            self.follow_delay = self.time_in_day / self.follow_per_day
+
+        # Unfollow
+        self.unfollow_per_day = unfollow_per_day
+        if self.unfollow_per_day != 0:
+            self.unfollow_delay = self.time_in_day / self.unfollow_per_day
+
+        # Comment
+        self.comments_per_day = comments_per_day
+        if self.comments_per_day != 0:
+            self.comments_delay = self.time_in_day / self.comments_per_day
+
         # Don't like if media have more than n likes.
         self.media_max_like = media_max_like
         # Don't like if media have less than n likes.
@@ -85,13 +120,26 @@ class InstaBot:
         self.user_login = login.lower()
         self.user_password = password
 
+        self.media_by_tag = []
+
         now_time = datetime.datetime.now()
-        log_string = 'Insta Bot v0.05 start at %s:' %\
+        log_string = 'Insta Bot v1.0 start at %s:' %\
                      (now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         self.login()
 
-    def __del__ (self):
+        atexit.register(self.cleanup)
+
+    def cleanup (self):
+        # Unfollow all bot follow
+        if len(self.bot_follow_list)>0:
+            for f in self.bot_follow_list:
+                log_string = "Try to unfollow: %s" % (f[0])
+                self.write_log(log_string)
+                self.unfollow(f[0])
+                self.bot_follow_list.remove(f)
+
+        # Logout
         if (self.login_status):
             self.logout()
 
@@ -137,7 +185,9 @@ class InstaBot:
 
     def logout(self):
         now_time = datetime.datetime.now()
-        log_string = 'Insta Bot logout, like count %i.' % self.like_conter
+        log_string = 'Logout: likes - %i, follow - %i, unfollow - %i, comments - %i.' %\
+                     (self.like_counter, self.follow_counter,
+                      self.unfollow_counter, self.comments_counter)
         self.write_log(log_string)
 
         try:
@@ -180,7 +230,7 @@ class InstaBot:
             else:
                 return 0
 
-    def like_all_exist_media (self, media_size=-1):
+    def like_all_exist_media (self, media_size=-1, delay=True):
         """ Like all media ID that have self.media_by_tag """
 
         if (self.login_status):
@@ -205,10 +255,10 @@ class InstaBot:
                                 if like.status_code == 200:
                                     # Like, all ok!
                                     self.error_400 = 0
-                                    self.like_conter += 1
+                                    self.like_counter += 1
                                     log_string = "Liked: %s. Like #%i." %\
                                                  (self.media_by_tag[i]['id'],
-                                                  self.like_conter)
+                                                  self.like_counter)
                                     self.write_log(log_string)
                                 elif like.status_code == 400:
                                     log_string = "Not liked: %i" \
@@ -226,9 +276,11 @@ class InstaBot:
                                     self.write_log(log_string)
                                     # Some error.
                                 i += 1
-                                time.sleep(self.like_delay*0.9 +
+                                if delay:
+                                    time.sleep(self.like_delay*0.9 +
                                            self.like_delay*0.2*random.random())
-                        #else:
+                                else:
+                                    return True
                             # This media have to many likes!
             else:
                 self.write_log("No media to like!")
@@ -239,6 +291,7 @@ class InstaBot:
             url_likes = self.url_likes % (media_id)
             try:
                 like = self.s.post(url_likes)
+                last_liked_media_id = media_id
             except:
                 self.write_log("Exept on like!")
                 like = 0
@@ -257,11 +310,15 @@ class InstaBot:
 
     def comment(self, media_id, comment_text):
         """ Send http request to comment """
-        if (self.login_status and comment_text!=""):
+        if (self.login_status):
             comment_post = {'comment_text' : comment_text}
             url_comment = self.url_comment % (media_id)
             try:
                 comment = self.s.post(url_comment, data=comment_post)
+                if comment.status_code == 200:
+                    self.comments_counter += 1
+                    log_string = 'Write: "%s". #%i.' % (comment_text, self.comments_counter)
+                    self.write_log(log_string)
                 return comment
             except:
                 self.write_log("Exept on comment!")
@@ -273,6 +330,10 @@ class InstaBot:
             url_follow = self.url_follow % (user_id)
             try:
                 follow = self.s.post(url_follow)
+                if follow.status_code == 200:
+                    self.follow_counter += 1
+                    log_string = "Follow: %s #%i." % (user_id, self.follow_counter)
+                    self.write_log(log_string)
                 return follow
             except:
                 self.write_log("Exept on follow!")
@@ -280,10 +341,14 @@ class InstaBot:
 
     def unfollow(self, user_id):
         """ Send http request to unfollow """
-        if (self.login_status and user_id>0):
+        if (self.login_status):
             url_unfollow = self.url_unfollow % (user_id)
             try:
                 unfollow = self.s.post(url_unfollow)
+                if unfollow.status_code == 200:
+                    self.unfollow_counter += 1
+                    log_string = "Unfollow: %s #%i." % (user_id, self.unfollow_counter)
+                    self.write_log(log_string)
                 return unfollow
             except:
                 self.write_log("Exept on unfollow!")
@@ -297,6 +362,106 @@ class InstaBot:
                 self.get_media_id_by_tag(random.choice(self.tag_list))
                 self.like_all_exist_media(random.randint \
                                          (1, self.max_like_for_one_tag))
+
+    def new_auto_mod(self):
+        while True:
+            # ------------------- Get media_id -------------------
+            if len(self.media_by_tag) == 0:
+                self.get_media_id_by_tag(random.choice(self.tag_list))
+                self.this_tag_like_count = 0
+                self.max_tag_like_count = random.randint(1, self.max_like_for_one_tag)
+            # ------------------- Like -------------------
+            self.new_auto_mod_like()
+            # ------------------- Follow -------------------
+            self.new_auto_mod_follow()
+            # ------------------- Unfollow -------------------
+            self.new_auto_mod_unfollow()
+            # ------------------- Comment -------------------
+            self.new_auto_mod_comments()
+
+            # Bot iteration in 1 sec
+            time.sleep(3)
+            # print("Tic!")
+
+    def new_auto_mod_like(self):
+        if time.time()>self.next_iteration["Like"] and self.like_per_day!=0 \
+            and len(self.media_by_tag) > 0:
+            # You have media_id to like:
+            if self.like_all_exist_media(media_size=1, delay=False):
+                # If like go to sleep:
+                self.next_iteration["Like"] = time.time() +\
+                                              self.add_time(self.like_delay)
+                # Count this tag likes:
+                self.this_tag_like_count += 1
+                if self.this_tag_like_count >= self.max_tag_like_count:
+                    self.media_by_tag = [0]
+            # Del first media_id
+            del self.media_by_tag[0]
+
+    def new_auto_mod_follow(self):
+        if time.time()>self.next_iteration["Follow"] and \
+            self.follow_per_day!=0 and len(self.media_by_tag) > 0:
+
+            log_string = "Try to follow: %s" % (self.media_by_tag[0]["owner"]["id"])
+            self.write_log(log_string)
+
+            if self.follow(self.media_by_tag[0]["owner"]["id"]) != False:
+                self.bot_follow_list.append([self.media_by_tag[0]["owner"]["id"],
+                                            time.time()])
+                self.next_iteration["Follow"] = time.time() +\
+                                                self.add_time(self.follow_delay)
+
+    def new_auto_mod_unfollow(self):
+        if time.time()>self.next_iteration["Unfollow"] and \
+            self.unfollow_per_day!=0 and len(self.bot_follow_list) > 0:
+            for f in self.bot_follow_list:
+                if time.time() > (f[1] + self.follow_time):
+
+                    log_string = "Try to unfollow: %s" % (f[0])
+                    self.write_log(log_string)
+
+                    if self.unfollow(f[0]) != False:
+                        self.bot_follow_list.remove(f)
+                        self.next_iteration["Unfollow"] = time.time() +\
+                                self.add_time(self.unfollow_delay)
+
+    def new_auto_mod_comments(self):
+        if time.time()>self.next_iteration["Comments"] and self.comments_per_day!=0 \
+            and len(self.media_by_tag) > 0:
+
+            comment_text = self.generate_comment()
+            log_string = "Try to comment: %s" % (self.media_by_tag[0]['id'])
+            self.write_log(log_string)
+            if self.comment(self.media_by_tag[0]['id'], comment_text) != False:
+                self.next_iteration["Comments"] = time.time() +\
+                                              self.add_time(self.comments_delay)
+
+    def add_time(self, time):
+        """ Make some random for next iteration"""
+        return time*0.9 + time*0.2*random.random()
+
+    def generate_comment(self):
+        c_list = list(itertools.product(
+                                    ["this", "the", "your", "i think", "think",
+                                    "i'm sure this"],
+                                    ["photo", "picture", "pic", "shot", "snapshot",
+                                    "exposition"],
+                                    ["is", "look", "", "feel", "really"],
+                                    ["great", "super", "good one", "very good",
+                                    "good", "so good", "wow", "WOW", "cool",
+                                    "GREAT", "magnificent", "magical", "very cool",
+                                    "stylish", "so stylish", "beautiful",
+                                    "so beautiful", "so stylish", "so professional",
+                                    "lovely", "so lovely", "very lovely",
+                                    "glorious", "so glorious", "very glorious",
+                                    "adorable", "excellent", "amazing"],
+                                    [".", "..", "...", "!", "!!", "!!!"]))
+
+        repl = [("  ", " "), (" .", "."), (" !", "!")]
+        res = " ".join(random.choice(c_list))
+        for s, r in repl:
+            res = res.replace(s, r)
+        return res.capitalize()
 
     def write_log(self, log_text):
         """ Write log by print() or logger """
