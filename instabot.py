@@ -8,7 +8,7 @@ import json
 class InstaBot:
     """
     Instagram bot v 0.05
-    like_in_day=1000 - How many likes set bot in one day.
+    like_per_day=1000 - How many likes set bot in one day.
 
     media_max_like=10 - Don't like media (photo or video) if it have more than
     media_max_like likes.
