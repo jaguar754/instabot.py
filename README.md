@@ -11,7 +11,7 @@ This InstaBot work by [https://www.instagram.com][2] and need only your login an
 
 ## Usage
 #### Example of usage:
-For example use `example.py`. Just change login and password and bot start work.
+For example use `example.py`. Just change login and password, then run `example.py` and bot start work.
 
 ####1) Login:
 Login automatic, when you create `InstaBot` class element:
