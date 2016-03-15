@@ -1,23 +1,50 @@
 ## InstaBot
-Instagram bot. It works without instagram api, need only login and password. Write on python.
+Instagram bot v 1.0. It works without instagram api, need only login and password. Write on python.
 
 After Instagram [close api][1] (new review process), there were some problem, to make auto - like, comment and follow.
 
 If your app can't pass new review process, this is solution!
 
 This InstaBot work by [https://www.instagram.com][2] and need only your login and password.
+
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UM6L3YJENAQZ6&lc=US&item_name=InstaBot%2epy&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" title="Buy me a beer"><img src="http://www.mikkonen.info/polaroid_gallery/images/paypal_beer.png"></a>
+
 ## Usage
+#### Example of usage:
+For example use `example.py`. Just change login and password and bot start work.
+
 ####1) Login:
 Login automatic, when you create `InstaBot` class element:
 ```python
 bot = InstaBot('login', 'password',
-               like_per_day=1000,
-               media_max_like=10,
-               media_min_like=0,
-               tag_list = ['cat', 'car', 'dog'],
-               max_like_for_one_tag=5,
-               log_mod = 0)
+                like_per_day=1000,
+                media_max_like=10,
+                media_min_like=0,
+                follow_per_day=0,
+                follow_time=5*60*60,
+                unfollow_per_day=0,
+                comments_per_day=0,
+                tag_list=['cat', 'car', 'dog'],
+                max_like_for_one_tag = 5,
+                log_mod = 0)
 ```
+
+| Parameter            | Type|                Description                           |        Default value             |                 Example value                   |
+|:--------------------:|:---:|:----------------------------------------------------:|:--------------------------------:|:-----------------------------------------------:|
+| login                | str | your instagram login                                 |                                  | python_god                                      |
+| password             | str | your instagram password                              |                                  | python_god_password                             |
+| like_per_day         | int | how many likes set bot in day                        | 1000                             | 500                                             |
+| media_max_like       | int | don't like if media have more than ... likes         | 10                               | 100                                             |
+| media_min_like       | int | don't like if media have less than ... likes         | 0                                | 5                                               |
+| follow_per_day       | int | how many user follow bot in day                      | 0                                | 100                                             |
+| follow_time          | int | how many time pass before bot unfollow followed user | 5*60*60                          | 60*60                                           |
+| unfollow_per_day     | int | how many user unfollow bot in day (followed by bot)  | 0                                | 100                                             |
+| comments_per_day     | int | how many user comment write bot in day               | 0                                | 50                                              |
+| tag_list             | list| list of tag bot work with                            | ['cat', 'car', 'dog']            | ['moto', 'girl', 'python']                      |
+| max_like_for_one_tag | int | bot get 21 media from one tag, how many use by row   | 5                                | 10                                              |
+| log_mod              | int | logging mod                                          | 0                                | 0 log to console, 1 log to file, 2 no log.      |
+
+
 ####2) Set likes and unlike:
 How many likes set bot in one day. Default value is 1000 likes per 24 hours.
 If you make more than 1000 likes in day - instagram can ban you. Usually this bot use 24/7 and this is way to set 1000 like in day evenly. If you want more likes in one moment with auto_mod() - set this parameter to 5000 or 10000 or more. Formula: set like with delay - `(24 hour * 60 minute * 60 second / like_per_day)`

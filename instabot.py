@@ -5,6 +5,7 @@ import datetime
 import logging
 import json
 import atexit
+import signal
 import itertools
 
 class InstaBot:
@@ -128,6 +129,8 @@ class InstaBot:
         self.write_log(log_string)
         self.login()
 
+        signal.signal(signal.SIGTERM, self.cleanup)
+        signal.signal(signal.SIGQUIT, self.cleanup)
         atexit.register(self.cleanup)
 
     def cleanup (self):
@@ -274,6 +277,7 @@ class InstaBot:
                                     log_string = "Not liked: %i" \
                                                   % (like.status_code)
                                     self.write_log(log_string)
+                                    return False
                                     # Some error.
                                 i += 1
                                 if delay:
@@ -281,7 +285,12 @@ class InstaBot:
                                            self.like_delay*0.2*random.random())
                                 else:
                                     return True
-                            # This media have to many likes!
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
             else:
                 self.write_log("No media to like!")
 
