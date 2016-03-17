@@ -130,7 +130,6 @@ class InstaBot:
         self.login()
 
         signal.signal(signal.SIGTERM, self.cleanup)
-        signal.signal(signal.SIGQUIT, self.cleanup)
         atexit.register(self.cleanup)
 
     def cleanup (self):
