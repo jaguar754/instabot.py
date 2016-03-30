@@ -450,7 +450,7 @@ class InstaBot:
 
     def generate_comment(self):
         c_list = list(itertools.product(
-                                    ["this", "the", "your", "wow this"],
+                                    ["this", "the", "your"],
                                     ["photo", "picture", "pic", "shot", "snapshot"],
                                     ["is", "looks", "feels", "is really"],
                                     ["great", "super", "good", "very good",
