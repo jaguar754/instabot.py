@@ -450,13 +450,11 @@ class InstaBot:
 
     def generate_comment(self):
         c_list = list(itertools.product(
-                                    ["this", "the", "your", "i think", "think",
-                                    "i'm sure this"],
-                                    ["photo", "picture", "pic", "shot", "snapshot",
-                                    "exposition"],
-                                    ["is", "look", "", "feel", "really"],
-                                    ["great", "super", "good one", "very good",
-                                    "good", "so good", "wow", "WOW", "cool",
+                                    ["this", "the", "your", "wow this"],
+                                    ["photo", "picture", "pic", "shot", "snapshot"],
+                                    ["is", "looks", "feels", "is really"],
+                                    ["great", "super", "good", "very good",
+                                    "good", "wow", "WOW", "cool",
                                     "GREAT", "magnificent", "magical", "very cool",
                                     "stylish", "so stylish", "beautiful",
                                     "so beautiful", "so stylish", "so professional",
@@ -478,7 +476,7 @@ class InstaBot:
             try:
                 print(log_text)
             except UnicodeEncodeError:
-                print("Your text have unicode problem!")
+                print("Your text has unicode problem!")
         elif self.log_mod == 1:
             # Create log_file if not exist.
             if self.log_file == 0:
@@ -498,4 +496,4 @@ class InstaBot:
             try:
                 self.logger.info(log_text)
             except UnicodeEncodeError:
-                print("Your text have unicode problem!")
+                print("Your text has unicode problem!")
