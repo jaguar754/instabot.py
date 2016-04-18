@@ -177,13 +177,13 @@ class InstaBot:
             finder = r.text.find(self.user_login)
             if finder != -1:
                 self.login_status = True
-                log_string = 'Look like login by %s succes!' % (self.user_login)
+                log_string = 'Look like login by %s success!' % (self.user_login)
                 self.write_log(log_string)
             else:
                 self.login_status = False
                 self.write_log('Login error! Check your login data!')
         else:
-            self.write_log('Login error! Connenction error!')
+            self.write_log('Login error! Connection error!')
 
     def logout(self):
         now_time = datetime.datetime.now()
@@ -195,7 +195,7 @@ class InstaBot:
         try:
             logout_post = {'csrfmiddlewaretoken' : self.csrftoken}
             logout = self.s.post(self.url_logout, data=logout_post)
-            self.write_log("Logout succes!")
+            self.write_log("Logout success!")
             self.login_status = False
         except:
             self.write_log("Logout error!")
