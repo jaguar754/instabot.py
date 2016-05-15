@@ -1,5 +1,5 @@
 ## InstaBot
-Instagram bot v 1.0. It works without instagram [api][1](the new review process), needs only login and password that is not stored anywhere online. Only local. Written in Python
+Instagram bot v 1.0.1 It works without instagram [api][1](the new review process), needs only login and password that is not stored anywhere online. Only local. Written in Python
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UM6L3YJENAQZ6&lc=US&item_name=InstaBot%2epy&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" title="Buy me a beer"><img src="http://www.mikkonen.info/polaroid_gallery/images/paypal_beer.png"></a>
 
