@@ -1,7 +1,15 @@
 ## InstaBot
-Instagram bot v 1.0.1 It works without instagram [api][1](the new review process), needs only login and password that is not stored anywhere online. Only local. Written in Python
+InstaBot v 1.0.1 
 
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UM6L3YJENAQZ6&lc=US&item_name=InstaBot%2epy&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" title="Buy me a beer"><img src="http://www.mikkonen.info/polaroid_gallery/images/paypal_beer.png"></a>
+Works without the new Instagram [api][1](the new review process)
+Username and password stored local. Written in Python
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="2YHX53ZDT4X7G">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
 
 ## Requirements
 `Python2.7` minimum
@@ -41,6 +49,8 @@ bot = InstaBot('login', 'password',
 | comments_per_day     | int | how many comments the bot writes in a day       | 0                                | 50                                              |
 | tag_list             | list| list of tag the bot uses                             | ['cat', 'car', 'dog']            | ['moto', 'girl', 'python']                      |
 | max_like_for_one_tag | int | bot get 21 media from one tag, how many use by row   | 5                                | 10                                              |
+| rand_start           | int | Minimum seconds for unfollow break pause             | 15                               | 15                                              |
+| rand_end             | int | Maximum seconds for unfollow break pause             | 30                               | 30                                              |
 | log_mod              | int | logging mod                                          | 0                                | 0 log to console, 1 log to file, 2 no log.      |
 
 
@@ -144,25 +154,23 @@ bot.like_all_exist_media(4)
 ```
 
 ## How to install and run:
-1) You should download and install `Python` on your OS.
+1) Download and install `Python` to your computer.
 
-2) You should install Python lib `requests`. Run command `pip3 install requests` if you use `Python 3`, or type `pip install requests` if you use `Python 2`.
+2) Install Python lib `requests`. Run command `pip3 install requests` if you use `Python 3`, or type `pip install requests` if you use `Python 2`.
 
-3) Download `instabot.py` and save it in right encoding!
+3) Download ZIP and extract 
 
-4) Add the code to the end of the file (like in usage examples), depending on how you want to use bot.
+4) Modify example.py to your pleasing
 
-5) Run program `python3 instabot.py` or `python instabot.py` on MAC and Linux, or `python instabot.py` on Windows.
-## Test on:
-Windows & Python 3.4
+5) Run program `python3 example.py` or `python example.py` on Mac, Linux or Windows
 
-CentOS & Python 3.4
+## Tested on:
+Windows - Python 3.4 & Python 2.7.11
 
-CentOS & Python 2.6
+CentOS - Python 3.4 & Python 2.6
 ## Warning!
-The entire responsibility for the use of bot programs entirely on you.
-#### What i see every time open instagram:
-![What i see every time open instagram](http://cs627124.vk.me/v627124268/35d95/rSponlVRclY.jpg)
+The End-User assumes sole responsibility for anything resulting from the use or modification this program.
+
 
 ## Work with userinfo.py
 If you want to get some user info (follower, following and etc.) Instagram don't give this info.
