@@ -4,7 +4,7 @@ InstaBot v 1.0.1
 Works without the new Instagram [api][1](the new review process)
 Username and password stored local. Written in Python
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2YHX53ZDT4X7G)
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UM6L3YJENAQZ6&lc=US&item_name=InstaBot%2epy&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" title="Buy me a beer"><img src="http://www.mikkonen.info/polaroid_gallery/images/paypal_beer.png"></a>
 
 ## Requirements
 `Python2.7` minimum
@@ -39,13 +39,13 @@ bot = InstaBot('login', 'password',
 | media_max_like       | int | don't like if media has more than ... likes          | 10                               | 100                                             |
 | media_min_like       | int | don't like if media has less than ... likes          | 0                                | 5                                               |
 | follow_per_day       | int | how many users to follow in 1 day                    | 0                                | 100                                             |
-| follow_time          | int | how many times passes before the  bot unfollows a followed user (sec) | 5 * 60 * 60                          | 60 * 60                                           |
+| follow_time          | int | how many times passes before the  bot unfollows a followed user (sec) | 5 * 60 * 60     | 60 * 60                                         |
 | unfollow_per_day     | int | how many user unfollows the bot does in day          | 0                                | 100                                             |
-| comments_per_day     | int | how many comments the bot writes in a day       | 0                                | 50                                              |
+| comments_per_day     | int | how many comments the bot writes in a day            | 0                                | 50                                              |
 | tag_list             | list| list of tag the bot uses                             | ['cat', 'car', 'dog']            | ['moto', 'girl', 'python']                      |
 | max_like_for_one_tag | int | bot get 21 media from one tag, how many use by row   | 5                                | 10                                              |
-| rand_start           | int | Minimum seconds for unfollow break pause             | 15                               | 15                                              |
-| rand_end             | int | Maximum seconds for unfollow break pause             | 30                               | 30                                              |
+| unfollow_break_min   | int | Minimum seconds for unfollow break pause             | 15                               | 30                                              |
+| unfollow_break_max   | int | Maximum seconds for unfollow break pause             | 30                               | 60                                              |
 | log_mod              | int | logging mod                                          | 0                                | 0 log to console, 1 log to file, 2 no log.      |
 
 
@@ -115,6 +115,13 @@ Log mod: `log_mod=0` log to console, `log_mod=1` log to file, `log_mod=2` no log
 ```python
 log_mod = 0
 ```
+unfollow_break_min / unfollow_break_max: These define the randomly selected amount of time in seconds that it will pause between unfollows on a break. 
+Example:
+```
+unfollow_break_min = 15
+unfollow_break_max = 30 
+```
+This will cause a delay of anywhere between 15 to 30 seconds between every unfollow. 
 ####6) Logout from exist session:
 ```python
 bot.logout()

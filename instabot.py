@@ -80,12 +80,12 @@ class InstaBot:
                 comments_per_day=0,
                 tag_list=['cat', 'car', 'dog'],
                 max_like_for_one_tag = 5,
-                rand_start=15,
-                rand_end=30,	
+                unfollow_break_min=15,
+                unfollow_break_max=30,	
                 log_mod = 0):
 
-        self.rand_start = rand_start
-        self.rand_end = rand_end
+        self.unfollow_break_min = unfollow_break_min
+        self.unfollow_break_max = unfollow_break_max
         self.time_in_day = 24*60*60
         # Like
         self.like_per_day = like_per_day
@@ -128,7 +128,7 @@ class InstaBot:
         self.media_by_tag = []
 
         now_time = datetime.datetime.now()
-        log_string = 'Instabot v1.0.1 Battle Toads Edition started at %s:\n' %\
+        log_string = 'Instabot v1.0.1 started at %s:\n' %\
                      (now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         self.login()
@@ -143,7 +143,7 @@ class InstaBot:
                 log_string = "Trying to unfollow: %s" % (f[0])
                 self.write_log(log_string)
                 self.unfollow(f[0])
-                sleeptime = random.randint(self.rand_start, self.rand_end)
+                sleeptime = random.randint(self.unfollow_break_min, self.unfollow_break_max)
                 log_string = "Pausing for %i seconds... %i of %i" % (sleeptime, self.unfollow_counter, self.follow_counter)
                 self.write_log(log_string)				
                 time.sleep(sleeptime)				
@@ -367,7 +367,7 @@ class InstaBot:
                     log_string = "Unfollow: %s #%i of %i." % (user_id, self.unfollow_counter, self.follow_counter)
                     self.write_log(log_string)
                 else:
-                    log_string = "Slow down - Pausing for 5 minutes"
+                    log_string = "Slow Down - Pausing for 5 minutes so we don't get banned!"
                     self.write_log(log_string)
                     time.sleep(300)
                     unfollow = self.s.post(url_unfollow)
@@ -379,14 +379,12 @@ class InstaBot:
 						log_string = "Still no good :( Skipping and pausing for another 5 minutes"
 						self.write_log(log_string)
 						time.sleep(300)
-                    return unfollow
+                    return False
                 return unfollow
             except:
-                log_string = "Except on unfollow... Probs a network error"
-                self.write_log(log_string)
-                return unfollow
-				
-        return unfollow
+                log_string = "Except on unfollow... Looks like a network error"
+                self.write_log(log_string)				
+        return False
 
     def auto_mod(self):
         """ Star loop, that get media ID by your tag list, and like it """

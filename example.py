@@ -8,8 +8,8 @@ bot = InstaBot(login="my_username", password="my_password",
                follow_per_day=150,
                follow_time=5*60*60,
                unfollow_per_day=150,
-               rand_start=15,
-               rand_end=30,
+               unfollow_break_min=15,
+               unfollow_break_max=30,
                log_mod=0			   
 			   )
 
