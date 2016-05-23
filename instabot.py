@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import requests
 import random
 import time
@@ -81,9 +84,10 @@ class InstaBot:
                 tag_list=['cat', 'car', 'dog'],
                 max_like_for_one_tag = 5,
                 unfollow_break_min=15,
-                unfollow_break_max=30,	
+                unfollow_break_max=30,
                 log_mod = 0):
 
+        self.bot_start = datetime.datetime.now()
         self.unfollow_break_min = unfollow_break_min
         self.unfollow_break_max = unfollow_break_max
         self.time_in_day = 24*60*60
@@ -121,6 +125,10 @@ class InstaBot:
         self.log_mod = log_mod
 
         self.s = requests.Session()
+        # if you need proxy make something like this:
+        # self.s.proxies = {"https" : "http://proxyip:proxyport"}
+        # by @ageorgios
+
         # convert login to lower
         self.user_login = login.lower()
         self.user_password = password
@@ -142,13 +150,12 @@ class InstaBot:
             for f in self.bot_follow_list:
                 log_string = "Trying to unfollow: %s" % (f[0])
                 self.write_log(log_string)
-                self.unfollow(f[0])
+                self.unfollow_on_cleanup(f[0])
                 sleeptime = random.randint(self.unfollow_break_min, self.unfollow_break_max)
                 log_string = "Pausing for %i seconds... %i of %i" % (sleeptime, self.unfollow_counter, self.follow_counter)
-                self.write_log(log_string)				
-                time.sleep(sleeptime)				
+                self.write_log(log_string)
+                time.sleep(sleeptime)
                 self.bot_follow_list.remove(f)
-
 
         # Logout
         if (self.login_status):
@@ -199,6 +206,9 @@ class InstaBot:
         log_string = 'Logout: likes - %i, follow - %i, unfollow - %i, comments - %i.' %\
                      (self.like_counter, self.follow_counter,
                       self.unfollow_counter, self.comments_counter)
+        self.write_log(log_string)
+        work_time = datetime.datetime.now() - self.bot_start
+        log_string = 'Bot work time: %s' %(work_time)
         self.write_log(log_string)
 
         try:
@@ -364,6 +374,21 @@ class InstaBot:
                 unfollow = self.s.post(url_unfollow)
                 if unfollow.status_code == 200:
                     self.unfollow_counter += 1
+                    log_string = "Unfollow: %s #%i." % (user_id, self.unfollow_counter)
+                    self.write_log(log_string)
+                return unfollow
+            except:
+                self.write_log("Exept on unfollow!")
+        return False
+
+    def unfollow_on_cleanup(self, user_id):
+        """ Unfollow on cleanup by @rjmayott """
+        if (self.login_status):
+            url_unfollow = self.url_unfollow % (user_id)
+            try:
+                unfollow = self.s.post(url_unfollow)
+                if unfollow.status_code == 200:
+                    self.unfollow_counter += 1
                     log_string = "Unfollow: %s #%i of %i." % (user_id, self.unfollow_counter, self.follow_counter)
                     self.write_log(log_string)
                 else:
@@ -383,7 +408,7 @@ class InstaBot:
                 return unfollow
             except:
                 log_string = "Except on unfollow... Looks like a network error"
-                self.write_log(log_string)				
+                self.write_log(log_string)
         return False
 
     def auto_mod(self):

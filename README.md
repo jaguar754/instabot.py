@@ -1,10 +1,10 @@
 ## InstaBot
-InstaBot v 1.0.1 
+InstaBot v 1.0.1
 
 Works without the new Instagram [api][1](the new review process)
 Username and password stored local. Written in Python
 
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UM6L3YJENAQZ6&lc=US&item_name=InstaBot%2epy&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" title="Buy me a beer"><img src="http://www.mikkonen.info/polaroid_gallery/images/paypal_beer.png"></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UM6L3YJENAQZ6&lc=US&item_name=InstaBot%2epy&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" title="Buy me a beer"><img src="https://img.shields.io/badge/Donate-PayPal-green.svg"></a>
 
 ## Requirements
 `Python2.7` minimum
@@ -115,13 +115,13 @@ Log mod: `log_mod=0` log to console, `log_mod=1` log to file, `log_mod=2` no log
 ```python
 log_mod = 0
 ```
-unfollow_break_min / unfollow_break_max: These define the randomly selected amount of time in seconds that it will pause between unfollows on a break. 
+unfollow_break_min / unfollow_break_max: These define the randomly selected amount of time in seconds that it will pause between unfollows on a break.
 Example:
 ```
 unfollow_break_min = 15
-unfollow_break_max = 30 
+unfollow_break_max = 30
 ```
-This will cause a delay of anywhere between 15 to 30 seconds between every unfollow. 
+This will cause a delay of anywhere between 15 to 30 seconds between every unfollow.
 ####6) Logout from exist session:
 ```python
 bot.logout()
@@ -160,7 +160,7 @@ bot.like_all_exist_media(4)
 
 2) Install Python lib `requests`. Run command `pip3 install requests` if you use `Python 3`, or type `pip install requests` if you use `Python 2`.
 
-3) Download ZIP and extract 
+3) Download ZIP and extract
 
 4) Modify example.py to your pleasing
 

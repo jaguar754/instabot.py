@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from instabot import InstaBot
 
 bot = InstaBot(login="my_username", password="my_password",
@@ -10,7 +13,6 @@ bot = InstaBot(login="my_username", password="my_password",
                unfollow_per_day=150,
                unfollow_break_min=15,
                unfollow_break_max=30,
-               log_mod=0			   
-			   )
+               log_mod=0)
 
 bot.new_auto_mod()
