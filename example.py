@@ -1,13 +1,16 @@
 from instabot import InstaBot
 
-bot = InstaBot(login="your_login", password="your_password",
+bot = InstaBot(login="my_username", password="my_password",
                like_per_day=1000,
-               max_like_for_one_tag=5,
+               comments_per_day=0,
+               tag_list=['follow4follow', 'f4f', 'cute'],
+               max_like_for_one_tag=50,
                follow_per_day=150,
                follow_time=5*60*60,
                unfollow_per_day=150,
-               comments_per_day=50,
-               tag_list=['girl', 'car', 'cat'],
-               log_mod=0)
+               unfollow_break_min=15,
+               unfollow_break_max=30,
+               log_mod=0			   
+			   )
 
 bot.new_auto_mod()
