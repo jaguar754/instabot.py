@@ -28,6 +28,8 @@ bot = InstaBot('login', 'password',
                 comments_per_day=0,
                 tag_list=['cat', 'car', 'dog'],
                 max_like_for_one_tag = 5,
+                unfollow_break_min = 15,
+                unfollow_break_max = 30,
                 log_mod = 0)
 ```
 

@@ -144,23 +144,6 @@ class InstaBot:
         signal.signal(signal.SIGTERM, self.cleanup)
         atexit.register(self.cleanup)
 
-    def cleanup (self):
-        # Unfollow all bot follow
-        if self.follow_counter >= self.unfollow_counter:
-            for f in self.bot_follow_list:
-                log_string = "Trying to unfollow: %s" % (f[0])
-                self.write_log(log_string)
-                self.unfollow_on_cleanup(f[0])
-                sleeptime = random.randint(self.unfollow_break_min, self.unfollow_break_max)
-                log_string = "Pausing for %i seconds... %i of %i" % (sleeptime, self.unfollow_counter, self.follow_counter)
-                self.write_log(log_string)
-                time.sleep(sleeptime)
-                self.bot_follow_list.remove(f)
-
-        # Logout
-        if (self.login_status):
-            self.logout()
-
     def login(self):
         log_string = 'Trying to login as %s...\n' % (self.user_login)
         self.write_log(log_string)
@@ -218,6 +201,24 @@ class InstaBot:
             self.login_status = False
         except:
             self.write_log("Logout error!")
+
+    def cleanup (self, *_):
+        # Unfollow all bot follow
+        if self.follow_counter >= self.unfollow_counter:
+            for f in self.bot_follow_list:
+                log_string = "Trying to unfollow: %s" % (f[0])
+                self.write_log(log_string)
+                self.unfollow_on_cleanup(f[0])
+                sleeptime = random.randint(self.unfollow_break_min, self.unfollow_break_max)
+                log_string = "Pausing for %i seconds... %i of %i" % (sleeptime, self.unfollow_counter, self.follow_counter)
+                self.write_log(log_string)
+                time.sleep(sleeptime)
+                self.bot_follow_list.remove(f)
+
+        # Logout
+        if (self.login_status):
+            self.logout()
+        exit(0)
 
     def get_media_id_by_tag (self, tag):
         """ Get media ID set, by your hashtag """
@@ -397,13 +398,13 @@ class InstaBot:
                     time.sleep(300)
                     unfollow = self.s.post(url_unfollow)
                     if unfollow.status_code == 200:
-						self.unfollow_counter += 1
-						log_string = "Unfollow: %s #%i of %i." % (user_id, self.unfollow_counter, self.follow_counter)
-						self.write_log(log_string)
+                        self.unfollow_counter += 1
+                        log_string = "Unfollow: %s #%i of %i." % (user_id, self.unfollow_counter, self.follow_counter)
+                        self.write_log(log_string)
                     else:
-						log_string = "Still no good :( Skipping and pausing for another 5 minutes"
-						self.write_log(log_string)
-						time.sleep(300)
+                        log_string = "Still no good :( Skipping and pausing for another 5 minutes"
+                        self.write_log(log_string)
+                        time.sleep(300)
                     return False
                 return unfollow
             except:
