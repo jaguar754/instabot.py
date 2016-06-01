@@ -7,9 +7,13 @@ import random
 ui = UserInfo()
 ui.search_user(user_name="login")
 
-#take followers
+#take following
 ui.get_following()
-followers = ui.following
+following = ui.following
+
+#take followers
+ui.get_followers()
+followers = ui.followers
 
 #favorite id list
 favorites = ['111','222','333']
@@ -17,15 +21,28 @@ favorites = ['111','222','333']
 #some lists
 newlist = []
 endlist = []
+followerslist = []
+
+#get following id
+for item in following:
+    newlist.append(item['id'])
 
 #get followers id
 for item in followers:
-    newlist.append(item['id'])
+    followerslist.append(item['id'])
     
-#create final list
+#create final list with followers
 for ids in newlist:
-        if ids not in favorites:
+    if ids not in favorites:
+        if ids not in followerslist:
             endlist.append(ids)
+
+#create final list without followers
+'''
+for ids in newlist:
+    if ids not in favorites:
+        endlist.append(ids)
+'''
 
 #use instabot
 bot = InstaBot('login', 'password')
@@ -39,4 +56,3 @@ for items in endlist:
     time.sleep(30+rnd)
 
 print ('All done.')
-
