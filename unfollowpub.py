@@ -32,16 +32,11 @@ for item in followers:
     followerslist.append(item['id'])
     
 #create final list with followers
-for ids in newlist:
-    if ids not in favorites:
-        if ids not in followerslist:
-            endlist.append(ids)
+endlist = set.difference(set(newlist), set(favorites), set(followerslist))
 
 #create final list without followers
 '''
-for ids in newlist:
-    if ids not in favorites:
-        endlist.append(ids)
+endlist = set.difference(set(newlist), set(favorites))
 '''
 
 #use instabot
