@@ -4,7 +4,7 @@ InstaBot v 1.0.1
 Works without the new Instagram [api][1](the new review process)
 Username and password stored local. Written in Python
 
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UM6L3YJENAQZ6&lc=US&item_name=InstaBot%2epy&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted" title="Buy me a beer"><img src="https://img.shields.io/badge/Donate-PayPal-green.svg"></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7BMM6JGE73322&lc=US&item_name=GitHub%20donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" title="Support project"><img src="https://img.shields.io/badge/Support%20project-paypal-brightgreen.svg"></a>
 
 ## Requirements
 `Python2.7` minimum
@@ -175,8 +175,12 @@ CentOS - Python 3.4 & Python 2.6
 ## Warning!
 The End-User assumes sole responsibility for anything resulting from the use or modification this program.
 
+## Work with [InstagramAPI.py][4]
+I rewrote, created by @mgp25 php class, to work with the instagram API. This class give ALL access to instagram (login, post photo/video, comment, follow, get followers and etc.). This class pretends device on android and can work like android APP. In future I will rewrite all this bot to InstagramAPI.py.
 
-## Work with userinfo.py
+This class not ready for 100%, but I make most important things and you can work with it. 
+
+## Work with userinfo.py (does not work after June 1 2016)
 If you want to get some user info (follower, following and etc.) Instagram don't give this info.
 Class in `userinfo.py` aggregate this information, from other sites (now only from http://ink361.com/)
 #### How to use:
@@ -206,3 +210,4 @@ print(ui.followers)
 [1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
 [2]: https://www.instagram.com
 [3]: https://www.python.org/dev/peps/pep-0008/#source-file-encoding
+[4]: https://github.com/LevPasha/Instagram-API-python
