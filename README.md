@@ -20,7 +20,7 @@ Login automatic, as followed, by creating the `InstaBot` class element:
 ```python
 bot = InstaBot('login', 'password',
                 like_per_day=1000,
-                media_max_like=10,
+                media_max_like=0,
                 media_min_like=0,
                 follow_per_day=0,
                 follow_time=5*60*60,
@@ -38,7 +38,7 @@ bot = InstaBot('login', 'password',
 | login                | str | your instagram username                              |                                  | python_god                                      |
 | password             | str | your instagram password                              |                                  | python_god_password                             |
 | like_per_day         | int | how many likes the bot does in 1 day                 | 1000                             | 500                                             |
-| media_max_like       | int | don't like if media has more than ... likes          | 10                               | 100                                             |
+| media_max_like       | int | don't like if media has more than ... likes          | 0                                | 100                                             |
 | media_min_like       | int | don't like if media has less than ... likes          | 0                                | 5                                               |
 | follow_per_day       | int | how many users to follow in 1 day                    | 0                                | 100                                             |
 | follow_time          | int | how many times passes before the  bot unfollows a followed user (sec) | 5 * 60 * 60     | 60 * 60                                         |
@@ -178,7 +178,7 @@ The End-User assumes sole responsibility for anything resulting from the use or 
 ## Work with [InstagramAPI.py][4]
 I rewrote, created by @mgp25 php class, to work with the instagram API. This class give ALL access to instagram (login, post photo/video, comment, follow, get followers and etc.). This class pretends device on android and can work like android APP. In future I will rewrite all this bot to InstagramAPI.py.
 
-This class not ready for 100%, but I make most important things and you can work with it. 
+This class not ready for 100%, but I make most important things and you can work with it.
 
 ## Work with userinfo.py (does not work after June 1 2016)
 If you want to get some user info (follower, following and etc.) Instagram don't give this info.

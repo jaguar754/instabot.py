@@ -16,7 +16,7 @@ class InstaBot:
     Instagram bot v 1.0
     like_per_day=1000 - How many likes set bot in one day.
 
-    media_max_like=10 - Don't like media (photo or video) if it have more than
+    media_max_like=0 - Don't like media (photo or video) if it have more than
     media_max_like likes.
 
     media_min_like=0 - Don't like media (photo or video) if it have less than
@@ -75,7 +75,7 @@ class InstaBot:
 
     def __init__(self, login, password,
                 like_per_day=1000,
-                media_max_like=10,
+                media_max_like=0,
                 media_min_like=0,
                 follow_per_day=0,
                 follow_time=5*60*60,
