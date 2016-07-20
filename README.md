@@ -174,6 +174,8 @@ bot.like_all_exist_media(4)
 Windows - Python 3.4 & Python 2.7.11
 
 CentOS - Python 3.4 & Python 2.6
+
+Ubuntu 15.10 wily - Python 3.4.3+ & 2.7.10
 ## Warning!
 The End-User assumes sole responsibility for anything resulting from the use or modification this program.
 
