@@ -76,8 +76,6 @@ class UserInfo:
                     if (u["username"] == self.user_name):
                         t = u["id"].split("-")
                         self.user_id = t[1]
-                        print("user id found !!")
-                        print(self.user_id)
                 # you have just name
             return True
         return False
