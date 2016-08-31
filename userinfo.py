@@ -11,6 +11,7 @@ class UserInfo:
     user_agent = ("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36")
 
+    url_user_info = "https://www.instagram.com/%s/?__a=1"
     url_list = {
                 "ink361":
                      {
@@ -36,6 +37,13 @@ class UserInfo:
             return True
         return False
 
+    def get_user_id_by_login(self, user_name):
+        url_info= self.url_user_info % (user_name)
+        info = self.s.get(url_info)
+        all_data = json.loads(info.text)
+        id_user = all_data['user']['id']
+        return id_user
+
     def search_user(self, user_id=None, user_name=None):
         '''
         Search user_id or user_name, if you don't have it.
@@ -56,12 +64,10 @@ class UserInfo:
             # you have id and name
             return True
 
-        #print(search_url)
         search = self.s.get(search_url)
 
         if search.status_code == 200:
             r = json.loads(search.text)
-
             if self.user_id:
                 # you have just id
                 self.user_name = r["data"]["username"]
