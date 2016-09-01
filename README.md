@@ -176,8 +176,13 @@ Windows - Python 3.4 & Python 2.7.11
 CentOS - Python 3.4 & Python 2.6
 
 Ubuntu 15.10 wily - Python 3.4.3+ & 2.7.10
+
+MacOS X El Captain 10.11.4 - Python 2.7
 ## Warning!
 The End-User assumes sole responsibility for anything resulting from the use or modification this program.
+Don't worry the bot will not : 
+- Like - comment or follow your own account or media
+- Comment a media already commented
 
 ## Work with [InstagramAPI.py][4]
 I rewrote, created by @mgp25 php class, to work with the instagram API. This class give ALL access to instagram (login, post photo/video, comment, follow, get followers and etc.). This class pretends device on android and can work like android APP. In future I will rewrite all this bot to InstagramAPI.py.
@@ -200,6 +205,12 @@ or if you know `user_id` use `ui.search_user(user_id="50417061")`. Your result:
 print(ui.user_name)
 print(ui.user_id)
 ```
+
+Get user id by username
+```python
+ui.get_user_id_by_login("nekflamm")
+```
+
 Get following list with no limit
 ```python
 ui.get_following()
