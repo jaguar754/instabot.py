@@ -128,9 +128,7 @@ class InstaBot:
         self.max_like_for_one_tag = max_like_for_one_tag
         # log_mod 0 to console, 1 to file
         self.log_mod = log_mod
-        
-        
-        
+      
         self.s = requests.Session()
         # if you need proxy make something like this:
         # self.s.proxies = {"https" : "http://proxyip:proxyport"}
