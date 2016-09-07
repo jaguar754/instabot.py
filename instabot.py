@@ -78,7 +78,6 @@ class InstaBot:
     next_iteration = {"Like": 0, "Follow": 0, "Unfollow": 0, "Comments": 0}
 
     def __init__(self, login, password,
-                 proxy="",
                  like_per_day=1000,
                  media_max_like=0,
                  media_min_like=0,
@@ -90,7 +89,8 @@ class InstaBot:
                  max_like_for_one_tag=5,
                  unfollow_break_min=15,
                  unfollow_break_max=30,
-                 log_mod=0):
+                 log_mod=0,
+                 proxy=""):
 
         self.bot_start = datetime.datetime.now()
         self.unfollow_break_min = unfollow_break_min
