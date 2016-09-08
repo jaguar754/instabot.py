@@ -32,7 +32,7 @@ bot = InstaBot('login', 'password',
                 max_like_for_one_tag = 5,
                 unfollow_break_min = 15,
                 unfollow_break_max = 30,
-                log_mod = 0
+                log_mod = 0,
                 proxy='')
 ```
 
