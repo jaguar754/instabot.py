@@ -89,7 +89,8 @@ class InstaBot:
                  max_like_for_one_tag=5,
                  unfollow_break_min=15,
                  unfollow_break_max=30,
-                 log_mod=0):
+                 log_mod=0,
+                 proxy=""):
 
         self.bot_start = datetime.datetime.now()
         self.unfollow_break_min = unfollow_break_min
@@ -127,12 +128,16 @@ class InstaBot:
         self.max_like_for_one_tag = max_like_for_one_tag
         # log_mod 0 to console, 1 to file
         self.log_mod = log_mod
-
         self.s = requests.Session()
         # if you need proxy make something like this:
         # self.s.proxies = {"https" : "http://proxyip:proxyport"}
         # by @ageorgios
-
+        if proxy!="":
+            proxies = {
+              'http': 'http://'+proxy,
+              'https': 'http://'+proxy,
+            }
+            s.proxies.update(proxies)
         # convert login to lower
         self.user_login = login.lower()
         self.user_password = password
