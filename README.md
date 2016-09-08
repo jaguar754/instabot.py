@@ -32,7 +32,8 @@ bot = InstaBot('login', 'password',
                 max_like_for_one_tag = 5,
                 unfollow_break_min = 15,
                 unfollow_break_max = 30,
-                log_mod = 0)
+                log_mod = 0,
+                proxy='')
 ```
 
 | Parameter            | Type|                Description                           |        Default value             |                 Example value                   |
@@ -51,7 +52,7 @@ bot = InstaBot('login', 'password',
 | unfollow_break_min   | int | Minimum seconds for unfollow break pause             | 15                               | 30                                              |
 | unfollow_break_max   | int | Maximum seconds for unfollow break pause             | 30                               | 60                                              |
 | log_mod              | int | logging mod                                          | 0                                | 0 log to console, 1 log to file, 2 no log.      |
-
+| proxy             | string | Access instagram through a proxy server                                          |                                | Without authentication: proxy:port, example: 10.10.1.10:3128, with authentication: user:password@proxy:port, example: user:password@10.10.1.10:3128 |
 
 ####2) Set likes and unlike:
 How many likes set bot in one day. Default value is 1000 likes per 24 hours.
