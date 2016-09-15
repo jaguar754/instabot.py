@@ -330,7 +330,7 @@ class InstaBot:
                                     # Like, all ok!
                                     self.error_400 = 0
                                     self.like_counter += 1
-                                    log_string = "Liked: %s Like #%i." % \
+                                    log_string = "Liked: %s. Like #%i." % \
                                                  (self.media_by_tag[i]['id'],
                                                   self.like_counter)
                                     self.write_log(log_string)
