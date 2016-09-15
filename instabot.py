@@ -331,7 +331,7 @@ class InstaBot:
                                     self.error_400 = 0
                                     self.like_counter += 1
                                     log_string = "Liked: %s Like #%i." % \
-                                                 (self.media_by_tag[i]['display_src'],
+                                                 (self.media_by_tag[i]['id'],
                                                   self.like_counter)
                                     self.write_log(log_string)
                                 elif like.status_code == 400:
