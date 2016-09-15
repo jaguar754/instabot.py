@@ -11,8 +11,6 @@ import json
 import atexit
 import signal
 import itertools
-import string
-
 
 class InstaBot:
     """
@@ -172,7 +170,7 @@ class InstaBot:
             log_string = "Blacklisted user %s added with ID: %s" % (user, id_user)
             self.write_log(log_string)
             time.sleep(5 * random.random())
-    
+
         log_string = "Completed populating user blacklist with IDs"
         self.write_log(log_string)
 
