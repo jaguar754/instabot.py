@@ -29,6 +29,8 @@ bot = InstaBot('login', 'password',
                 unfollow_per_day=0,
                 comments_per_day=0,
                 tag_list=['cat', 'car', 'dog'],
+                tag_blacklist=['rain', 'thunderstorm'],
+                user_blacklist={'hellokitty':'', 'hellokitty3':''},
                 max_like_for_one_tag = 5,
                 unfollow_break_min = 15,
                 unfollow_break_max = 30,
@@ -48,11 +50,13 @@ bot = InstaBot('login', 'password',
 | unfollow_per_day     | int | how many user unfollows the bot does in day          | 0                                | 100                                             |
 | comments_per_day     | int | how many comments the bot writes in a day            | 0                                | 50                                              |
 | tag_list             | list| list of tag the bot uses                             | ['cat', 'car', 'dog']            | ['moto', 'girl', 'python']                      |
+| tag_blacklist        | list| list of tags the bot refuses to like                 | []                               | ['rain', 'thunderstorm']                        |
+| user_blacklist       | dict| don't like posts from certain users                  | {}                               | {'hellokitty':'', 'hellokitty3':''}             |
 | max_like_for_one_tag | int | bot get 21 media from one tag, how many use by row   | 5                                | 10                                              |
 | unfollow_break_min   | int | Minimum seconds for unfollow break pause             | 15                               | 30                                              |
 | unfollow_break_max   | int | Maximum seconds for unfollow break pause             | 30                               | 60                                              |
 | log_mod              | int | logging mod                                          | 0                                | 0 log to console, 1 log to file, 2 no log.      |
-| proxy             | string | Access instagram through a proxy server                                          |                                | Without authentication: proxy:port, example: 10.10.1.10:3128, with authentication: user:password@proxy:port, example: user:password@10.10.1.10:3128 |
+| proxy             | string | Access instagram through a proxy server              |                                  | Without authentication: proxy:port, example: 10.10.1.10:3128, with authentication: user:password@proxy:port, example: user:password@10.10.1.10:3128 |
 
 ####2) Set likes and unlike:
 How many likes set bot in one day. Default value is 1000 likes per 24 hours.
