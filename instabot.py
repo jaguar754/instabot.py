@@ -307,16 +307,15 @@ class InstaBot:
                                 self.write_log("Keep calm - It's your own media ;)")
                                 return False
 
-                            if (self.media_by_tag[i]['caption']):
+                            try:
                                 caption = self.media_by_tag[i]['caption'].encode('ascii',errors='ignore')
                                 tag_blacklist = set(self.tag_blacklist)
                                 tags = {str.lower(tag.strip("#")) for tag in caption.split() if tag.startswith("#")}
-                                print tags
                                 if tags.intersection(tag_blacklist):
                                         matching_tags = ', '.join(tags.intersection(tag_blacklist))
                                         self.write_log("Not liking media with blacklisted tag(s): " + matching_tags)
                                         return False
-                            else:
+                            except:
                                 self.write_log("Couldn't find caption - not liking")
                                 return False
 
