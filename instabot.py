@@ -299,20 +299,22 @@ class InstaBot:
                             or (self.media_max_like == 0 and l_c >= self.media_min_like)
                             or (self.media_min_like == 0 and l_c <= self.media_max_like)
                             or (self.media_min_like == 0 and self.media_max_like == 0)):
+                            for blacklisted_user_name, blacklisted_user_id in self.user_blacklist.items():
+                                if (self.media_by_tag[i]['owner']['id'] == blacklisted_user_id):
+                                    self.write_log("Not liking media owned by blacklisted user: " + blacklisted_user_name)
+                                    return False
                             if (self.media_by_tag[i]['owner']['id'] == self.user_id):
                                 self.write_log("Keep calm - It's your own media ;)")
                                 return False
-                            for blacklisted_user_name, blacklisted_user_id in self.user_blacklist.items():
-                                if (self.media_by_tag[i]['owner']['id'] == blacklisted_user_id):
-                                    self.write_log("Not liking media owned by blacklisted user: %s") % (blacklisted_user_name)
-                                    return False
+
                             if (self.media_by_tag[i]['caption']):
                                 caption = self.media_by_tag[i]['caption'].encode('ascii',errors='ignore')
                                 tag_blacklist = set(self.tag_blacklist)
                                 tags = {str.lower(tag.strip("#")) for tag in caption.split() if tag.startswith("#")}
+                                print tags
                                 if tags.intersection(tag_blacklist):
-                                        matching_tags = str(', '.join(tags.intersection(tag_blacklist)))
-                                        self.write_log("Not liking media with blacklisted tag(s): %s") % (matching_tags)
+                                        matching_tags = ', '.join(tags.intersection(tag_blacklist))
+                                        self.write_log("Not liking media with blacklisted tag(s): " + matching_tags)
                                         return False
                             else:
                                 self.write_log("Couldn't find caption - not liking")
@@ -512,11 +514,7 @@ class InstaBot:
                         self.follow_per_day != 0 and len(self.media_by_tag) > 0:
             if self.media_by_tag[0]["owner"]["id"] == self.user_id:
                 self.write_log("Keep calm - It's your own profile ;)")
-                return False
-            for blacklisted_user_name, blacklisted_user_id in self.user_blacklist.items():
-                if (self.media_by_tag[0]['owner']['id'] == blacklisted_user_id):
-                    self.write_log("Not following blacklisted user: %s") % (blacklisted_user_name)
-                    return False
+                return
             log_string = "Trying to follow: %s" % (self.media_by_tag[0]["owner"]["id"])
             self.write_log(log_string)
 
@@ -580,23 +578,11 @@ class InstaBot:
         url_check = self.url_media_detail % (media_code)
         check_comment = self.s.get(url_check)
         all_data = json.loads(check_comment.text)
-        for blacklisted_user_name, blacklisted_user_id in self.user_blacklist.items():
-            if (self.all_data['media']['owner']['id']] == blacklisted_user_id):
-                self.write_log("Not liking media owned by blacklisted user: %s") % (blacklisted_user_name)
-                return False
-        if (self.all_data['media']['caption']):
-            caption = self.all_data['media']['caption'].encode('ascii',errors='ignore')
-            tag_blacklist = set(self.tag_blacklist)
-            tags = {str.lower(tag.strip("#")) for tag in caption.split() if tag.startswith("#")}
-            if tags.intersection(tag_blacklist):
-                    matching_tags = str(', '.join(tags.intersection(tag_blacklist)))
-                    self.write_log("Not commenting on media with blacklisted tag(s): %s") % (matching_tags)
-                    return False
         if all_data['media']['owner']['id'] == self.user_id:
-            self.write_log("Keep calm - It's your own media ;)")
-            # Del media to don't loop on it
-            del self.media_by_tag[0]
-            return True
+                self.write_log("Keep calm - It's your own media ;)")
+                # Del media to don't loop on it
+                del self.media_by_tag[0]
+                return True
         comment_list = list(all_data['media']['comments']['nodes'])
         for d in comment_list:
             if d['user']['id'] == self.user_id:
