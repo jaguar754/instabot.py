@@ -12,7 +12,6 @@ import atexit
 import signal
 import itertools
 
-
 class InstaBot:
     """
     Instagram bot v 1.0
@@ -44,6 +43,7 @@ class InstaBot:
     url_login = 'https://www.instagram.com/accounts/login/ajax/'
     url_logout = 'https://www.instagram.com/accounts/logout/'
     url_media_detail = 'https://www.instagram.com/p/%s/?__a=1'
+    url_user_detail = 'https://www.instagram.com/%s/?__a=1'
 
     user_agent = ("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36")
@@ -90,11 +90,16 @@ class InstaBot:
                  unfollow_break_min=15,
                  unfollow_break_max=30,
                  log_mod=0,
-                 proxy=""):
+                 proxy="",
+                 user_blacklist={},
+                 tag_blacklist=[]):
 
         self.bot_start = datetime.datetime.now()
         self.unfollow_break_min = unfollow_break_min
         self.unfollow_break_max = unfollow_break_max
+        self.user_blacklist = user_blacklist
+        self.tag_blacklist = tag_blacklist
+
         self.time_in_day = 24 * 60 * 60
         # Like
         self.like_per_day = like_per_day
@@ -149,9 +154,25 @@ class InstaBot:
                      (now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         self.login()
-
+        self.populate_user_blacklist()
         signal.signal(signal.SIGTERM, self.cleanup)
         atexit.register(self.cleanup)
+
+    def populate_user_blacklist(self):
+        for user in self.user_blacklist:
+
+            user_id_url= self.url_user_detail % (user)
+            info = self.s.get(user_id_url)
+            all_data = json.loads(info.text)
+            id_user = all_data['user']['media']['nodes'][0]['owner']['id']
+            #Update the user_name with the user_id
+            self.user_blacklist[user]=id_user
+            log_string = "Blacklisted user %s added with ID: %s" % (user, id_user)
+            self.write_log(log_string)
+            time.sleep(5 * random.random())
+
+        log_string = "Completed populating user blacklist with IDs"
+        self.write_log(log_string)
 
     def login(self):
         log_string = 'Trying to login as %s...\n' % (self.user_login)
@@ -278,9 +299,26 @@ class InstaBot:
                             or (self.media_max_like == 0 and l_c >= self.media_min_like)
                             or (self.media_min_like == 0 and l_c <= self.media_max_like)
                             or (self.media_min_like == 0 and self.media_max_like == 0)):
+                            for blacklisted_user_name, blacklisted_user_id in self.user_blacklist.items():
+                                if (self.media_by_tag[i]['owner']['id'] == blacklisted_user_id):
+                                    self.write_log("Not liking media owned by blacklisted user: " + blacklisted_user_name)
+                                    return False
                             if (self.media_by_tag[i]['owner']['id'] == self.user_id):
                                 self.write_log("Keep calm - It's your own media ;)")
                                 return False
+
+                            try:
+                                caption = self.media_by_tag[i]['caption'].encode('ascii',errors='ignore')
+                                tag_blacklist = set(self.tag_blacklist)
+                                tags = {str.lower(tag.strip("#")) for tag in caption.split() if tag.startswith("#")}
+                                if tags.intersection(tag_blacklist):
+                                        matching_tags = ', '.join(tags.intersection(tag_blacklist))
+                                        self.write_log("Not liking media with blacklisted tag(s): " + matching_tags)
+                                        return False
+                            except:
+                                self.write_log("Couldn't find caption - not liking")
+                                return False
+
                             log_string = "Trying to like media: %s" % \
                                          (self.media_by_tag[i]['id'])
                             self.write_log(log_string)
