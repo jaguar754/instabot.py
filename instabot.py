@@ -142,7 +142,7 @@ class InstaBot:
               'http': 'http://'+proxy,
               'https': 'http://'+proxy,
             }
-            s.proxies.update(proxies)
+            self.s.proxies.update(proxies)
         # convert login to lower
         self.user_login = login.lower()
         self.user_password = password
