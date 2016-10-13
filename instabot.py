@@ -12,6 +12,8 @@ import atexit
 import signal
 import itertools
 
+from unfollow_protocol import unfollow_protocol
+
 class InstaBot:
     """
     Instagram bot v 1.0
@@ -57,13 +59,34 @@ class InstaBot:
     ban_sleep_time = 2 * 60 * 60
 
     # All counter.
+    bot_mode = 0
     like_counter = 0
     follow_counter = 0
     unfollow_counter = 0
     comments_counter = 0
-
+    current_user ='hajka'
+    current_index = 0
+    current_id = 'abcds'
     # List of user_id, that bot follow
     bot_follow_list = []
+    user_info_list = []
+    user_list = []
+    ex_user_list = []
+    unwanted_username_list = []
+    is_checked = False
+    is_selebgram = False
+    is_fake_account  = False
+    is_active_user = False
+    is_following = False
+    is_follower = False
+    is_rejected = False
+    is_self_checking = False
+    is_by_tag = False
+    is_follower_number = 0
+
+    self_following = 0
+    self_follower = 0
+
 
     # Log setting.
     log_file_path = ''
@@ -72,6 +95,8 @@ class InstaBot:
     # Other.
     user_id = 0
     media_by_tag = 0
+    media_on_feed = []
+    media_by_user = []
     login_status = False
 
     # For new_auto_mod
@@ -79,7 +104,7 @@ class InstaBot:
 
     def __init__(self, login, password,
                  like_per_day=1000,
-                 media_max_like=0,
+                 media_max_like=50,
                  media_min_like=0,
                  follow_per_day=0,
                  follow_time=5 * 60 * 60,
@@ -92,7 +117,8 @@ class InstaBot:
                  log_mod=0,
                  proxy="",
                  user_blacklist={},
-                 tag_blacklist=[]):
+                 tag_blacklist=[],
+                 unwanted_username_list=[]):
 
         self.bot_start = datetime.datetime.now()
         self.unfollow_break_min = unfollow_break_min
@@ -146,9 +172,11 @@ class InstaBot:
         # convert login to lower
         self.user_login = login.lower()
         self.user_password = password
-
+        self.bot_mode = 0
         self.media_by_tag = []
-
+        self.media_on_feed = []
+        self.media_by_user = []
+        self.unwanted_username_list = unwanted_username_list
         now_time = datetime.datetime.now()
         log_string = 'Instabot v1.0.1 started at %s:\n' % \
                      (now_time.strftime("%d.%m.%Y %H:%M"))
@@ -488,7 +516,6 @@ class InstaBot:
             self.new_auto_mod_unfollow()
             # ------------------- Comment -------------------
             self.new_auto_mod_comments()
-
             # Bot iteration in 1 sec
             time.sleep(3)
             # print("Tic!")
@@ -525,17 +552,18 @@ class InstaBot:
 
     def new_auto_mod_unfollow(self):
         if time.time() > self.next_iteration["Unfollow"] and \
-                        self.unfollow_per_day != 0 and len(self.bot_follow_list) > 0:
-            for f in self.bot_follow_list:
-                if time.time() > (f[1] + self.follow_time):
-
-                    log_string = "Trying to unfollow #%i: %s" % (self.unfollow_counter, f[0])
-                    self.write_log(log_string)
-
-                    if self.unfollow(f[0]) != False:
+                        self.unfollow_per_day != 0 and len(self.bot_follow_list) > 0:     
+            if (self.bot_mode == 0) :
+                for f in self.bot_follow_list:
+                    if time.time() > (f[1] + self.follow_time):
+                        log_string = "Trying to unfollow #%i: "
+                        self.write_log(log_string)
+                        self.auto_unfollow()
                         self.bot_follow_list.remove(f)
                         self.next_iteration["Unfollow"] = time.time() + \
                                                           self.add_time(self.unfollow_delay)
+            if (self.bot_mode == 1) :
+                unfollow_protocol(self)
 
     def new_auto_mod_comments(self):
         if time.time() > self.next_iteration["Comments"] and self.comments_per_day != 0 \
@@ -590,6 +618,144 @@ class InstaBot:
                 del self.media_by_tag[0]
                 return True
         return False
+
+    def auto_unfollow(self):
+        chooser = 1
+        current_user = 'abcd'
+        current_id = '12345'
+        self.media_on_feed = []
+        if len(self.media_on_feed) < 1:
+            self.get_media_id_recent_feed()
+        if len(self.media_on_feed) != 0 :
+            chooser = random.randint(0,len(self.media_on_feed)-1)
+            current_id=self.media_on_feed[chooser]["owner"]["id"]
+            current_user=self.media_on_feed[chooser]["owner"]["username"]
+        if (self.login_status):
+            now_time = datetime.datetime.now()
+            log_string = "%s : Get user info \n%s"%(self.user_login,now_time.strftime("%d.%m.%Y %H:%M"))
+            self.write_log(log_string)
+            if self.login_status == 1:
+                url_tag = 'https://www.instagram.com/%s/'%(current_user)
+                try:
+                    r = self.s.get(url_tag)
+                    text = r.text
+                    finder_text_start = ('<script type="text/javascript">'
+                                         'window._sharedData = ')
+                    finder_text_start_len = len(finder_text_start)-1
+                    finder_text_end = ';</script>'
+
+                    all_data_start = text.find(finder_text_start)
+                    all_data_end = text.find(finder_text_end, all_data_start + 1)
+                    json_str = text[(all_data_start + finder_text_start_len + 1) \
+                                   : all_data_end]
+                    all_data = json.loads(json_str)
+                                        
+                    self.user_info = list(all_data['entry_data']['ProfilePage'])
+                    i=0	
+                    log_string="Checking user info.."
+                    self.write_log(log_string)
+
+                        
+                    while i<1:
+                        follows = self.user_info[0]['user']['follows']['count']
+                        follower = self.user_info[0]['user']['followed_by']['count']
+                        media = self.user_info[0]['user']['media']['count']
+                        follow_viewer = self.user_info[0]['user']['follows_viewer']
+                        followed_by_viewer = self.user_info[0]['user']['followed_by_viewer']
+                        requested_by_viewer = self.user_info[0]['user']['requested_by_viewer']
+                        has_requested_viewer = self.user_info[0]['user']['has_requested_viewer']
+                        log_string = "Follower : %i" % (follower)
+                        self.write_log(log_string)
+                        log_string = "Following : %s" % (follows)
+                        self.write_log(log_string)
+                        log_string = "Media : %i" % (media)
+                        self.write_log(log_string)
+                        if follower/follows > 2:
+                            self.is_selebgram = True
+                            self.is_fake_account = False
+                            print('   >>>This is probably Selebgram account')
+                        elif follows/follower > 2:
+                            self.is_fake_account = True
+                            self.is_selebgram = False
+                            print('   >>>This is probably Fake account')
+                        else:
+                            self.is_selebgram = False
+                            self.is_fake_account = False
+                            print('   >>>This is a normal account')
+                            
+                        if follows/media < 10 and follower/media < 10:
+                            self.is_active_user = True
+                            print('   >>>This user is active')
+                        else:
+                            self.is_active_user = False
+                            print('   >>>This user is passive')
+                            
+                        if follow_viewer or has_requested_viewer:
+                            self.is_follower = True
+                            print("   >>>This account is following you")
+                        else:
+                            self.is_follower = False
+                            print('   >>>This account is NOT following you')
+                            
+                        if followed_by_viewer or requested_by_viewer:
+                            self.is_following = True
+                            print('   >>>You are following this account')
+                            
+                        else:
+                            self.is_following = False
+                            print('   >>>You are NOT following this account')
+                        i+=1
+                
+                except:
+                    media_on_feed = []
+                    self.write_log("Except on get_info!")
+                    time.sleep(20)
+                    return 0
+            else:
+                return 0
+            
+            if self.is_selebgram is not False or self.is_fake_account is not False or self.is_active_user is not True or self.is_follower is not True:
+                print current_user
+                self.unfollow(current_id)
+                try:
+                    del self.media_on_feed[chooser]
+                except:
+                    self.media_on_feed = []    
+            self.media_on_feed = []    
+
+    def get_media_id_recent_feed (self):
+        if (self.login_status):
+            now_time = datetime.datetime.now()
+            log_string = "%s : Get media id on recent feed"%(self.user_login)
+            self.write_log(log_string)
+            if self.login_status == 1:
+                url_tag = 'https://www.instagram.com/#'
+                try:
+                    r = self.s.get(url_tag)
+                    text = r.text
+                    finder_text_start = ('<script type="text/javascript">'
+                                         'window._sharedData = ')
+                    finder_text_start_len = len(finder_text_start)-1
+                    finder_text_end = ';</script>'
+
+                    all_data_start = text.find(finder_text_start)
+                    all_data_end = text.find(finder_text_end, all_data_start + 1)
+                    json_str = text[(all_data_start + finder_text_start_len + 1) \
+                                   : all_data_end]
+                    all_data = json.loads(json_str)
+
+                    self.media_on_feed = list(all_data['entry_data']['FeedPage'][0]\
+                                            ['feed']['media']['nodes'])
+                    log_string="Media in recent feed = %i"%(len(self.media_on_feed))
+                    self.write_log(log_string)
+                except:
+                    self.media_on_feed = []
+                    self.write_log("Except on get_media!")
+                    time.sleep(20)
+                    return 0
+            else:
+                return 0
+
 
     def write_log(self, log_text):
         """ Write log by print() or logger """
