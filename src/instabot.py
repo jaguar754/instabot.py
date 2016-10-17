@@ -338,7 +338,8 @@ class InstaBot:
                             try:
                                 caption = self.media_by_tag[i]['caption'].encode('ascii',errors='ignore')
                                 tag_blacklist = set(self.tag_blacklist)
-                                tags = {str.lower(tag.strip("#")) for tag in caption.split() if tag.startswith("#")}
+                                tags = {str.lower((tag.decode('ASCII')).strip('#')) for tag in caption.split() if
+                                        (tag.decode('ASCII')).startswith("#")}
                                 if tags.intersection(tag_blacklist):
                                         matching_tags = ', '.join(tags.intersection(tag_blacklist))
                                         self.write_log("Not liking media with blacklisted tag(s): " + matching_tags)
@@ -552,7 +553,7 @@ class InstaBot:
 
     def new_auto_mod_unfollow(self):
         if time.time() > self.next_iteration["Unfollow"] and \
-                        self.unfollow_per_day != 0 and len(self.bot_follow_list) > 0:     
+                        self.unfollow_per_day != 0 and len(self.bot_follow_list) > 0:
             if (self.bot_mode == 0) :
                 for f in self.bot_follow_list:
                     if time.time() > (f[1] + self.follow_time):
@@ -649,13 +650,13 @@ class InstaBot:
                     json_str = text[(all_data_start + finder_text_start_len + 1) \
                                    : all_data_end]
                     all_data = json.loads(json_str)
-                                        
+
                     self.user_info = list(all_data['entry_data']['ProfilePage'])
-                    i=0	
+                    i=0
                     log_string="Checking user info.."
                     self.write_log(log_string)
 
-                        
+
                     while i<1:
                         follows = self.user_info[0]['user']['follows']['count']
                         follower = self.user_info[0]['user']['followed_by']['count']
@@ -682,30 +683,30 @@ class InstaBot:
                             self.is_selebgram = False
                             self.is_fake_account = False
                             print('   >>>This is a normal account')
-                            
+
                         if follows/media < 10 and follower/media < 10:
                             self.is_active_user = True
                             print('   >>>This user is active')
                         else:
                             self.is_active_user = False
                             print('   >>>This user is passive')
-                            
+
                         if follow_viewer or has_requested_viewer:
                             self.is_follower = True
                             print("   >>>This account is following you")
                         else:
                             self.is_follower = False
                             print('   >>>This account is NOT following you')
-                            
+
                         if followed_by_viewer or requested_by_viewer:
                             self.is_following = True
                             print('   >>>You are following this account')
-                            
+
                         else:
                             self.is_following = False
                             print('   >>>You are NOT following this account')
                         i+=1
-                
+
                 except:
                     media_on_feed = []
                     self.write_log("Except on get_info!")
@@ -713,15 +714,15 @@ class InstaBot:
                     return 0
             else:
                 return 0
-            
+
             if self.is_selebgram is not False or self.is_fake_account is not False or self.is_active_user is not True or self.is_follower is not True:
-                print current_user
+                print (current_user)
                 self.unfollow(current_id)
                 try:
                     del self.media_on_feed[chooser]
                 except:
-                    self.media_on_feed = []    
-            self.media_on_feed = []    
+                    self.media_on_feed = []
+            self.media_on_feed = []
 
     def get_media_id_recent_feed (self):
         if (self.login_status):
