@@ -338,7 +338,7 @@ class InstaBot:
                             try:
                                 caption = self.media_by_tag[i]['caption'].encode('ascii',errors='ignore')
                                 tag_blacklist = set(self.tag_blacklist)
-                                tags = {str.lower((tag.decode('ASCII')).strip('#')) for tag in caption.split() if
+                                tags = {unicode.lower((tag.decode('ASCII')).strip('#')) for tag in caption.split() if
                                         (tag.decode('ASCII')).startswith("#")}
                                 if tags.intersection(tag_blacklist):
                                         matching_tags = ', '.join(tags.intersection(tag_blacklist))
