@@ -233,6 +233,11 @@ ui.get_followers(limit=10)
 print(ui.followers)
 ```
 
+## Community
+
+- [Telegram Group](https://telegram.me/joinchat/DYKH-wdXpfmQCdcJLaV48Q)
+- [Facebook Group](https://www.facebook.com/groups/instabot/)
+
 [1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
 [2]: https://www.instagram.com
 [3]: https://www.python.org/dev/peps/pep-0008/#source-file-encoding
