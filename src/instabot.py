@@ -16,7 +16,7 @@ from unfollow_protocol import unfollow_protocol
 
 class InstaBot:
     """
-    Instagram bot v 1.0
+    Instagram bot v 1.1.0
     like_per_day=1000 - How many likes set bot in one day.
 
     media_max_like=0 - Don't like media (photo or video) if it have more than
@@ -338,7 +338,7 @@ class InstaBot:
                             try:
                                 caption = self.media_by_tag[i]['caption'].encode('ascii',errors='ignore')
                                 tag_blacklist = set(self.tag_blacklist)
-                                tags = {unicode.lower((tag.decode('ASCII')).strip('#')) for tag in caption.split() if
+                                tags = {str.lower((tag.decode('ASCII')).strip('#')) for tag in caption.split() if
                                         (tag.decode('ASCII')).startswith("#")}
                                 if tags.intersection(tag_blacklist):
                                         matching_tags = ', '.join(tags.intersection(tag_blacklist))
