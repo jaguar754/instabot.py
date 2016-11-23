@@ -11,6 +11,7 @@ import json
 import atexit
 import signal
 import itertools
+import sys
 
 from unfollow_protocol import unfollow_protocol
 
@@ -338,8 +339,13 @@ class InstaBot:
                             try:
                                 caption = self.media_by_tag[i]['caption'].encode('ascii',errors='ignore')
                                 tag_blacklist = set(self.tag_blacklist)
-                                tags = {str.lower((tag.decode('ASCII')).strip('#')) for tag in caption.split() if
-                                        (tag.decode('ASCII')).startswith("#")}
+                                if sys.version_info[0] == 3:
+                                    tags = {str.lower((tag.decode('ASCII')).strip('#')) for tag in caption.split() if
+                                            (tag.decode('ASCII')).startswith("#")}
+                                else:
+                                    tags = {unicode.lower((tag.decode('ASCII')).strip('#')) for tag in caption.split() if
+                                            (tag.decode('ASCII')).startswith("#")}
+
                                 if tags.intersection(tag_blacklist):
                                         matching_tags = ', '.join(tags.intersection(tag_blacklist))
                                         self.write_log("Not liking media with blacklisted tag(s): " + matching_tags)
