@@ -1,9 +1,3 @@
-## Offtop
-
-Hi all. I need your help! Support my project on Steam Greenlight. It is very important to me, and if I succeed I'll have more time to this project. Thank you!
-
-<a href="http://steamcommunity.com/sharedfiles/filedetails/?id=790882811" title="Suppor Ultimus bellum on Steam Greenlight"><img src="http://i.imgur.com/8JOnnOR.jpg"></a>
-
 ## InstaBot
 InstaBot v 1.1.0
 
