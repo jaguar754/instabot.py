@@ -590,16 +590,12 @@ class InstaBot:
     def generate_comment(self):
         c_list = list(itertools.product(
             ["this", "the", "your"],
-            ["photo", "picture", "pic", "shot", "snapshot"],
-            ["is", "looks", "feels", "is really"],
-            ["great", "super", "good", "very good",
+            ["photo", "picture", "pic", "shot"],
+            ["is", "looks", "feels"],
+            ["great", "super", "very good",
              "good", "wow", "WOW", "cool",
-             "GREAT", "magnificent", "magical", "very cool",
-             "stylish", "so stylish", "beautiful",
-             "so beautiful", "so stylish", "so professional",
-             "lovely", "so lovely", "very lovely",
-             "glorious", "so glorious", "very glorious",
-             "adorable", "excellent", "amazing"],
+             "GREAT", "very cool", "beautiful",
+             "excellent", "amazing"],
             [".", "..", "...", "!", "!!", "!!!"]))
 
         repl = [("  ", " "), (" .", "."), (" !", "!")]
