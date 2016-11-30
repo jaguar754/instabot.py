@@ -10,7 +10,9 @@ from unfollow_protocol import unfollow_protocol
 from follow_protocol import follow_protocol
 import time
 
-
+#IMPORTANT INFORMATION!
+##Likes,Comments,Follows, and Unfollows have been tweaked to the amount of hours the bot runs for!
+###So if your like_per_day=1000 and the bot runs for 2 hours, it will try to post that many in those two hours!
 bot = InstaBot(login="username", password="password",
                like_per_day=1000,
                comments_per_day=0,
@@ -32,7 +34,20 @@ bot = InstaBot(login="username", password="password",
                                        'travel','art','shop','store','sex','toko','jual','online','murah','jam','kaos','case','baju','fashion',
                                         'corp','tas','butik','grosir','karpet','sosis','salon','skin','care','cloth','tech','rental',
                                         'kamera','beauty','express','kredit','collection','impor','preloved','follow','follower','gain',
-                                        '.id','_id','bags'])
+                                        '.id','_id','bags'],
+               bot_running_hour_start = 0,
+               bot_running_hour_end = 24
+			   #Change these to whatever hours you like
+			   ##The bot will only run during these hours and sleep 
+			   ### HOURS BETWEEN 0-24 ONLY!!!!!!!!!!!!!!!!
+			   #### EXAMPLE 1
+			   #####bot_running_hour_start = 5,
+			   #####bot_running_hour_end = 16
+			   #### EXAMPLE 2
+			   #####bot_running_hour_start = 22,
+			   #####bot_running_hour_end = 4
+			   #### BOTH OF THESE ARE VALID HOURS AND WORK!
+               )
 while True:
 
     #print("# MODE 0 = ORIGINAL MODE BY LEVPASHA")
