@@ -144,7 +144,7 @@ class InstaBot:
         self.like_per_day = like_per_day
         if self.like_per_day != 0:
             self.like_delay = self.time_in_day / self.like_per_day
-
+	
         # Follow
         self.follow_time = follow_time
         self.follow_per_day = follow_per_day
