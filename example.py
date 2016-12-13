@@ -36,7 +36,7 @@ bot = InstaBot(login="username", password="password",
                                         'kamera','beauty','express','kredit','collection','impor','preloved','follow','follower','gain',
                                         '.id','_id','bags'],
                bot_running_hour_start = 0,
-               bot_running_hour_end = 24
+               bot_running_hour_end = 23
 			   #Change these to whatever hours you like
 			   ##The bot will only run during these hours and sleep 
 			   ### HOURS BETWEEN 0-24 ONLY!!!!!!!!!!!!!!!!
