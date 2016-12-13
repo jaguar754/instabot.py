@@ -104,7 +104,7 @@ class InstaBot:
     next_iteration = {"Like": 0, "Follow": 0, "Unfollow": 0, "Comments": 0}
 
 	# Running hours
-    bot_running_hour_start = 14
+    bot_running_hour_start = 0
     bot_running_hour_end = 23
 	
     def __init__(self, login, password,
