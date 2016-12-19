@@ -103,10 +103,6 @@ class InstaBot:
     # For new_auto_mod
     next_iteration = {"Like": 0, "Follow": 0, "Unfollow": 0, "Comments": 0}
 
-	# Running hours
-    bot_running_hour_start = 0
-    bot_running_hour_end = 23
-	
     def __init__(self, login, password,
                  like_per_day=1000,
                  media_max_like=50,
@@ -123,28 +119,20 @@ class InstaBot:
                  proxy="",
                  user_blacklist={},
                  tag_blacklist=[],
-                 unwanted_username_list=[],
-                 bot_running_hour_start=0,
-                 bot_running_hour_end=23):
+                 unwanted_username_list=[]):
 
         self.bot_start = datetime.datetime.now()
         self.unfollow_break_min = unfollow_break_min
         self.unfollow_break_max = unfollow_break_max
         self.user_blacklist = user_blacklist
         self.tag_blacklist = tag_blacklist
-        self.bot_running_hour_start = bot_running_hour_start
-        self.bot_running_hour_end = bot_running_hour_end
 
-	if self.bot_running_hour_end < self.bot_running_hour_start:
-            self.time_in_day = (self.bot_running_hour_end + 24) - self.bot_running_hour_start * 60 * 60
-        else:
-            self.time_in_day = self.bot_running_hour_end - self.bot_running_hour_start * 60 * 60
-
+        self.time_in_day = 24 * 60 * 60
         # Like
         self.like_per_day = like_per_day
         if self.like_per_day != 0:
             self.like_delay = self.time_in_day / self.like_per_day
-	
+
         # Follow
         self.follow_time = follow_time
         self.follow_per_day = follow_per_day
@@ -198,8 +186,7 @@ class InstaBot:
         self.populate_user_blacklist()
         signal.signal(signal.SIGTERM, self.cleanup)
         atexit.register(self.cleanup)
-	
-		
+
     def populate_user_blacklist(self):
         for user in self.user_blacklist:
 
@@ -523,31 +510,22 @@ class InstaBot:
 
     def new_auto_mod(self):
         while True:
-            now = datetime.datetime.now()
-            if (now.hour >= self.bot_running_hour_start and now.hour <= self.bot_running_hour_end):
-                # ------------------- Get media_id -------------------
-                if len(self.media_by_tag) == 0:
-                    self.get_media_id_by_tag(random.choice(self.tag_list))
-                    self.this_tag_like_count = 0
-                    self.max_tag_like_count = random.randint(1, self.max_like_for_one_tag)
-                # ------------------- Like -------------------
-                self.new_auto_mod_like()
-                # ------------------- Follow -------------------
-                self.new_auto_mod_follow()
-                # ------------------- Unfollow -------------------
-                self.new_auto_mod_unfollow()
-                # ------------------- Comment -------------------
-                self.new_auto_mod_comments()
-                # Bot iteration in 1 sec
-            else:
-                self.write_log('Not doing anything now. Waiting till the start time')
-                if self.bot_running_hour_start < now.hour:
-                    self.write_log(str(self.bot_running_hour_start + 24 - now.hour) + ' Hour(s)')
-                    time.sleep(((self.bot_running_hour_start + 24) - now.hour) * 60 * 60)
-                else:
-                    self.write_log(str(self.bot_running_hour_start - now.hour) + ' Hour(s)')
-                    time.sleep((self.bot_running_hour_start - now.hour) * 60 * 60)
-	    time.sleep(3)
+            # ------------------- Get media_id -------------------
+            if len(self.media_by_tag) == 0:
+                self.get_media_id_by_tag(random.choice(self.tag_list))
+                self.this_tag_like_count = 0
+                self.max_tag_like_count = random.randint(1, self.max_like_for_one_tag)
+            # ------------------- Like -------------------
+            self.new_auto_mod_like()
+            # ------------------- Follow -------------------
+            self.new_auto_mod_follow()
+            # ------------------- Unfollow -------------------
+            self.new_auto_mod_unfollow()
+            # ------------------- Comment -------------------
+            self.new_auto_mod_comments()
+            # Bot iteration in 1 sec
+            time.sleep(3)
+            # print("Tic!")
 
     def new_auto_mod_like(self):
         if time.time() > self.next_iteration["Like"] and self.like_per_day != 0 \
