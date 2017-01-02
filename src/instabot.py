@@ -596,7 +596,7 @@ class InstaBot:
              "good", "wow", "WOW", "cool",
              "GREAT", "magnificent", "magical", "very cool",
              "stylish", "so stylish", "beautiful",
-             "so beautiful", "so stylish", "so professional",
+             "so beautiful", "so professional",
              "lovely", "so lovely", "very lovely",
              "glorious", "so glorious", "very glorious",
              "adorable", "excellent", "amazing"],
