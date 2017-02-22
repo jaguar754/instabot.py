@@ -32,7 +32,8 @@ bot = InstaBot(login="username", password="password",
                                        'travel','art','shop','store','sex','toko','jual','online','murah','jam','kaos','case','baju','fashion',
                                         'corp','tas','butik','grosir','karpet','sosis','salon','skin','care','cloth','tech','rental',
                                         'kamera','beauty','express','kredit','collection','impor','preloved','follow','follower','gain',
-                                        '.id','_id','bags'])
+                                        '.id','_id','bags'],
+               unfollow_whitelist=['example_user_1','example_user_2'])
 while True:
 
     #print("# MODE 0 = ORIGINAL MODE BY LEVPASHA")
