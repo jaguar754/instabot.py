@@ -30,7 +30,7 @@ def feed_scanner(self):
             max = 0
             while len(self.media_on_feed) > 5 and max < 5:
                 chooser = random.randint(0,len(self.media_on_feed)-1)
-                self.current_id=self.media_on_feed[chooser]["owner"]["id"]
+                self.current_id=self.media_on_feed[chooser]["node"]["owner"]["id"]
                 self.follow(self.current_id)
                 del self.media_on_feed[chooser]
                 max += 1
