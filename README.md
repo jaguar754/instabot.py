@@ -1,5 +1,7 @@
 ## InstaBot
-InstaBot v 1.1.0
+InstaBot v 1.1.0 
+
+If you want to join instabot.py team or have something to say - <a href="https://github.com/LevPasha">write me</a>.
 
 Works without the new Instagram [api][1](the new review process)
 Username and password stored local. Written in Python
