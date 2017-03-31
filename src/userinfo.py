@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests
 import json
+
+import requests
+
 
 class UserInfo:
     '''
@@ -13,17 +15,16 @@ class UserInfo:
 
     url_user_info = "https://www.instagram.com/%s/?__a=1"
     url_list = {
-                "ink361":
-                     {
-                      "main": "http://ink361.com/",
-                      "user": "http://ink361.com/app/users/%s",
-                      "search_name": "https://data.ink361.com/v1/users/search?q=%s",
-                      "search_id": "https://data.ink361.com/v1/users/ig-%s",
-                      "followers": "https://data.ink361.com/v1/users/ig-%s/followed-by",
-                      "following": "https://data.ink361.com/v1/users/ig-%s/follows",
-                      "stat": "http://ink361.com/app/users/ig-%s/%s/stats"
-                     }
-               }
+        "ink361": {
+            "main": "http://ink361.com/",
+            "user": "http://ink361.com/app/users/%s",
+            "search_name": "https://data.ink361.com/v1/users/search?q=%s",
+            "search_id": "https://data.ink361.com/v1/users/ig-%s",
+            "followers": "https://data.ink361.com/v1/users/ig-%s/followed-by",
+            "following": "https://data.ink361.com/v1/users/ig-%s/follows",
+            "stat": "http://ink361.com/app/users/ig-%s/%s/stats"
+        }
+    }
 
     def __init__(self, info_aggregator="ink361"):
         self.i_a = info_aggregator
@@ -38,7 +39,7 @@ class UserInfo:
         return False
 
     def get_user_id_by_login(self, user_name):
-        url_info= self.url_user_info % (user_name)
+        url_info = self.url_user_info % (user_name)
         info = self.s.get(url_info)
         all_data = json.loads(info.text)
         id_user = all_data['user']['id']
@@ -73,7 +74,7 @@ class UserInfo:
                 self.user_name = r["data"]["username"]
             else:
                 for u in r["data"]:
-                    if (u["username"] == self.user_name):
+                    if u["username"] == self.user_name:
                         t = u["id"].split("-")
                         self.user_id = t[1]
                 # you have just name
@@ -91,11 +92,11 @@ class UserInfo:
                 for u in r["data"]:
                     if  limit > 0 or limit < 0:
                         self.followers.append({
-                                                "username": u["username"],
-                                                #"profile_picture": u["profile_picture"],
-                                                "id": u["id"].split("-")[1],
-                                                #"full_name": u["full_name"]
-                                              })
+                            "username": u["username"],
+                            #"profile_picture": u["profile_picture"],
+                            "id": u["id"].split("-")[1],
+                            #"full_name": u["full_name"]
+                        })
                         limit -= 1
                     else:
                         return True
@@ -118,11 +119,11 @@ class UserInfo:
                 for u in r["data"]:
                     if limit > 0 or limit < 0:
                         self.following.append({
-                                                "username": u["username"],
-                                                #"profile_picture": u["profile_picture"],
-                                                "id": u["id"].split("-")[1],
-                                                #"full_name": u["full_name"]
-                                              })
+                            "username": u["username"],
+                            #"profile_picture": u["profile_picture"],
+                            "id": u["id"].split("-")[1],
+                            #"full_name": u["full_name"]
+                        })
                         limit -= 1
                     else:
                         return True
