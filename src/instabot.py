@@ -565,7 +565,7 @@ class InstaBot:
             if (self.bot_mode == 0) :
                 for f in self.bot_follow_list:
                     if time.time() > (f[1] + self.follow_time):
-                        log_string = "Trying to unfollow #%i: "
+                        log_string = "Trying to unfollow #%i: " % (self.unfollow_counter+1)
                         self.write_log(log_string)
                         self.auto_unfollow()
                         self.bot_follow_list.remove(f)
