@@ -231,7 +231,7 @@ print(ui.followers)
 
 ## Community
 
-- [Telegram Group](https://telegram.me/joinchat/DYKH-wdXpfmQCdcJLaV48Q)
+- [Telegram Group](https://t.me/joinchat/AAAAAEG_8hv3PIJnmq1VVg)
 - [Facebook Group](https://www.facebook.com/groups/instabot/)
 
 [1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
