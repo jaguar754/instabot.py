@@ -1,22 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import time
 import datetime
 import json
 import random
+import time
 
-def get_user_info (self, username):
-    if (self.login_status):
+
+def get_user_info(self, username):
+    if self.login_status:
         now_time = datetime.datetime.now()
-        log_string = "%s : Get user info \n%s"%(self.user_login,now_time.strftime("%d.%m.%Y %H:%M"))
+        log_string = "%s : Get user info \n%s" % (self.user_login, now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         if self.login_status == 1:
             url = 'https://www.instagram.com/%s/'%(username)
-            try :
+            try:
                 r = self.s.get(url)
                 text = r.text
                 finder_text_start = ('<script type="text/javascript">'
-                                         'window._sharedData = ')
+                                     'window._sharedData = ')
                 finder_text_start_len = len(finder_text_start)-1
                 finder_text_end = ';</script>'
 
@@ -25,10 +26,10 @@ def get_user_info (self, username):
                 json_str = text[(all_data_start + finder_text_start_len + 1) \
                                    : all_data_end]
                 all_data = json.loads(json_str)
-                                        
+
                 user_info = list(all_data['entry_data']['ProfilePage'])
-              	
-                log_string="Checking user info.."
+
+                log_string = "Checking user info.."
                 self.write_log(log_string)
 
                 follows = user_info[0]['user']['follows']['count']
@@ -63,21 +64,21 @@ def get_user_info (self, username):
                     self.is_selebgram = False
                     self.is_fake_account = False
                     print('   >>>This is a normal account')
-                            
+
                 if follows/media < 10 and follower/media < 10:
                     self.is_active_user = True
                     print('   >>>This user is active')
                 else:
                     self.is_active_user = False
                     print('   >>>This user is passive')
-                            
+
                 if follow_viewer or has_requested_viewer:
                     self.is_follower = True
                     print("   >>>This account is following you")
                 else:
                     self.is_follower = False
                     print('   >>>This account is NOT following you')
-                            
+
                 if followed_by_viewer or requested_by_viewer:
                     self.is_following = True
                     print('   >>>You are following this account')
