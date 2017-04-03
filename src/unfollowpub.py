@@ -48,7 +48,7 @@ print('Number of unnecessary subscriptions:', len(endlist), '\n')
 for items in endlist:
     rnd = random.randint(1, 16)
     bot.unfollow(items)
-    print('Wait', 30+rnd, 'sec')
+    print('Wait', 30 + rnd, 'sec')
     time.sleep(30 + rnd)
 
 print('All done.')

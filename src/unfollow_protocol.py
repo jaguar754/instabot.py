@@ -18,9 +18,11 @@ def unfollow_protocol(self):
             self.follow_counter = 0
             follow_protocol(self)
         if len(self.media_on_feed) != 0 and self.is_follower_number < 5:
-            chooser = random.randint(0, len(self.media_on_feed)-1)
-            self.current_user = self.media_on_feed[chooser]["node"]["owner"]["username"]
-            self.current_id = self.media_on_feed[chooser]["node"]["owner"]["id"]
+            chooser = random.randint(0, len(self.media_on_feed) - 1)
+            self.current_user = self.media_on_feed[chooser]["node"]["owner"][
+                "username"]
+            self.current_id = self.media_on_feed[chooser]["node"]["owner"][
+                "id"]
             if self.bot_mode == 2:
                 new_auto_mod_unfollow2(self)
                 time.sleep(30)
@@ -37,4 +39,4 @@ def unfollow_protocol(self):
         else:
             follow_protocol(self)
             self.is_follower_number = 0
-            time.sleep(13+5)
+            time.sleep(13 + 5)

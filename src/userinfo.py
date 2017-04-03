@@ -32,7 +32,7 @@ class UserInfo:
 
     def hello(self):
         self.s = requests.Session()
-        self.s.headers.update({'User-Agent' : self.user_agent})
+        self.s.headers.update({'User-Agent': self.user_agent})
         main = self.s.get(self.url_list[self.i_a]["main"])
         if main.status_code == 200:
             return True
@@ -60,7 +60,8 @@ class UserInfo:
             search_url = self.url_list[self.i_a]["search_id"] % self.user_id
         elif self.user_name:
             # you have just name
-            search_url = self.url_list[self.i_a]["search_name"] % self.user_name
+            search_url = self.url_list[self.i_a][
+                "search_name"] % self.user_name
         else:
             # you have id and name
             return True
@@ -90,7 +91,7 @@ class UserInfo:
                 followers = self.s.get(next_url)
                 r = json.loads(followers.text)
                 for u in r["data"]:
-                    if  limit > 0 or limit < 0:
+                    if limit > 0 or limit < 0:
                         self.followers.append({
                             "username": u["username"],
                             #"profile_picture": u["profile_picture"],
@@ -138,6 +139,7 @@ class UserInfo:
     def get_stat(self, limit):
         # todo
         return False
+
 
 '''
 # example

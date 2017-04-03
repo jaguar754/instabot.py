@@ -9,16 +9,17 @@ import time
 def get_user_info(self, username):
     if self.login_status:
         now_time = datetime.datetime.now()
-        log_string = "%s : Get user info \n%s" % (self.user_login, now_time.strftime("%d.%m.%Y %H:%M"))
+        log_string = "%s : Get user info \n%s" % (
+            self.user_login, now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         if self.login_status == 1:
-            url = 'https://www.instagram.com/%s/'%(username)
+            url = 'https://www.instagram.com/%s/' % (username)
             try:
                 r = self.s.get(url)
                 text = r.text
                 finder_text_start = ('<script type="text/javascript">'
                                      'window._sharedData = ')
-                finder_text_start_len = len(finder_text_start)-1
+                finder_text_start_len = len(finder_text_start) - 1
                 finder_text_end = ';</script>'
 
                 all_data_start = text.find(finder_text_start)
@@ -43,8 +44,10 @@ def get_user_info(self, username):
                 media = user_info[0]['user']['media']['count']
                 follow_viewer = user_info[0]['user']['follows_viewer']
                 followed_by_viewer = user_info[0]['user']['followed_by_viewer']
-                requested_by_viewer = user_info[0]['user']['requested_by_viewer']
-                has_requested_viewer = user_info[0]['user']['has_requested_viewer']
+                requested_by_viewer = user_info[0]['user'][
+                    'requested_by_viewer']
+                has_requested_viewer = user_info[0]['user'][
+                    'has_requested_viewer']
                 log_string = "Follower : %i" % (follower)
                 self.write_log(log_string)
                 log_string = "Following : %s" % (follows)
@@ -52,11 +55,11 @@ def get_user_info(self, username):
                 log_string = "Media : %i" % (media)
                 self.write_log(log_string)
 
-                if follower/follows > 2:
+                if follower / follows > 2:
                     self.is_selebgram = True
                     self.is_fake_account = False
                     print('   >>>This is probably Selebgram account')
-                elif follows/follower > 2:
+                elif follows / follower > 2:
                     self.is_fake_account = True
                     self.is_selebgram = False
                     print('   >>>This is probably Fake account')
@@ -65,7 +68,7 @@ def get_user_info(self, username):
                     self.is_fake_account = False
                     print('   >>>This is a normal account')
 
-                if follows/media < 10 and follower/media < 10:
+                if follows / media < 10 and follower / media < 10:
                     self.is_active_user = True
                     print('   >>>This user is active')
                 else:
