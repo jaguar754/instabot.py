@@ -1,5 +1,7 @@
 ## InstaBot
-InstaBot v 1.1.0
+InstaBot v 1.1.0 
+
+If you want to join instabot.py team or have something to say - <a href="https://github.com/LevPasha">write me</a>.
 
 Works without the new Instagram [api][1](the new review process)
 Username and password stored local. Written in Python
@@ -229,7 +231,7 @@ print(ui.followers)
 
 ## Community
 
-- [Telegram Group](https://telegram.me/joinchat/DYKH-wdXpfmQCdcJLaV48Q)
+- [Telegram Group](https://t.me/joinchat/AAAAAEG_8hv3PIJnmq1VVg)
 - [Facebook Group](https://www.facebook.com/groups/instabot/)
 
 [1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
