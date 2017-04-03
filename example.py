@@ -12,7 +12,7 @@ from follow_protocol import follow_protocol
 from instabot import InstaBot
 from unfollow_protocol import unfollow_protocol
 
-bot = InstaBot(login="cwlfuk", password="56E663kz@wC2!Cj7fjjS",
+bot = InstaBot(login="username", password="password",
                like_per_day=1000,
                comments_per_day=0,
                tag_list=['follow4follow', 'f4f', 'cute'],
