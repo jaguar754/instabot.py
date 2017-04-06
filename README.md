@@ -169,7 +169,7 @@ bot.like_all_exist_media(4)
 ## How to install and run:
 1) Download and install `Python` to your computer.
 
-2) Install Python lib `requests`. Run command `pip3 install requests` if you use `Python 3`, or type `pip install requests` if you use `Python 2`.
+2) To install the project's dependencies, run command `pip install -r requirements.txt` (specify `pip2` or `pip3` if you have multiple versions of Python installed)
 
 3) Download ZIP and extract
 
