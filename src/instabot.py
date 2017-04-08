@@ -39,7 +39,7 @@ class InstaBot:
     """
 
     url = 'https://www.instagram.com/'
-    url_tag = 'https://www.instagram.com/explore/tags/'
+    url_tag = 'https://www.instagram.com/explore/tags/%s/?__a=1'
     url_likes = 'https://www.instagram.com/web/likes/%s/like/'
     url_unlike = 'https://www.instagram.com/web/likes/%s/unlike/'
     url_comment = 'https://www.instagram.com/web/comments/%s/add/'
@@ -306,25 +306,12 @@ class InstaBot:
             log_string = "Get media id by tag: %s" % (tag)
             self.write_log(log_string)
             if self.login_status == 1:
-                url_tag = '%s%s%s' % (self.url_tag, tag, '/')
+                url_tag = self.url_tag % (tag)
                 try:
                     r = self.s.get(url_tag)
-                    text = r.text
+                    all_data = json.loads(r.text)
 
-                    finder_text_start = ('<script type="text/javascript">'
-                                         'window._sharedData = ')
-                    finder_text_start_len = len(finder_text_start) - 1
-                    finder_text_end = ';</script>'
-
-                    all_data_start = text.find(finder_text_start)
-                    all_data_end = text.find(finder_text_end,
-                                             all_data_start + 1)
-                    json_str = text[(all_data_start + finder_text_start_len + 1) \
-                        : all_data_end]
-                    all_data = json.loads(json_str)
-
-                    self.media_by_tag = list(all_data['entry_data']['TagPage'][0] \
-                                                 ['tag']['media']['nodes'])
+                    self.media_by_tag = list(all_data['tag']['media']['nodes'])
                 except:
                     self.media_by_tag = []
                     self.write_log("Except on get_media!")
@@ -714,40 +701,26 @@ class InstaBot:
                 self.user_login, now_time.strftime("%d.%m.%Y %H:%M"))
             self.write_log(log_string)
             if self.login_status == 1:
-                url_tag = 'https://www.instagram.com/%s/' % (current_user)
+                url_tag = self.url_user_detail % (current_user)
                 try:
                     r = self.s.get(url_tag)
-                    text = r.text
-                    finder_text_start = ('<script type="text/javascript">'
-                                         'window._sharedData = ')
-                    finder_text_start_len = len(finder_text_start) - 1
-                    finder_text_end = ';</script>'
+                    all_data = json.loads(r.text)
 
-                    all_data_start = text.find(finder_text_start)
-                    all_data_end = text.find(finder_text_end,
-                                             all_data_start + 1)
-                    json_str = text[(all_data_start + finder_text_start_len + 1) \
-                                   : all_data_end]
-                    all_data = json.loads(json_str)
-
-                    self.user_info = list(
-                        all_data['entry_data']['ProfilePage'])
+                    self.user_info = all_data['user']
                     i = 0
                     log_string = "Checking user info.."
                     self.write_log(log_string)
 
                     while i < 1:
-                        follows = self.user_info[0]['user']['follows']['count']
-                        follower = self.user_info[0]['user']['followed_by'][
-                            'count']
-                        media = self.user_info[0]['user']['media']['count']
-                        follow_viewer = self.user_info[0]['user'][
-                            'follows_viewer']
-                        followed_by_viewer = self.user_info[0]['user'][
+                        follows = self.user_info['follows']['count']
+                        follower = self.user_info['followed_by']['count']
+                        media = self.user_info['media']['count']
+                        follow_viewer = self.user_info['follows_viewer']
+                        followed_by_viewer = self.user_info[
                             'followed_by_viewer']
-                        requested_by_viewer = self.user_info[0]['user'][
+                        requested_by_viewer = self.user_info[
                             'requested_by_viewer']
-                        has_requested_viewer = self.user_info[0]['user'][
+                        has_requested_viewer = self.user_info[
                             'has_requested_viewer']
                         log_string = "Follower : %i" % (follower)
                         self.write_log(log_string)
@@ -814,25 +787,14 @@ class InstaBot:
             log_string = "%s : Get media id on recent feed" % (self.user_login)
             self.write_log(log_string)
             if self.login_status == 1:
-                url_tag = 'https://www.instagram.com/#'
+                url_tag = 'https://www.instagram.com/?__a=1'
                 try:
                     r = self.s.get(url_tag)
-                    text = r.text
-                    finder_text_start = ('<script type="text/javascript">'
-                                         'window._sharedData = ')
-                    finder_text_start_len = len(finder_text_start) - 1
-                    finder_text_end = ';</script>'
-
-                    all_data_start = text.find(finder_text_start)
-                    all_data_end = text.find(finder_text_end,
-                                             all_data_start + 1)
-                    json_str = text[(all_data_start + finder_text_start_len + 1) \
-                                   : all_data_end]
-                    all_data = json.loads(json_str)
+                    all_data = json.loads(r.text)
 
                     self.media_on_feed = list(
-                        all_data['entry_data']['FeedPage'][0]['graphql'][
-                            'user']['edge_web_feed_timeline']['edges'])
+                        all_data['graphql']['user']['edge_web_feed_timeline'][
+                            'edges'])
 
                     log_string = "Media in recent feed = %i" % (
                         len(self.media_on_feed))
