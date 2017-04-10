@@ -19,7 +19,7 @@ A working Instagram account
 #### Example of usage:
 For example see `example.py`. Just change the login and password information with your own, then run `example.py` and the bot will start doing it's magic!
 
-####1) Login:
+#### 1) Login:
 Login automatic, as followed, by creating the `InstaBot` class element:
 ```python
 bot = InstaBot('login', 'password',
@@ -60,11 +60,11 @@ bot = InstaBot('login', 'password',
 | log_mod              | int | logging mod                                          | 0                                | 0 log to console, 1 log to file, 2 no log.      |
 | proxy             | string | Access instagram through a proxy server              |                                  | Without authentication: proxy:port, example: 10.10.1.10:3128, with authentication: user:password@proxy:port, example: user:password@10.10.1.10:3128 |
 
-####2) Set likes and unlike:
+#### 2) Set likes and unlike:
 How many likes set bot in one day. Default value is 1000 likes per 24 hours.
 If you want to do more than 1000 likes in day - instagram can ban you.
 Usually this bot is used 24/7 and it's default setup to distripute 1000 likes in day evenly. If you want more likes in one moment, set this parameter to 5000 or 10000 or more. Formula: set like with delay = `(24 hour * 60 minute * 60 second / like_per_day)`
-######Be careful, don't set more than 1000 like in day or you can be banned! Be warned!!
+###### Be careful, don't set more than 1000 like in day or you can be banned! Be warned!!
 ```python
 like_per_day=1000
 ```
@@ -99,7 +99,7 @@ For unlike:
 ```python
 bot.unlike('media_id')
 ```
-####3) Set comments:
+#### 3) Set comments:
 ```python
 bot.comment('media_id', 'comment')
 ```
@@ -107,7 +107,7 @@ For example:
 ```python
 bot.comment(11111111111111111111, 'Cool!')
 ```
-####4) Follow and unfollow:
+#### 4) Follow and unfollow:
 Follow:
 ```python
 bot.follow('user_id')
@@ -121,7 +121,7 @@ For example (follow and unfollow user with id 111111111):
 bot.follow(111111111)
 bot.unfollow(111111111)
 ```
-####5) Else:
+#### 5) Else:
 Log mod: `log_mod=0` log to console, `log_mod=1` log to file, `log_mod=2` no log.
 ```python
 log_mod = 0
@@ -133,7 +133,7 @@ unfollow_break_min = 15
 unfollow_break_max = 30
 ```
 This will cause a delay of anywhere between 15 to 30 seconds between every unfollow.
-####6) Logout from exist session:
+#### 6) Logout from exist session:
 ```python
 bot.logout()
 ```
