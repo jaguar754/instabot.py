@@ -9,10 +9,10 @@ import logging
 import random
 import signal
 import sys
+if 'threading' in sys.modules:
+    del sys.modules['threading']
 import time
-
 import requests
-
 from unfollow_protocol import unfollow_protocol
 from userinfo import UserInfo
 
