@@ -609,7 +609,6 @@ class InstaBot:
         return res.capitalize()
 
     def check_exisiting_comment(self, media_code):
-        print media_code
         url_check = self.url_media_detail % (media_code)
         check_comment = self.s.get(url_check)
         all_data = json.loads(check_comment.text)
