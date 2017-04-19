@@ -9,6 +9,8 @@ import logging
 import random
 import signal
 import sys
+from json import JSONDecodeError
+
 if 'threading' in sys.modules:
     del sys.modules['threading']
 import time
@@ -194,20 +196,23 @@ class InstaBot:
 
     def populate_user_blacklist(self):
         for user in self.user_blacklist:
-
             user_id_url = self.url_user_detail % (user)
             info = self.s.get(user_id_url)
-            all_data = json.loads(info.text)
-            id_user = all_data['user']['media']['nodes'][0]['owner']['id']
-            #Update the user_name with the user_id
-            self.user_blacklist[user] = id_user
-            log_string = "Blacklisted user %s added with ID: %s" % (user,
-                                                                    id_user)
-            self.write_log(log_string)
-            time.sleep(5 * random.random())
 
-        log_string = "Completed populating user blacklist with IDs"
-        self.write_log(log_string)
+            # prevent error if 'Account of user was deleted or link is invalid
+            try:
+                all_data = json.loads(info.text)
+            except JSONDecodeError as e:
+                self.write_log('Account of user %s was deleted or link is invalid' % (user))
+            else:
+                # prevent exception if user have no media
+                id_user = all_data['user']['id']
+                # Update the user_name with the user_id
+                self.user_blacklist[user] = id_user
+                log_string = "Blacklisted user %s added with ID: %s" % (user,
+                                                                        id_user)
+                self.write_log(log_string)
+                time.sleep(5 * random.random())
 
     def login(self):
         log_string = 'Trying to login as %s...\n' % (self.user_login)
@@ -330,23 +335,23 @@ class InstaBot:
                         media_size -= 1
                         l_c = self.media_by_tag[i]['likes']['count']
                         if ((l_c <= self.media_max_like and
-                             l_c >= self.media_min_like) or
-                            (self.media_max_like == 0 and
-                             l_c >= self.media_min_like) or
-                            (self.media_min_like == 0 and
-                             l_c <= self.media_max_like) or
-                            (self.media_min_like == 0 and
-                             self.media_max_like == 0)):
+                                     l_c >= self.media_min_like) or
+                                (self.media_max_like == 0 and
+                                         l_c >= self.media_min_like) or
+                                (self.media_min_like == 0 and
+                                         l_c <= self.media_max_like) or
+                                (self.media_min_like == 0 and
+                                         self.media_max_like == 0)):
                             for blacklisted_user_name, blacklisted_user_id in self.user_blacklist.items(
                             ):
                                 if self.media_by_tag[i]['owner'][
-                                        'id'] == blacklisted_user_id:
+                                    'id'] == blacklisted_user_id:
                                     self.write_log(
                                         "Not liking media owned by blacklisted user: "
                                         + blacklisted_user_name)
                                     return False
                             if self.media_by_tag[i]['owner'][
-                                    'id'] == self.user_id:
+                                'id'] == self.user_id:
                                 self.write_log(
                                     "Keep calm - It's your own media ;)")
                                 return False
@@ -354,7 +359,7 @@ class InstaBot:
                             try:
                                 caption = self.media_by_tag[i][
                                     'caption'].encode(
-                                        'ascii', errors='ignore')
+                                    'ascii', errors='ignore')
                                 tag_blacklist = set(self.tag_blacklist)
                                 if sys.version_info[0] == 3:
                                     tags = {
@@ -363,7 +368,7 @@ class InstaBot:
                                         for tag in caption.split()
                                         if (tag.decode('ASCII')
                                             ).startswith("#")
-                                    }
+                                        }
                                 else:
                                     tags = {
                                         unicode.lower(
@@ -371,7 +376,7 @@ class InstaBot:
                                         for tag in caption.split()
                                         if (tag.decode('ASCII')
                                             ).startswith("#")
-                                    }
+                                        }
 
                                 if tags.intersection(tag_blacklist):
                                     matching_tags = ', '.join(
@@ -633,13 +638,13 @@ class InstaBot:
             itertools.product(["this", "the", "your"], [
                 "photo", "picture", "pic", "shot", "snapshot"
             ], ["is", "looks", "feels", "is really"], [
-                "great", "super", "good", "very good", "good", "wow", "WOW",
-                "cool", "GREAT", "magnificent", "magical", "very cool",
-                "stylish", "beautiful", "so beautiful",
-                "so stylish", "so professional", "lovely", "so lovely",
-                "very lovely", "glorious", "so glorious", "very glorious",
-                "adorable", "excellent", "amazing"
-            ], [".", "..", "...", "!", "!!", "!!!"]))
+                                  "great", "super", "good", "very good", "good", "wow", "WOW",
+                                  "cool", "GREAT", "magnificent", "magical", "very cool",
+                                  "stylish", "beautiful", "so beautiful",
+                                  "so stylish", "so professional", "lovely", "so lovely",
+                                  "very lovely", "glorious", "so glorious", "very glorious",
+                                  "adorable", "excellent", "amazing"
+                              ], [".", "..", "...", "!", "!!", "!!!"]))
 
         repl = [("  ", " "), (" .", "."), (" !", "!")]
         res = " ".join(random.choice(c_list))
