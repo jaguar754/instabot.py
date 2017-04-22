@@ -344,23 +344,23 @@ class InstaBot:
                         media_size -= 1
                         l_c = self.media_by_tag[i]['likes']['count']
                         if ((l_c <= self.media_max_like and
-                                 l_c >= self.media_min_like) or
+                                     l_c >= self.media_min_like) or
                                 (self.media_max_like == 0 and
-                                 l_c >= self.media_min_like) or
+                                         l_c >= self.media_min_like) or
                                 (self.media_min_like == 0 and
-                                 l_c <= self.media_max_like) or
+                                         l_c <= self.media_max_like) or
                                 (self.media_min_like == 0 and
-                                 self.media_max_like == 0)):
+                                         self.media_max_like == 0)):
                             for blacklisted_user_name, blacklisted_user_id in self.user_blacklist.items(
                             ):
                                 if self.media_by_tag[i]['owner'][
-                                        'id'] == blacklisted_user_id:
+                                    'id'] == blacklisted_user_id:
                                     self.write_log(
                                         "Not liking media owned by blacklisted user: "
                                         + blacklisted_user_name)
                                     return False
                             if self.media_by_tag[i]['owner'][
-                                    'id'] == self.user_id:
+                                'id'] == self.user_id:
                                 self.write_log(
                                     "Keep calm - It's your own media ;)")
                                 return False
@@ -368,7 +368,7 @@ class InstaBot:
                             try:
                                 caption = self.media_by_tag[i][
                                     'caption'].encode(
-                                        'ascii', errors='ignore')
+                                    'ascii', errors='ignore')
                                 tag_blacklist = set(self.tag_blacklist)
                                 if sys.version_info[0] == 3:
                                     tags = {
@@ -377,7 +377,7 @@ class InstaBot:
                                         for tag in caption.split()
                                         if (tag.decode('ASCII')
                                             ).startswith("#")
-                                    }
+                                        }
                                 else:
                                     tags = {
                                         unicode.lower(
@@ -385,7 +385,7 @@ class InstaBot:
                                         for tag in caption.split()
                                         if (tag.decode('ASCII')
                                             ).startswith("#")
-                                    }
+                                        }
 
                                 if tags.intersection(tag_blacklist):
                                     matching_tags = ', '.join(
@@ -644,9 +644,11 @@ class InstaBot:
 
     def generate_comment(self):
         c_list = list(
-            itertools.product(self.comment_list))
+            itertools.product(*self.comment_list))
 
         repl = [("  ", " "), (" .", "."), (" !", "!")]
+        print(self.comment_list)
+        print(c_list)
         res = " ".join(random.choice(c_list))
         for s, r in repl:
             res = res.replace(s, r)
@@ -656,14 +658,14 @@ class InstaBot:
         url_check = self.url_media_detail % (media_code)
         check_comment = self.s.get(url_check)
         all_data = json.loads(check_comment.text)
-        if all_data['media']['owner']['id'] == self.user_id:
+        if all_data['graphql']['shortcode_media']['owner']['id'] == self.user_id:
             self.write_log("Keep calm - It's your own media ;)")
             # Del media to don't loop on it
             del self.media_by_tag[0]
             return True
-        comment_list = list(all_data['media']['comments']['nodes'])
+        comment_list = list(all_data['graphql']['shortcode_media']['edge_media_to_comment']['edges'])
         for d in comment_list:
-            if d['user']['id'] == self.user_id:
+            if d['node']['id'] == self.user_id:
                 self.write_log("Keep calm - Media already commented ;)")
                 # Del media to don't loop on it
                 del self.media_by_tag[0]
