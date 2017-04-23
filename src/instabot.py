@@ -348,13 +348,13 @@ class InstaBot:
                         media_size -= 1
                         l_c = self.media_by_tag[i]['likes']['count']
                         if ((l_c <= self.media_max_like and
-                                l_c >= self.media_min_like) or
-                                (self.media_max_like == 0 and
-                                 l_c >= self.media_min_like) or
-                                (self.media_min_like == 0 and
-                                 l_c <= self.media_max_like) or
-                                (self.media_min_like == 0 and
-                                 self.media_max_like == 0)):
+                             l_c >= self.media_min_like) or
+                            (self.media_max_like == 0 and
+                             l_c >= self.media_min_like) or
+                            (self.media_min_like == 0 and
+                             l_c <= self.media_max_like) or
+                            (self.media_min_like == 0 and
+                             self.media_max_like == 0)):
                             for blacklisted_user_name, blacklisted_user_id in self.user_blacklist.items(
                             ):
                                 if self.media_by_tag[i]['owner'][

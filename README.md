@@ -102,6 +102,10 @@ comment_list = [["this", "the", "your"], ["photo", "picture", "pic", "shot",
                "very glorious", "adorable", "excellent","amazing"],
                [".", "..", "...", "!","!!","!!!"]]
 ```
+If you don't want to generate comment, just random pick from list use:
+```python
+comment_list = [["WOW", "Amazing", "Cool", "So wonderful"]]
+```
 Like 1 to `max_like_for_one_tag` times by row.
 ```python
 max_like_for_one_tag=5
