@@ -28,6 +28,18 @@ bot = InstaBot(
     unfollow_break_max=30,
     log_mod=0,
     proxy='',
+    # List of list of words, each of which will be used to generate comment
+    # For example: "This shot feels wow!"
+    comment_list=[["this", "the", "your"],
+                  ["photo", "picture", "pic", "shot", "snapshot"],
+                  ["is", "looks", "feels", "is really"],
+                  ["great", "super", "good", "very good", "good", "wow",
+                   "WOW", "cool", "GREAT","magnificent", "magical",
+                   "very cool", "stylish", "beautiful", "so beautiful",
+                   "so stylish", "so professional", "lovely",
+                   "so lovely", "very lovely", "glorious","so glorious",
+                   "very glorious", "adorable", "excellent", "amazing"],
+                  [".", "..", "...", "!", "!!", "!!!"]],
     # Use unwanted_username_list to block usernames containing a string
     ## Will do partial matches; i.e. 'mozart' will block 'legend_mozart'
     ### 'free_followers' will be blocked because it contains 'free'

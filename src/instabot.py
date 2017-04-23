@@ -117,11 +117,14 @@ class InstaBot:
                  comment_list=[["this", "the", "your"],
                                ["photo", "picture", "pic", "shot", "snapshot"],
                                ["is", "looks", "feels", "is really"],
-                               ["great", "super", "good", "very good", "good", "wow", "WOW", "cool", "GREAT",
-                                "magnificent", "magical", "very cool", "stylish", "beautiful", "so beautiful",
-                                "so stylish", "so professional", "lovely", "so lovely", "very lovely", "glorious",
-                                "so glorious", "very glorious", "adorable", "excellent", "amazing"],
-                               [".", "..", "...", "!", "!!", "!!!"]],
+                               ["great", "super", "good", "very good", "good",
+                                "wow", "WOW", "cool", "GREAT", "magnificent",
+                                "magical", "very cool", "stylish", "beautiful",
+                                "so beautiful", "so stylish", "so professional",
+                                "lovely", "so lovely", "very lovely", "glorious",
+                                "so glorious", "very glorious", "adorable",
+                                "excellent", "amazing"],[".", "..", "...", "!",
+                                                         "!!", "!!!"]],
                  comments_per_day=0,
                  tag_list=['cat', 'car', 'dog'],
                  max_like_for_one_tag=5,
@@ -212,7 +215,8 @@ class InstaBot:
             try:
                 all_data = json.loads(info.text)
             except JSONDecodeError as e:
-                self.write_log('Account of user %s was deleted or link is invalid' % (user))
+                self.write_log('Account of user %s was deleted or link is '
+                               'invalid' % (user))
             else:
                 # prevent exception if user have no media
                 id_user = all_data['user']['id']
@@ -344,23 +348,23 @@ class InstaBot:
                         media_size -= 1
                         l_c = self.media_by_tag[i]['likes']['count']
                         if ((l_c <= self.media_max_like and
-                                     l_c >= self.media_min_like) or
+                                l_c >= self.media_min_like) or
                                 (self.media_max_like == 0 and
-                                         l_c >= self.media_min_like) or
+                                 l_c >= self.media_min_like) or
                                 (self.media_min_like == 0 and
-                                         l_c <= self.media_max_like) or
+                                 l_c <= self.media_max_like) or
                                 (self.media_min_like == 0 and
-                                         self.media_max_like == 0)):
+                                 self.media_max_like == 0)):
                             for blacklisted_user_name, blacklisted_user_id in self.user_blacklist.items(
                             ):
                                 if self.media_by_tag[i]['owner'][
-                                    'id'] == blacklisted_user_id:
+                                        'id'] == blacklisted_user_id:
                                     self.write_log(
                                         "Not liking media owned by blacklisted user: "
                                         + blacklisted_user_name)
                                     return False
                             if self.media_by_tag[i]['owner'][
-                                'id'] == self.user_id:
+                                    'id'] == self.user_id:
                                 self.write_log(
                                     "Keep calm - It's your own media ;)")
                                 return False
@@ -368,7 +372,7 @@ class InstaBot:
                             try:
                                 caption = self.media_by_tag[i][
                                     'caption'].encode(
-                                    'ascii', errors='ignore')
+                                        'ascii', errors='ignore')
                                 tag_blacklist = set(self.tag_blacklist)
                                 if sys.version_info[0] == 3:
                                     tags = {
@@ -377,7 +381,7 @@ class InstaBot:
                                         for tag in caption.split()
                                         if (tag.decode('ASCII')
                                             ).startswith("#")
-                                        }
+                                    }
                                 else:
                                     tags = {
                                         unicode.lower(
@@ -385,7 +389,7 @@ class InstaBot:
                                         for tag in caption.split()
                                         if (tag.decode('ASCII')
                                             ).startswith("#")
-                                        }
+                                    }
 
                                 if tags.intersection(tag_blacklist):
                                     matching_tags = ', '.join(
@@ -643,12 +647,9 @@ class InstaBot:
         return time * 0.9 + time * 0.2 * random.random()
 
     def generate_comment(self):
-        c_list = list(
-            itertools.product(*self.comment_list))
+        c_list = list(itertools.product(*self.comment_list))
 
         repl = [("  ", " "), (" .", "."), (" !", "!")]
-        print(self.comment_list)
-        print(c_list)
         res = " ".join(random.choice(c_list))
         for s, r in repl:
             res = res.replace(s, r)

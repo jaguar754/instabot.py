@@ -30,6 +30,18 @@ bot = InstaBot('login', 'password',
                 follow_time=5*60*60,
                 unfollow_per_day=0,
                 comments_per_day=0,
+                comment_list=[["this", "the", "your"],
+                              ["photo", "picture", "pic", "shot", "snapshot"],
+                              ["is", "looks", "feels", "is really"],
+                              ["great", "super", "good", "very good", "good",
+                               "wow", "WOW", "cool", "GREAT","magnificent",
+                               "magical", "very cool", "stylish", "beautiful",
+                               "so beautiful", "so stylish",
+                               "so professional","lovely", "so lovely",
+                               "very lovely", "glorious","so glorious",
+                               "very glorious", "adorable", "excellent",
+                               "amazing"], [".", "..", "...", "!","!!",
+                                            "!!!"]],
                 tag_list=['cat', 'car', 'dog'],
                 tag_blacklist=['rain', 'thunderstorm'],
                 user_blacklist={'hellokitty':'', 'hellokitty3':''},
@@ -51,6 +63,7 @@ bot = InstaBot('login', 'password',
 | follow_time          | int | how many times passes before the  bot unfollows a followed user (sec) | 5 * 60 * 60     | 60 * 60                                         |
 | unfollow_per_day     | int | how many user unfollows the bot does in day          | 0                                | 100                                             |
 | comments_per_day     | int | how many comments the bot writes in a day            | 0                                | 50                                              |
+| comment_list         | list| list of list of words, each of which will be used to generate comment | [["this", "the", "your"], ["photo", "picture", "pic", "shot", "snapshot"], ["is", "looks", "feels", "is really"], ["great", "super", "good", "very good", "good","wow", "WOW", "cool", "GREAT","magnificent","magical", "very cool", "stylish", "beautiful","so beautiful", "so stylish","so professional","lovely", "so lovely","very lovely", "glorious","so glorious","very glorious", "adorable", "excellent","amazing"], [".", "..", "...", "!","!!","!!!"]] | [["this", "the", "your"], ["photo", "picture", "pic", "shot", "snapshot"], ["is", "looks", "feels", "is really"], ["great", "super", "good", "very good", "good","wow", "WOW", "cool", "GREAT","magnificent","magical", "very cool", "stylish", "beautiful","so beautiful", "so stylish","so professional","lovely", "so lovely","very lovely", "glorious","so glorious","very glorious", "adorable", "excellent","amazing"], [".", "..", "...", "!","!!","!!!"]] |
 | tag_list             | list| list of tag the bot uses                             | ['cat', 'car', 'dog']            | ['moto', 'girl', 'python']                      |
 | tag_blacklist        | list| list of tags the bot refuses to like                 | []                               | ['rain', 'thunderstorm']                        |
 | user_blacklist       | dict| don't like posts from certain users                  | {}                               | {'hellokitty':'', 'hellokitty3':''}             |
@@ -77,6 +90,17 @@ media_min_like=0
 Tag list to like.
 ```python
 tag_list = ['cat', 'car', 'dog']
+```
+List of list of words, each of which will be used to generate comment. For example: "This shot feels wow!"
+```python
+comment_list = [["this", "the", "your"], ["photo", "picture", "pic", "shot",
+               "snapshot"], ["is", "looks", "feels", "is really"], ["great",
+               "super", "good", "very good", "good","wow", "WOW", "cool",
+               "GREAT","magnificent","magical", "very cool", "stylish",
+               "beautiful","so beautiful", "so stylish","so professional",
+               "lovely", "so lovely","very lovely", "glorious","so glorious",
+               "very glorious", "adorable", "excellent","amazing"],
+               [".", "..", "...", "!","!!","!!!"]]
 ```
 Like 1 to `max_like_for_one_tag` times by row.
 ```python
