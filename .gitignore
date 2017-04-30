@@ -93,3 +93,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# IDEs
+.idea/
+*.iml
