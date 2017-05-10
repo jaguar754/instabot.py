@@ -9,6 +9,7 @@ import logging
 import random
 import signal
 import sys
+
 if 'threading' in sys.modules:
     del sys.modules['threading']
 import time
@@ -113,6 +114,17 @@ class InstaBot:
                  follow_per_day=0,
                  follow_time=5 * 60 * 60,
                  unfollow_per_day=0,
+                 comment_list=[["this", "the", "your"],
+                               ["photo", "picture", "pic", "shot", "snapshot"],
+                               ["is", "looks", "feels", "is really"],
+                               ["great", "super", "good", "very good", "good",
+                                "wow", "WOW", "cool", "GREAT", "magnificent",
+                                "magical", "very cool", "stylish", "beautiful",
+                                "so beautiful", "so stylish", "so professional",
+                                "lovely", "so lovely", "very lovely", "glorious",
+                                "so glorious", "very glorious", "adorable",
+                                "excellent", "amazing"],[".", "..", "...", "!",
+                                                         "!!", "!!!"]],
                  comments_per_day=0,
                  tag_list=['cat', 'car', 'dog'],
                  max_like_for_one_tag=5,
@@ -131,6 +143,7 @@ class InstaBot:
         self.user_blacklist = user_blacklist
         self.tag_blacklist = tag_blacklist
         self.unfollow_whitelist = unfollow_whitelist
+        self.comment_list = comment_list
 
         self.time_in_day = 24 * 60 * 60
         # Like
@@ -194,20 +207,25 @@ class InstaBot:
 
     def populate_user_blacklist(self):
         for user in self.user_blacklist:
-
             user_id_url = self.url_user_detail % (user)
             info = self.s.get(user_id_url)
-            all_data = json.loads(info.text)
-            id_user = all_data['user']['media']['nodes'][0]['owner']['id']
-            #Update the user_name with the user_id
-            self.user_blacklist[user] = id_user
-            log_string = "Blacklisted user %s added with ID: %s" % (user,
-                                                                    id_user)
-            self.write_log(log_string)
-            time.sleep(5 * random.random())
 
-        log_string = "Completed populating user blacklist with IDs"
-        self.write_log(log_string)
+            # prevent error if 'Account of user was deleted or link is invalid
+            from json import JSONDecodeError
+            try:
+                all_data = json.loads(info.text)
+            except JSONDecodeError as e:
+                self.write_log('Account of user %s was deleted or link is '
+                               'invalid' % (user))
+            else:
+                # prevent exception if user have no media
+                id_user = all_data['user']['id']
+                # Update the user_name with the user_id
+                self.user_blacklist[user] = id_user
+                log_string = "Blacklisted user %s added with ID: %s" % (user,
+                                                                        id_user)
+                self.write_log(log_string)
+                time.sleep(5 * random.random())
 
     def login(self):
         log_string = 'Trying to login as %s...\n' % (self.user_login)
@@ -629,17 +647,7 @@ class InstaBot:
         return time * 0.9 + time * 0.2 * random.random()
 
     def generate_comment(self):
-        c_list = list(
-            itertools.product(["this", "the", "your"], [
-                "photo", "picture", "pic", "shot", "snapshot"
-            ], ["is", "looks", "feels", "is really"], [
-                "great", "super", "good", "very good", "good", "wow", "WOW",
-                "cool", "GREAT", "magnificent", "magical", "very cool",
-                "stylish", "beautiful", "so beautiful",
-                "so stylish", "so professional", "lovely", "so lovely",
-                "very lovely", "glorious", "so glorious", "very glorious",
-                "adorable", "excellent", "amazing"
-            ], [".", "..", "...", "!", "!!", "!!!"]))
+        c_list = list(itertools.product(*self.comment_list))
 
         repl = [("  ", " "), (" .", "."), (" !", "!")]
         res = " ".join(random.choice(c_list))
@@ -651,18 +659,19 @@ class InstaBot:
         url_check = self.url_media_detail % (media_code)
         check_comment = self.s.get(url_check)
         all_data = json.loads(check_comment.text)
-        if all_data['media']['owner']['id'] == self.user_id:
+        if all_data['graphql']['shortcode_media']['owner']['id'] == self.user_id:
             self.write_log("Keep calm - It's your own media ;)")
             # Del media to don't loop on it
             del self.media_by_tag[0]
             return True
-        comment_list = list(all_data['media']['comments']['nodes'])
+        comment_list = list(all_data['graphql']['shortcode_media']['edge_media_to_comment']['edges'])
         for d in comment_list:
-            if d['user']['id'] == self.user_id:
-                self.write_log("Keep calm - Media already commented ;)")
-                # Del media to don't loop on it
-                del self.media_by_tag[0]
-                return True
+            if 'username' in d['node']['owner']:
+                if d['node']['owner']['username'] == self.user_login:
+                    self.write_log("Keep calm - Media already commented ;)")
+                    # Del media to don't loop on it
+                    del self.media_by_tag[0]
+                    return True
         return False
 
     def auto_unfollow(self):
