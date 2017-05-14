@@ -1,4 +1,3 @@
-<a href="#InstaBot" title="Instabot.py Logo"><img src="https://s14.postimg.org/l51bobm8h/Instabot.py.png"></a>
 ## InstaBot
 
 InstaBot v 1.1.0 
