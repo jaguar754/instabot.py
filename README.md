@@ -229,7 +229,7 @@ This class not ready for 100%, but I make most important things and you can work
 
 ## Community
 
-- [Telegram Group](https://t.me/joinchat/AAAAAEG_8hv3PIJnmq1VVg)
+- [Telegram Group](https://t.me/joinchat/DYKH-0G_8hsDDoN_iE8ZlA)
 - [Facebook Group](https://www.facebook.com/groups/instabot/)
 
 [1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
