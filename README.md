@@ -207,6 +207,15 @@ bot = InstaBot('login', 'password')
 bot.get_media_id_by_tag('python')
 bot.like_all_exist_media(4)
 ```
+## Video Tutorials
+
+The following video tutorials demo setting up and running the bot on Windows and Mac/Linux:
+
+### Windows instabot.py tutorial
+[![Instabot.py Windows Setup](https://img.youtube.com/vi/V8P0UCrACA0/0.jpg)](https://www.youtube.com/watch?v=V8P0UCrACA0)
+
+### Mac/Linux instabot.py tutorial
+[![Instabot.py Mac/Linux Setup](https://img.youtube.com/vi/ASO-cZO6uqo/0.jpg)](https://www.youtube.com/watch?v=ASO-cZO6uqo)
 
 ## Tested on:
 Windows - Python 3.4 & Python 2.7.11
