@@ -44,11 +44,11 @@ def get_user_info(self, username):
                 log_string = "Media : %i" % (media)
                 self.write_log(log_string)
 
-                if follower / follows > 2:
+                if follows == 0 or follower / follows > 2:
                     self.is_selebgram = True
                     self.is_fake_account = False
                     print('   >>>This is probably Selebgram account')
-                elif follows / follower > 2:
+                elif follower == 0 or follows / follower > 2:
                     self.is_fake_account = True
                     self.is_selebgram = False
                     print('   >>>This is probably Fake account')
@@ -57,7 +57,7 @@ def get_user_info(self, username):
                     self.is_fake_account = False
                     print('   >>>This is a normal account')
 
-                if follows / media < 10 and follower / media < 10:
+                if media > 0 and follows / media < 10 and follower / media < 10:
                     self.is_active_user = True
                     print('   >>>This user is active')
                 else:
