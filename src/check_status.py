@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from user_info import get_user_info
+from .user_info import get_user_info
 
 
 def check_status(self):

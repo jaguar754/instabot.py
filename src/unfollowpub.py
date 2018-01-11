@@ -1,8 +1,8 @@
 import random
 import time
 
-from instabot import InstaBot
-from userinfo import UserInfo
+from .instabot import InstaBot
+from .userinfo import UserInfo
 
 #use userinfo
 ui = UserInfo()

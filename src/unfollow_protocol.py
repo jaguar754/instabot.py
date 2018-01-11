@@ -4,10 +4,10 @@
 import random
 import time
 
-from follow_protocol import follow_protocol
-from new_auto_mod_unfollow2 import new_auto_mod_unfollow2
-from recent_feed import get_media_id_recent_feed
-from user_feed_protocol import user_feed_protocol
+from .follow_protocol import follow_protocol
+from .new_auto_mod_unfollow2 import new_auto_mod_unfollow2
+from .recent_feed import get_media_id_recent_feed
+from .user_feed_protocol import user_feed_protocol
 
 
 def unfollow_protocol(self):

@@ -10,6 +10,11 @@
 |:--------------------:|:---:|:----------------------------------------------------:|:--------------------------------:|
 | login                | str | Your instagram username                              |      |
 | password             | str | Your instagram password                              |      |
+| start\_at\_h         | int | Start program at the hour                            | 0    |
+| start\_at\_m         | int | Start program at the min                             | 0    |
+| end\_at\_h           | int | End program at the hour                              | 23   |
+| end\_at\_m           | int | End program at the min                               | 59   |
+| database\_name       | str | change the name of database file to use multiple account | "follows\_db.db"   |
 | like_per_day         | int | Number of photos to like per day (over 1000 may cause throttling) | 1000 |
 | media_max_like       | int | Maximum number of likes on photos to like (set to 0 to disable) | 0    |
 | media_min_like       | int | Maximum number of likes on photos to like (set to 0 to disable) | 0    |

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from new_unfollow import new_unfollow
+from .new_unfollow import new_unfollow
 
 
 def new_auto_mod_unfollow2(self):
