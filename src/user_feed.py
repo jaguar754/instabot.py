@@ -4,7 +4,7 @@ import json
 import random
 import time
 
-from user_info import get_user_info
+from .user_info import get_user_info
 
 
 def get_media_id_user_feed(self):

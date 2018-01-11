@@ -3,8 +3,8 @@
 import random
 import time
 
-from feed_scanner import feed_scanner
-from user_info import get_user_info
+from .feed_scanner import feed_scanner
+from .user_info import get_user_info
 
 
 def follow_protocol(self):
