@@ -1,21 +1,20 @@
-Fill in all requirements *before* submitting an issue.
-If you fail to do so, we will close the ticket.
+|Fill in all requirements *before* submitting an issue.
+|If you fail to do so, we will close the ticket.
 
 - [x] This is a checked box.
 - [ ] Checked other issues for the same problem.
-- [ ] Uploaded the error.log (if applicable).
 
 ## Hosting
 - [ ] Are you hosting the bot on a VPS or other Cloud hosting?
 - [ ] If so, have you tried running the code on your local machine?
 
-Check One :
+#### Select one:
 - [ ] Bug
 - [ ] Feature Request
 - [ ] Technical Help
 - [ ] Other
 
-## Which OS? (include version)
+### Operating System? (include version)
 MAC / Windows / Linux / Android
 
 ## Python Version?
@@ -23,3 +22,8 @@ MAC / Windows / Linux / Android
 
 ## Description
 
+Type the description of your issue here.
+
+```
+Include the contents of the error.log here. (if applicable)
+```
