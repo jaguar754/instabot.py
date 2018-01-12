@@ -21,7 +21,7 @@ from .sql_updates import get_usernames_first, get_usernames, get_username_random
 
 class InstaBot:
     """
-    Instagram bot v 1.1.0
+    Instagram bot v 1.2.0
     like_per_day=1000 - How many likes set bot in one day.
 
     media_max_like=0 - Don't like media (photo or video) if it have more than
