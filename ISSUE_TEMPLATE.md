@@ -19,3 +19,5 @@ Yes / No
 - [ ] VPS: Tried the same code via my local pc
 
 ## What is your python knowledge vote 0/10
+
+## Traceback error logs
