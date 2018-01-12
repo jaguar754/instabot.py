@@ -1,12 +1,12 @@
-|Fill in all requirements *before* submitting an issue.
-|If you fail to do so, we will close the ticket.
+> Fill in all requirements *before* submitting an issue.
+> If you fail to do so, we will close the ticket.
 
 - [x] This is a checked box.
-- [ ] Checked other issues for the same problem.
+- [ ] I have searched for other issues with the same problem.
 
 ## Hosting
 - [ ] Are you hosting the bot on a VPS or other Cloud hosting?
-- [ ] If so, have you tried running the code on your local machine?
+- [ ] If so; have you tried running the code on your local machine?
 
 #### Select one:
 - [ ] Bug
