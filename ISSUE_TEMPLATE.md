@@ -1,23 +1,25 @@
-Fill all requirements before sending issues. Or all issues will be closed without reading. 
+Fill in all requirements *before* submitting an issue.
+If you fail to do so, we will close the ticket.
 
-- [ ] Searched and checked other issues about my problem
-- [ ] If have errors.log file and i did upload it
+- [x] This is a checked box.
+- [ ] Checked other issues for the same problem.
+- [ ] Uploaded the error.log (if applicable).
+
+## Hosting
+- [ ] Are you hosting the bot on a VPS or other Cloud hosting?
+- [ ] If so, have you tried running the code on your local machine?
 
 Check One :
 - [ ] Bug
-- [ ] Feature
-- [ ] Need Help
+- [ ] Feature Request
+- [ ] Technical Help
+- [ ] Other
 
-## What OS ?
-MAC / Windows / Linux(detail) / Android
-## Python Version ?
-2x / 3x
-## Is it VPS ?
-Yes / No
-### VPS: Is the vps far far away ? Another Country ?
-Yes / No
-- [ ] VPS: Tried the same code via my local pc
+## Which OS? (include version)
+MAC / Windows / Linux / Android
 
-## What is your python knowledge vote 0/10
+## Python Version?
+2 / 3
 
-## Traceback error logs
+## Description
+
