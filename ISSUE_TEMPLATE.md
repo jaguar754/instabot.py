@@ -1,6 +1,4 @@
-> Fill in all requirements *before* submitting an issue.
-
-> If you fail to do so, we will close the ticket.
+> Fill in all requirements *before* submitting an issue. If you fail to do so, we will close the ticket.
 
 - [x] This is a checked box.
 - [ ] I have searched for other issues with the same problem.
@@ -26,5 +24,5 @@ MAC / Windows / Linux / Android
 Type the description of your issue here.
 
 ```
-Include the contents of the error.log here. (if applicable)
+Include the contents of the error.log here (if applicable).
 ```
