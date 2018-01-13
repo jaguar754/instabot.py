@@ -30,7 +30,7 @@ def get_media_id_user_feed(self):
                 if self.is_by_tag != True:
                     self.media_by_user = list(all_data['user']['media']['nodes'])
                 else:
-                    self.media_by_user = list(all_data['tag']['media']['nodes'])
+                    self.media_by_user = list(all_data['graphql']['hashtag']['edge_hashtag_to_media']['edges'])
                 log_string = "Get media by user success!"
                 self.write_log(log_string)
             except:
