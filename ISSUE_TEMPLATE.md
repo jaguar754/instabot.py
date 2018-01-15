@@ -2,7 +2,7 @@
 > Do not delete any of the template, fill all of it in; even if you think it doesn't apply to your issue.
 > If you fail to follow these simple instructions, we will close the ticket.
 
-- [x] This is a checked box. **Do not put spaces around the `x`!**
+- [x] This is a checked box. **Do not leave spaces around the `x`!**
 
 - [ ] I have searched for other issues with the same problem.
 
