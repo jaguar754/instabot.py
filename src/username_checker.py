@@ -3,8 +3,8 @@
 def username_checker(self):
     chooser = 0
     while len(self.user_list) > 0 and chooser < len(self.user_list):
-        self.current_user = self.user_list[chooser]["user"]["username"]
-        self.current_id = self.user_list[chooser]["user"]["id"]
+        self.current_user = self.user_list[chooser]["node"]["username"]
+        self.current_id = self.user_list[chooser]["node"]["id"]
         for index in range(len(self.unwanted_username_list)):
             if self.unwanted_username_list[index] in self.current_user:
                 print('Username = ' + self.current_user + '\n      ID = ' +

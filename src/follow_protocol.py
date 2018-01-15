@@ -23,15 +23,18 @@ def follow_protocol(self):
             feed_scanner(self)
         if self.is_selebgram != True and self.is_fake_account != True and self.is_active_user != False:
             if self.is_following != True:
-                print('Trying to follow : ' + self.current_user +
-                      ' with user ID :' + self.current_id)
+                log = ('Trying to follow : ' + self.current_user +
+                       ' with user ID :' + self.current_id)
+                self.write_log(log)
                 self.follow(self.current_id)
-                print('delete ' + self.user_info_list[chooser][0] +
-                      ' from user info list')
+                log = ('delete ' + self.user_info_list[chooser][0] +
+                       ' from user info list')
+                self.write_log(log)
                 del self.user_info_list[chooser]
         else:
-            print('delete ' + self.user_info_list[chooser][0] +
+            log = ('delete ' + self.user_info_list[chooser][0] +
                   ' from user info list')
+            self.write_log(log)
             del self.user_info_list[chooser]
 
         time.sleep(random.randint(13, 26))
