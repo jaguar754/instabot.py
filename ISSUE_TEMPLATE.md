@@ -1,6 +1,6 @@
 > Fill in all requirements *before* submitting an issue. If you fail to do so, we will close the ticket.
 
-- [x] This is a checked box.
+- [x] This is a checked box. **Do not put spaces around the `x`!**
 - [ ] I have searched for other issues with the same problem.
 
 ## Hosting
