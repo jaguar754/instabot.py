@@ -4,17 +4,17 @@
 
 - [x] This is a checked box. **Do not put spaces around the `x`!**
 
-- [] I have searched for other issues with the same problem.
+- [ ] I have searched for other issues with the same problem.
 
 ## Hosting
-- [] Are you hosting the bot on a VPS or other Cloud hosting?
-- [] If so; have you tried running the code on your local machine?
+- [ ] Are you hosting the bot on a VPS or other Cloud hosting?
+- [ ] If so; have you tried running the code on your local machine?
 
 #### Select one:
-- [] Bug
-- [] Feature Request
-- [] Technical Help
-- [] Other
+- [ ] Bug
+- [ ] Feature Request
+- [ ] Technical Help
+- [ ] Other
 
 ### Operating System? (include version)
 MAC / Windows / Linux / Android
