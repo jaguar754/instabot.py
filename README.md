@@ -3,7 +3,7 @@
 > Toolkit for building automated Instagram bots without direct access to the Instagram API or passsing through the review process.
 
 [![Donate](https://img.shields.io/badge/PayPal-Donate-brightgreen.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7BMM6JGE73322&lc=US)
-[![Chat on Telegram](https://img.shields.io/badge/Chat%20on-Telegram-brightgreen.svg)](https://t.me/joinchat/AAAAAEG_8hv3PIJnmq1VVg)
+[![Chat on Telegram](https://img.shields.io/badge/Chat%20on-Telegram-brightgreen.svg)](https://t.me/joinchat/DYKH-0G_8hsDDoN_iE8ZlA)
 
 ## Parameters
 | Parameter            | Type|                Description                           |        Default value             |
