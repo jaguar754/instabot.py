@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import json
-
 import requests
-
+from fake_useragent import UserAgent
 
 class UserInfo:
     '''
     This class try to take some user info (following, followers, etc.)
     '''
-    user_agent = ("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 "
-                  "(KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36")
+    ua = UserAgent()
+    user_agent = str(ua.random)
 
     url_user_info = "https://www.instagram.com/%s/?__a=1"
     url_list = {

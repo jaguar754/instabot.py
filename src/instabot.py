@@ -18,6 +18,8 @@ import requests
 from .sql_updates import check_and_update, check_already_liked, check_already_followed
 from .sql_updates import insert_media, insert_username, insert_unfollow_count
 from .sql_updates import get_usernames_first, get_usernames, get_username_random
+from .sql_updates import check_and_insert_user_agent
+from fake_useragent import UserAgent
 
 class InstaBot:
     """
@@ -56,7 +58,7 @@ class InstaBot:
     url_user_detail = 'https://www.instagram.com/%s/?__a=1'
     api_user_detail = 'https://i.instagram.com/api/v1/users/%s/info/'
 
-    user_agent = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0")
+    user_agent = "" ""
     accept_language = 'en-US,en;q=0.5'
 
     # If instagram ban you - query return 400 error.
@@ -157,6 +159,8 @@ class InstaBot:
         self.follows_db = sqlite3.connect(database_name, timeout=0, isolation_level=None)
         self.follows_db_c = self.follows_db.cursor()
         check_and_update(self)
+        fake_ua = UserAgent()
+        self.user_agent = check_and_insert_user_agent(self, str(fake_ua.random))
         self.bot_start = datetime.datetime.now()
         self.start_at_h = start_at_h
         self.start_at_m = start_at_m

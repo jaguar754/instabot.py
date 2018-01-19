@@ -36,6 +36,16 @@ def check_and_update(self):
     table_column_status = [o for o in table_info if o[1] == "last_followed_time"]
     if not table_column_status:
         self.follows_db_c.execute("ALTER TABLE usernames ADD COLUMN last_followed_time TEXT")
+    table_info = self.follows_db_c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='settings';").fetchone()
+    if not table_info:
+        qry = """
+            CREATE TABLE "settings" ( `settings_name` TEXT, `settings_val` TEXT  );
+              """
+        self.follows_db_c.execute(qry)
+    #table_column_status = [o for o in table_info if o[1] == "last_followed_time"]
+    #if not table_column_status:
+    #    self.follows_db_c.execute("ALTER TABLE usernames ADD COLUMN last_followed_time TEXT")
+    
 
 def check_already_liked(self, media_id):
     """ controls if media already liked before """
@@ -101,3 +111,18 @@ def get_username_random(self):
         return username
     else:
         return False
+
+def check_and_insert_user_agent(self, user_agent):
+    """ Check user agent  """
+    qry = "SELECT settings_val from settings where settings_name = 'USERAGENT'"
+    result_check = self.follows_db_c.execute(qry).fetchone()
+    if result_check:
+        result_get = result_check[0]
+        return result_get
+    else:
+        qry_insert = """
+                    INSERT INTO settings (settings_name, settings_val)
+                    VALUES ('USERAGENT', '%s')
+                     """ % user_agent
+        self.follows_db_c.execute(qry_insert)
+        return check_and_insert_user_agent(self, user_agent)
