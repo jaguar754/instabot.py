@@ -3,14 +3,13 @@
 
 import json
 import requests
-from fake_useragent import UserAgent
-from .sql_updates import check_and_insert_user_agent
 
 class UserInfo:
     '''
     This class try to take some user info (following, followers, etc.)
     '''
-    user_agent = "" ""
+    user_agent = ("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36")
     url_user_info = "https://www.instagram.com/%s/?__a=1"
     url_list = {
         "ink361": {
@@ -27,8 +26,6 @@ class UserInfo:
     def __init__(self, info_aggregator="ink361"):
         self.i_a = info_aggregator
         self.hello()
-        fake_ua = UserAgent()
-        self.user_agent = check_and_insert_user_agent(self, str(fake_ua.random))
 
     def hello(self):
         self.s = requests.Session()
