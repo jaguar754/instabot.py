@@ -1,9 +1,14 @@
-# InstaBot
+[![Donate](https://img.shields.io/badge/PayPal-Donate-brightgreen.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=andrewsegas%40gmail%2ecom&lc=BR&item_name=instaboost&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+
+# New Features
++ User Interface
++ .EXE file for non developers 
++ Location tags 
+	
+# InstaBoost
 
 > Toolkit for building automated Instagram bots without direct access to the Instagram API or passsing through the review process.
 
-[![Donate](https://img.shields.io/badge/PayPal-Donate-brightgreen.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7BMM6JGE73322&lc=US)
-[![Chat on Telegram](https://img.shields.io/badge/Chat%20on-Telegram-brightgreen.svg)](https://t.me/joinchat/DYKH-0G_8hsDDoN_iE8ZlA)
 
 ## Parameters
 | Parameter            | Type|                Description                           |        Default value             |
@@ -23,7 +28,7 @@
 | unfollow_per_day     | int | Users to unfollow per day                            | 0    |
 | comments_per_day     | int | Comments to post per day                             | 0    |
 | comment_list         | [[str]] | List of word lists for comment generation        | [['this', 'your'], ['photo', 'picture', 'pic', 'shot'], ['is', 'looks', 'is really'], ['great', 'super', 'good'], ['.', '...', '!', '!!']] |
-| tag_list             | [str] | Tags to use for finding posts                      | ['cat', 'car', 'dog'] |
+| tag_list             | [str] | Tags/location to use for finding posts             | ['cat', 'car', 'dog'] |
 | tag_blacklist        | [str] | Tags to ignore when liking posts                   | [] |
 | user_blacklist       | {str: str} | Users whose posts to ignore                   | {} |
 | max_like_for_one_tag | int | How many media of a given tag to like at once (out of 21) | 5 |
@@ -44,44 +49,34 @@
 | unfollow(id) | Unfollow the user with the given ID. |
 | logout() | Log out of Instagram. |
 
-## Usage examples
-Basic bot implementation:
+## Usage
+1 - Prompt
 ```py
-bot = InstaBot('login', 'password')
-bot.auto_mod()
+pip install -r requirements.txt
+python example.py
+```
+## OR
+2 - User Interface
+```py
+pip3 install pyqt5
+pip install -r requirements.txt
+python instaboost.py
 ```
 
-Standard use with custom tags:
-```py
-bot = InstaBot('login', 'password', tag_list=['with', 'your', 'tag'])
-bot.auto_mod()
-```
+## OR easier>
+3 - User Interface
 
-Standard use with change default settings (you should know what you do!):
-```py
-bot = InstaBot('login', 'password',
-               like_in_day=1000,
-               media_max_like=50,
-               media_min_like=5,
-               tag_list=['like', 'follow', 'f4f'],
-               max_like_for_one_tag=50,
-               log_mod=1)
-bot.auto_mod()
-```
+EXE FILES\instaboot.exe
 
-Get media by one tag `'python'` and like 4 of them:
-```py
-bot = InstaBot('login', 'password')
-bot.get_media_id_by_tag('python')
-bot.like_all_exist_media(4)
-```
+If your antivirus complain and you don't trust you may use the first example
 
-## Video Tutorials
-The following video tutorials demo setting up and running the bot:
-* [Windows](https://www.youtube.com/watch?v=V8P0UCrACA0)
-* [Mac/Linux](https://www.youtube.com/watch?v=ASO-cZO6uqo)
+![Parameters!](https://github.com/andrewsegas/docs/blob/master/im2.png "Parameters")
 
-## Community
 
-- [Telegram Group](https://t.me/joinchat/DYKH-0G_8hsDDoN_iE8ZlA)
-- [Facebook Group](https://www.facebook.com/groups/instabot/)
+![running!](https://github.com/andrewsegas/docs/blob/master/img3.png "running")
+
+Finding location code!!
+![Finding Location!](https://github.com/andrewsegas/docs/blob/master/location.png "Finding Location")
+
+
+based on https://github.com/instabot-py 
