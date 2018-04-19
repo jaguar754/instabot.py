@@ -22,19 +22,19 @@ def get_user_info(self, username):
                 log_string = "Checking user info.."
                 self.write_log(log_string)
 
-                follows = get_str_info(user_info,'"edge_follow":{"count":','}')
-                follower = get_str_info(user_info,'edge_followed_by":{"count":','}')
+                follows = get_str_info(user_info,'"edge_follow":{"count":','}',"n")
+                follower = get_str_info(user_info,'edge_followed_by":{"count":','}',"n")
                 if self.is_self_checking is not False:
                     self.self_following = follows
                     self.self_follower = follower
                     self.is_self_checking = False
                     self.is_checked = True
                     return 0
-                media = get_str_info(user_info,'edge_owner_to_timeline_media":{"count":','}')
-                follow_viewer = get_str_info(user_info,'follows_viewer":',',')
-                followed_by_viewer = get_str_info(user_info,'followed_by_viewer":',',')
-                requested_by_viewer = get_str_info(user_info,'requested_by_viewer":',',')
-                has_requested_viewer = get_str_info(user_info,'has_requested_viewer":',',')
+                media = get_str_info(user_info,'edge_owner_to_timeline_media":{"count":',',',"n")
+                follow_viewer = get_str_info(user_info,'follows_viewer":',',',"b")
+                followed_by_viewer = get_str_info(user_info,'followed_by_viewer":',',',"b")
+                requested_by_viewer = get_str_info(user_info,'requested_by_viewer":',',',"b")
+                has_requested_viewer = get_str_info(user_info,'has_requested_viewer":',',',"b")
                 log_string = "Follower : %i" % (follower)
                 self.write_log(log_string)
                 log_string = "Following : %s" % (follows)
@@ -84,8 +84,8 @@ def get_user_info(self, username):
         else:
             return 0
 
-def get_str_info(str, key,end):
-    if end == '}':
+def get_str_info(str, key,end,type):
+    if type == 'n':
         ret = int(str[ (str.find(key) + len(key)) : str.find(end, str.find(key) + len(key)) ] )
     else:
         ret = (str[(str.find(key) + len(key)): str.find(end, str.find(key) + len(key))]) == 'true'
