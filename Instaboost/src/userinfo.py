@@ -11,7 +11,7 @@ class UserInfo:
     '''
     user_agent = ("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36")
-    url_user_info = "https://www.instagram.com/%s/?__a=1"
+    url_user_info = "https://www.instagram.com/%s/"
     url_media_detail = 'https://www.instagram.com/p/%s/?__a=1'
     url_list = {
         "ink361": {
@@ -40,8 +40,8 @@ class UserInfo:
     def get_user_id_by_login(self, user_name):
         url_info = self.url_user_info % (user_name)
         info = self.s.get(url_info)
-        all_data = json.loads(info.text)
-        id_user = all_data['graphql']['user']['id']
+        all_data = info.text[info.text.find('javascript">window._sharedData'):]
+        id_user = int(all_data[all_data.find('"profilePage_')+13 : all_data.find('"',all_data.find('"profilePage_')+13)])
         return id_user
 
     def get_user_by_media(self, media):

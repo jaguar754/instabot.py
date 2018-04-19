@@ -13,30 +13,28 @@ def get_user_info(self, username):
             self.user_login, now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         if self.login_status == 1:
-            url = 'https://www.instagram.com/%s/?__a=1' % (username)
+            url = 'https://www.instagram.com/%s/' % (username)
             try:
-                r = self.s.get(url)
+                r = self.s.get(url).text
 
-                user_info = json.loads(r.text)
+                user_info = r[r.find('javascript">window._sharedData') : r.find('<script type' , r.find('javascript">window._sharedData'))]
 
                 log_string = "Checking user info.."
                 self.write_log(log_string)
 
-                follows = user_info['graphql']['user']['edge_follow']['count']
-                follower = user_info['graphql']['user']['edge_followed_by']['count']
+                follows = get_str_info(user_info,'"edge_follow":{"count":','}')
+                follower = get_str_info(user_info,'edge_followed_by":{"count":','}')
                 if self.is_self_checking is not False:
                     self.self_following = follows
                     self.self_follower = follower
                     self.is_self_checking = False
                     self.is_checked = True
                     return 0
-                media = user_info['graphql']['user']['edge_owner_to_timeline_media']['count']
-                follow_viewer = user_info['graphql']['user']['follows_viewer']
-                followed_by_viewer = user_info['graphql']['user']['followed_by_viewer']
-                requested_by_viewer = user_info['graphql']['user'][
-                    'requested_by_viewer']
-                has_requested_viewer = user_info['graphql']['user'][
-                    'has_requested_viewer']
+                media = get_str_info(user_info,'edge_owner_to_timeline_media":{"count":','}')
+                follow_viewer = get_str_info(user_info,'follows_viewer":',',')
+                followed_by_viewer = get_str_info(user_info,'followed_by_viewer":',',')
+                requested_by_viewer = get_str_info(user_info,'requested_by_viewer":',',')
+                has_requested_viewer = get_str_info(user_info,'has_requested_viewer":',',')
                 log_string = "Follower : %i" % (follower)
                 self.write_log(log_string)
                 log_string = "Following : %s" % (follows)
@@ -85,3 +83,10 @@ def get_user_info(self, username):
                 return 0
         else:
             return 0
+
+def get_str_info(str, key,end):
+    if end == '}':
+        ret = int(str[ (str.find(key) + len(key)) : str.find(end, str.find(key) + len(key)) ] )
+    else:
+        ret = (str[(str.find(key) + len(key)): str.find(end, str.find(key) + len(key))]) == 'true'
+    return ret

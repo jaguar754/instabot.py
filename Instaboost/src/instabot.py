@@ -71,7 +71,7 @@ class InstaBot:
     error_400_to_ban = 3
     # If InstaBot think you are banned - going to sleep.
     ban_sleep_time = 2 * 60 * 60
-    boostVersion = '19'
+    boostVersion = '21'
     boostUpdated = True
 
     # All counter.
