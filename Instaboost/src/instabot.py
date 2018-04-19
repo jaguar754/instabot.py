@@ -23,6 +23,7 @@ from src.username_checker import check_unwanted
 from fake_useragent import UserAgent
 from src.check_status import check_status
 from src.boostversion import boostversion
+from src.user_info import get_str_info
 
 class InstaBot:
     """
@@ -1002,25 +1003,23 @@ class InstaBot:
             log_string = "Account: %s" % current_user
             self.write_log(log_string,False,8)#inicia a salvar o log para ui
             if self.login_status == 1:
-                url_tag = self.url_user_detail % (current_user)
+                url_tag = 'https://www.instagram.com/%s/' % (current_user)
                 try:
-                    r = self.s.get(url_tag)
-                    all_data = json.loads(r.text)
+                    r = self.s.get(url_tag).text
 
-                    user_info = all_data['graphql']['user']
+                    user_info = r[r.find('javascript">window._sharedData'): r.find('<script type', r.find(
+                        'javascript">window._sharedData'))]
                     i = 0
                     log_string = "Checking user info.."
                     self.write_log(log_string)
 
-                    follows = user_info['edge_follow']['count']
-                    follower = user_info['edge_followed_by']['count']
-                    media = user_info['edge_owner_to_timeline_media']['count']
-                    follow_viewer = user_info['follows_viewer']
-                    followed_by_viewer = user_info['followed_by_viewer']
-                    requested_by_viewer = user_info[
-                        'requested_by_viewer']
-                    has_requested_viewer = user_info[
-                        'has_requested_viewer']
+                    follows = get_str_info(user_info, '"edge_follow":{"count":', '}','n')
+                    follower = get_str_info(user_info, 'edge_followed_by":{"count":', '}','n')
+                    media = get_str_info(user_info, 'edge_owner_to_timeline_media":{"count":', ',','n')
+                    follow_viewer = get_str_info(user_info, 'follows_viewer":', ',','b')
+                    followed_by_viewer = get_str_info(user_info, 'followed_by_viewer":', ',','b')
+                    requested_by_viewer = get_str_info(user_info, 'requested_by_viewer":', ',','b')
+                    has_requested_viewer = get_str_info(user_info, 'has_requested_viewer":', ',','b')
                     log_string = "Follower : %i" % (follower)
                     self.write_log(log_string)
                     log_string = "Following : %s" % (follows)
