@@ -10,7 +10,36 @@
 > Toolkit for building automated Instagram bots without direct access to the Instagram API or passsing through the review process.
 
 
-## Parameters
+## Usage
+1 - Prompt
+```py
+pip install -r requirements.txt
+python example.py
+```
+## OR
+2 - User Interface
+```py
+pip3 install pyqt5
+pip install -r requirements.txt
+python instaboost.py
+```
+
+## OR easier>
+3 - User Interface
+
+EXE FILES\instaboot.exe
+
+If your antivirus complain and you don't trust you may use the first example
+
+![Parameters!](https://github.com/andrewsegas/docs/blob/master/im2.png "Parameters")
+
+
+![running!](https://github.com/andrewsegas/docs/blob/master/img3.png "running")
+
+Finding location code!!
+![Finding Location!](https://github.com/andrewsegas/docs/blob/master/location.png "Finding Location")
+
+## Parameters for Devs
 | Parameter            | Type|                Description                           |        Default value             |
 |:--------------------:|:---:|:----------------------------------------------------:|:--------------------------------:|
 | login                | str | Your instagram username                              |      |
@@ -48,35 +77,5 @@
 | follow(id) | Follow the user with the given ID. |
 | unfollow(id) | Unfollow the user with the given ID. |
 | logout() | Log out of Instagram. |
-
-## Usage
-1 - Prompt
-```py
-pip install -r requirements.txt
-python example.py
-```
-## OR
-2 - User Interface
-```py
-pip3 install pyqt5
-pip install -r requirements.txt
-python instaboost.py
-```
-
-## OR easier>
-3 - User Interface
-
-EXE FILES\instaboot.exe
-
-If your antivirus complain and you don't trust you may use the first example
-
-![Parameters!](https://github.com/andrewsegas/docs/blob/master/im2.png "Parameters")
-
-
-![running!](https://github.com/andrewsegas/docs/blob/master/img3.png "running")
-
-Finding location code!!
-![Finding Location!](https://github.com/andrewsegas/docs/blob/master/location.png "Finding Location")
-
 
 based on https://github.com/instabot-py 
