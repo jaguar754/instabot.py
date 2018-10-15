@@ -27,7 +27,7 @@ from src.user_info import get_str_info
 
 class InstaBot:
     """
-    Instagram bot v 1.19.0
+    Instagram bot v 1.23.0
     like_per_day=1000 - How many likes set bot in one day.
 
     media_max_like=0 - Don't like media (photo or video) if it have more than
@@ -72,7 +72,7 @@ class InstaBot:
     error_400_to_ban = 3
     # If InstaBot think you are banned - going to sleep.
     ban_sleep_time = 2 * 60 * 60
-    boostVersion = '21'
+    boostVersion = '22'
     boostUpdated = True
 
     # All counter.
@@ -236,7 +236,7 @@ class InstaBot:
         self.media_by_user = []
         self.unwanted_username_list = unwanted_username_list
         now_time = datetime.datetime.now()
-        log_string = 'Instaboost v2.19.0 started at %s:\n' % \
+        log_string = 'Instaboost v2.23.0 started at %s:\n' % \
                      (now_time.strftime("%d.%m.%Y %H:%M"))
         self.write_log(log_string)
         self.login()
@@ -276,6 +276,9 @@ class InstaBot:
                 'THIS SOFTWARE MUST BE UPDATED, PLEASE, UPDATE YOUR INSTABOOST IN "https://github.com/andrewsegas/instaboost" !')
             self.write_log(
                 'THIS SOFTWARE MUST BE UPDATED, PLEASE, UPDATE YOUR INSTABOOST IN "https://github.com/andrewsegas/instaboost" !')
+        else:
+            self.write_log(
+                'This software is already Updated!')
 
         log_string = 'Trying to login as %s...\n' % (self.user_login)
         self.write_log(log_string)
