@@ -268,7 +268,6 @@ class InstaBot:
                 time.sleep(5 * random.random())
 
     def login(self):
-        boostversion(self)
         if self.boostUpdated != True:
             self.write_log(
                 'THIS SOFTWARE MUST BE UPDATED, PLEASE, UPDATE YOUR INSTABOOST IN "https://github.com/andrewsegas/instaboost" !')
