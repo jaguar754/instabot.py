@@ -1,137 +1,81 @@
-## InstaBot
-Instagram bot. It works without instagram api, need only login and password. Write on python.
+[![Donate](https://img.shields.io/badge/PayPal-Donate-brightgreen.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=andrewsegas%40gmail%2ecom&lc=BR&item_name=instaboost&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
-After Instagram [close api][1] (new review process), there were some problem, to make auto - like, comment and follow.
+# New Features
++ User Interface
++ .EXE file for non developers 
++ Location tags 
+	
+# InstaBoost
 
-If your app can't pass new review process, this is solution!
+> Toolkit for building automated Instagram bots without direct access to the Instagram API or passsing through the review process.
 
-This InstaBot work by [https://www.instagram.com][2] and need only your login and password.
+
 ## Usage
-####1) Login:
-Login automatic, when you create `InstaBot` class element:
-```python
-bot = InstaBot('login', 'password',
-               like_per_day=1000,
-               more_than_likes=10,
-               tag_list = ['cat', 'car', 'dog'],
-               max_like_for_one_tag=5,
-               log_mod = 0)
+1 - Prompt
+```py
+pip install -r requirements.txt
+python example.py
 ```
-####2) Set likes:
-How many likes set bot in one day.
-```python
-like_per_day=1000
-```
-Don't like media (photo or video) if it have more than `more_than_likes` likes. If media have too much likes - your like have not feedback.
-```python
-more_than_likes=10
-```
-Tag list to like.
-```python
-tag_list = ['cat', 'car', 'dog']
-```
-Like 1 to `max_like_for_one_tag` times by row.
-```python
-max_like_for_one_tag=5
+## OR
+2 - User Interface
+```py
+pip3 install pyqt5
+pip install -r requirements.txt
+python instaboost.py
 ```
 
-You can like one tag:
-```python
-bot.get_media_id_by_tag('dog')
-```
-Like 4 times:
-```python
-bot.like_all_exist_media(4)
-```
-Or you can choose `auto_mod` (like all tags from setting by loop):
-```python
-bot.auto_mod()
-```
-####3) Set comments:
-```python
-bot.comment('media_id', 'comment')
-```
-For example:
-```python
-bot.comment(11111111111111111111, 'Cool!')
-```
-####4) Follow and unfollow:
-Follow:
-```python
-bot.follow('user_id')
-```
-Unfollow:
-```python
-bot.unfollow('user_id')
-```
-For example (follow and unfollow user with id 111111111):
-```python
-bot.follow(111111111)
-bot.unfollow(111111111)
-```
-####5) Else:
-Log mod: `log_mod=0` log to console, `log_mod=1` log to file, `log_mod=2` no log.
-```python
-log_mod = 0
-```
-####6) Logout from exist session:
-```python
-bot.logout()
-```
-## Usage examples
-Standard use (will like by loop, all default tag):
-```python
-bot = InstaBot('login', 'password')
-bot.auto_mod()
-```
-Standard use with your tag (will like by loop, all your tag):
-```python
-bot = InstaBot('login', 'password', tag_list = ['with', 'your', 'tag'])
-bot.auto_mod()
-```
-Standard use with change defaul settings (you should know what you do!):
-```python
-bot = InstaBot('login', 'password',
-               like_in_day=100000,
-               more_than_likes=5,
-               tag_list = ['like', 'follow', 'girls'],
-               max_like_for_one_tag=50,
-               log_mod = 1)
-bot.auto_mod()
-```
-Get media_id buy one tag `'python'` and like 4 of them:
-```python
-bot = InstaBot('login', 'password')
-bot.get_media_id_by_tag('python')
-bot.like_all_exist_media(4)
-```
-## Requirements
-`Python`
+## OR easier>
+3 - User Interface
 
-Instagram account
+EXE FILES\instaboot.exe
 
-`instabot.py` file must be in `UTF-8` encoding if you use `Python 3`, or `ASCII` in `Python 2` ([PEP][3])!
-## How to install and run:
-1) You should download and install `Python` on your OS.
+If your antivirus complain and you don't trust you may use the first example
 
-2) You should install Python lib `requests`. Run command `pip3 install requests` if you use `Python 3`, or type `pip install requests` if you use `Python 2`.
+![Parameters!](https://github.com/andrewsegas/docs/blob/master/im2.png "Parameters")
 
-3) Download `instabot.py` and save it in right encoding!
 
-4) Add the code to the end of the file (like in usage examples), depending on how you want to use bot.
+![running!](https://github.com/andrewsegas/docs/blob/master/img3.png "running")
 
-5) Run program `python3 instabot.py` or `python instabot.py` on MAC and Linux, or `python instabot.py` on Windows.
-## Test on:
-Windows & Python 3.4
+Finding location code!!
+![Finding Location!](https://github.com/andrewsegas/docs/blob/master/location.png "Finding Location")
 
-CentOS & Python 3.4
+## Parameters for Devs
+| Parameter            | Type|                Description                           |        Default value             |
+|:--------------------:|:---:|:----------------------------------------------------:|:--------------------------------:|
+| login                | str | Your instagram username                              |      |
+| password             | str | Your instagram password                              |      |
+| start\_at\_h         | int | Start program at the hour                            | 0    |
+| start\_at\_m         | int | Start program at the min                             | 0    |
+| end\_at\_h           | int | End program at the hour                              | 23   |
+| end\_at\_m           | int | End program at the min                               | 59   |
+| database\_name       | str | change the name of database file to use multiple account | "follows\_db.db"   |
+| like_per_day         | int | Number of photos to like per day (over 1000 may cause throttling) | 1000 |
+| media_max_like       | int | Maximum number of likes on photos to like (set to 0 to disable) | 0    |
+| media_min_like       | int | Maximum number of likes on photos to like (set to 0 to disable) | 0    |
+| follow_per_day       | int | Photos to like per day                               | 0    |
+| follow_time          | int | Seconds to wait before unfollowing                   | 5 * 60 * 60 |
+| unfollow_per_day     | int | Users to unfollow per day                            | 0    |
+| comments_per_day     | int | Comments to post per day                             | 0    |
+| comment_list         | [[str]] | List of word lists for comment generation        | [['this', 'your'], ['photo', 'picture', 'pic', 'shot'], ['is', 'looks', 'is really'], ['great', 'super', 'good'], ['.', '...', '!', '!!']] |
+| tag_list             | [str] | Tags/location to use for finding posts             | ['cat', 'car', 'dog'] |
+| tag_blacklist        | [str] | Tags to ignore when liking posts                   | [] |
+| user_blacklist       | {str: str} | Users whose posts to ignore                   | {} |
+| max_like_for_one_tag | int | How many media of a given tag to like at once (out of 21) | 5 |
+| unfollow_break_min   | int | Minimum seconds to break between unfollows           | 15 |
+| unfollow_break_max   | int | Maximum seconds to break between unfollows           | 30 |
+| log_mod              | int | Logging target (0 log to console, 1 log to file, 2 no log.) | 0 |
+| proxy                | str | Access instagram through a proxy. (host:port or user:password@host:port) | |
 
-CentOS & Python 2.6
-## Warning!
-The entire responsibility for the use of bot programs entirely on you.
-#### What i see every time open instagram:
-![What i see every time open instagram](http://cs627124.vk.me/v627124268/35d95/rSponlVRclY.jpg)
+## Methods
+| Method | Description |
+|:------:|:-----------:|
+| get_media_id_by_tag(tag) | Add photos with a given tag to like queue |
+| like_all_exist_media(num) | Like some number of media in queue |
+| auto_mod() | Automatically loop through tags and like photos |
+| unlike(id) | Unlike media, given its ID. |
+| comment(id, comment) | Write a comment on the media with a given ID. |
+| follow(id) | Follow the user with the given ID. |
+| unfollow(id) | Unfollow the user with the given ID. |
+| logout() | Log out of Instagram. |
 
-[1]: http://developers.instagram.com/post/133424514006/instagram-platform-update
-[2]: https://www.instagram.com
-[3]: https://www.python.org/dev/peps/pep-0008/#source-file-encoding
+based on https://github.com/instabot-py 
